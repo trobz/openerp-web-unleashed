@@ -1,0 +1,8 @@
+<template>
+
+<t t-name="FieldSerialized">
+    <div class="oe_form_field oe_form_field_text form_serialized">
+    </div>
+</t>
+
+</template>
