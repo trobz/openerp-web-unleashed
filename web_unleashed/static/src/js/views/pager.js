@@ -1,34 +1,16 @@
 openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
 
 
-    var PagerController = base.controllers('Pager');
+    var PagerController = base.utils('Pager');
     
-    var ItemView = Backbone.Marionette.ItemView,
-        _super = ItemView.prototype;
+    var Renderer = Marionette.Renderer,
+        BaseView = base.views('BaseView'),
+        _super = BaseView.prototype;
 
-
-    /*
-     * @class
-     * @module      web_unleashed
-     * @name        PagerView
-     * @classdesc   Display a Pager, similar than the OpenERP default pager on list
-     * @mixes       BaseView
-     * 
-     * @author Michel Meyer <michel[at]zazabe.com>
-     */    
-    var PagerView = ItemView.extend({
+    var Pager = BaseView.extend({
         
-        template: 'Base.Pager',
-        
-        /*
-         * @property {String} className the class used to create the main pager DOM Element
-         */
         className:  'unleashed-pager',
         
-        
-        /*
-         * @property {Object} events DOM listeners
-         */
         events: {
             'click .prev-page': 'previous',
             'click .next-page': 'next',
@@ -36,89 +18,69 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             'change .range-selector': 'rangeChanged'
         },
         
-        /*
-         * Set the model to work on
-         * 
-         * @param {Object} options pass the model to work on
-         */
         initialize: function(options){
-            // TODO: check because extending views are using options.model instead of options.collection (see dashboard/widgets/pager), 
-            // should not be done because of a specific pager view... 
-            
-            this.data = options.collection ? options.collection : ( options.model ? options.model : null);
-            if(!this.data){
-                throw new Error('The Pager view has to be initialized with a model or a collection.');
+            options = options || {};
+            // use collection or model for the pagination
+            if(options.collection && options.collection instanceof PagerController){
+                this.data = options.collection;
+                this.listener = 'sync';
+            }
+            else if(options.model && options.model instanceof PagerController){
+                this.data = options.model;
+                this.listener = 'change';
+            }
+            else {
+                throw new Error('you have to pass an model or a collection to the pager view, and this object has to inherit from a Pager Controller')
+            }
+            _super.initialize.apply(this, arguments);    
+        },
+        
+        // render
+        
+        bind: function(){
+            this.data.on(this.listener, this.render, this);
+        },
+        
+        unbind: function(){
+            this.data.off(null, null, this);
+        },
+        
+        render: function(){
+            return this.$el.html(Renderer.render('UnleashedBase.Pager', {
+                ranges: this.data.pager.ranges,
+                info: this.data.info(),
+                current_range: this.data.pager.limit
+            }));    
+    
+            if(this.data.pager.nb_pages <= 1){
+                this.$el.find('.oe_pager_group').hide();    
             }
         },
         
-        /*
-         * Listen to data event to render the pager
-         */
-        onShow: function(){
-            this.listenTo(this.data, 'sync reset change', this.render);
-        },
-        
-        
-        /*
-         * Serialize pager data
-         * 
-         * @returns {Object} 
-         */
-        serializeData: function(){
-            var disabled = this.data.pager.nb_pages <= 1 ? true : false;
-            disabled = _.isFunction(this.data.grouped) ? this.data.grouped() : disabled;
-            
-            return {
-                ranges: this.data.pager.ranges,
-                current_range: this.data.pager.limit,
-                
-                firstIndex: this.data.firstIndex(),
-                lastIndex: this.data.lastIndex(),
-                total: this.data.pager.total,
-                
-                disabled: disabled,
-                previous: this.data.hasPrevious(),
-                next: this.data.hasNext(),
-            };
-        },
-        
-        
         // UI event
 
-        /*
-         * Go to previous page on the model
-         */
         previous: function(){
             this.data.prev();
         },
         
-        /*
-         * Go to next page on the model
-         */
         next: function(){
             this.data.next();
         },
         
-        /*
-         * Render the pager limit selector
-         */
         range: function(e){
-            var $range = $(e.currentTarget);
-            
-            $range.html(base.render('Base.Pager.range', {
+            var $range = $(e.currentTarget), collection = this.data;
+            $range.html(Renderer.render('UnleashedBase.Pager.range', {
                 ranges: this.data.pager.ranges,
                 current_range: this.data.pager.limit
             }));
         },
         
-        /*
-         * Change the pager limit
-         */
         rangeChanged: function(e){
             var $selector = $(e.currentTarget);
             this.data.changeLimit($selector.val());
         }
     });
 
-    base.views('Pager', PagerView);
+    base.views('Pager', Pager);
+
 });

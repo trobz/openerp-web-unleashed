@@ -3,6 +3,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
     var Pager = base.collections('Pager'); 
         
     openerp.testing.section('Pager Collection', function (test) {
+    
         
         var Connector = base.utils('Connector');
         var connection = null;
@@ -13,9 +14,8 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
             model_name: 'unit.test',
             sync: sync,
         });
-    
             
-        test('fetch', {templates: false, rpc: 'mock', asserts: 79 }, function (instance, $fixture, mock) {
+        test('fetch', {templates: false, rpc: 'mock', asserts: 68 }, function (instance, $fixture, mock) {
          
             connection = instance.web.Model;
         
@@ -35,23 +35,11 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                 return { records: result };
             });
             
+            mock('/web/dataset/call_kw', function (call) {
+                console.log('/web/dataset/call_kw', arguments);
+                return nb_records;
+            });
             
-            //fake response to JSON-RPC call
-            var group_mock = function(call){
-                if(call.params.method == 'read_group'){
-                    return [
-                        { category: 'cat1', count: 5, __domain: [[ 'category', '=', 'cat1' ]] }, 
-                        { category: 'cat2', count: 10, __domain: [[ 'category', '=', 'cat2' ]] }];    
-                }
-                else if(call.params.method == 'search_count'){
-                    return nb_records;    
-                }
-            };
-            
-            // define 2 mocks, for prod and dev mode...
-            mock('/web/dataset/call_kw', group_mock);
-            mock('/web/dataset/call_kw/unit.test:read_group', group_mock);
-            mock('/web/dataset/call_kw/unit.test:search_count', group_mock);
             
             var list = new List();
             
@@ -155,7 +143,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
         
                 });
  
-                stack.add('prev', function(method){
+                stack.add('previous', function(method){
                     strictEqual(list.pager.page, 11, method + ': page number is correct');
                     strictEqual(list.pager.total, nb_records, method + ': total number of item is correct');
                     strictEqual(list.pager.nb_pages, 13, method + ': number of pages is correct');
@@ -192,7 +180,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                     });
                 });
                 
-                stack.add('prev', function(method){
+                stack.add('previous', function(method){
                     strictEqual(changed, false, method + ': has not affected the pager');
                     
                     strictEqual(list.pager.page, 0, method + ': page number is correct');
@@ -217,7 +205,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                     });
                 });
                 
-                stack.add('last').add('prev', function(method){
+                stack.add('last').add('previous', function(method){
                     strictEqual(changed, true, method + ': has affected the pager');
                     
                     strictEqual(list.pager.page, 11, method + ': page number is correct');
@@ -228,38 +216,9 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                     strictEqual(list.at(0).get('name'), 'item 111', method + ': first item is correct');
                     strictEqual(list.at(9).get('name'), 'item 120', method + ': last item is correct');
         
-                    strictEqual(list.hasPrevious(), true, method + ': pager has previous');
+                    strictEqual(list.hasPrevious(), true, method + ': pager has no previous');
                     strictEqual(list.hasNext(), true, method + ': pager has next');
                 });
-                
-                        
-                stack.add('load', [{ group_by: ['category'] }], function(method){
-                    var Query = base.models('GroupQuery');
-            
-                    strictEqual(list.enabled(), false, 'group by: pager is disabled');
-                    strictEqual(list.length, 2, 'group by: pager has 2 items');
-                    strictEqual(list.at(0) instanceof Query, true, 'group by: item is an instance of GroupQuery');
-                });
-                
-                // no effect, the pager is disabled
-                stack.add('last', function(){
-                    list.enable();
-                });
-                
-                
-                stack.add('next').add('prev', function(method){
-                    strictEqual(list.pager.page, 11, method + ': page number is correct');
-                    strictEqual(list.pager.total, nb_records, method + ': total number of item is correct');
-                    strictEqual(list.pager.nb_pages, 13, method + ': number of pages is correct');
-                    strictEqual(list.length, 10, method + ': number of items in the collection is correct');
-        
-                    strictEqual(list.at(0).get('name'), 'item 111', method + ': first item is correct');
-                    strictEqual(list.at(9).get('name'), 'item 120', method + ': last item is correct');
-        
-                    strictEqual(list.hasPrevious(), true, method + ': pager has previous');
-                    strictEqual(list.hasNext(), true, method + ': pager has next');
-                });
-                                
                                 
                 
                 stack.exec();
