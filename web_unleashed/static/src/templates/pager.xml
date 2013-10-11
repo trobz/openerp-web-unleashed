@@ -1,0 +1,36 @@
+<template>
+
+
+    <t t-name="UnleashedBase.Pager">
+        <div class="oe_list_pager" colspan="3" style="">
+            <div class="range-page oe_pager_value">
+                <span class="oe_list_pager_state"><t t-esc="info" /></span>
+            </div>
+            <ul class="oe_pager_group">
+                <li>
+                    <a t-att-class="'oe_i prev-page' + (previous ? '' : ' disabled')" 
+                       data-pager-action="previous" 
+                       type="button">(</a>
+                </li>
+                <li>
+                    <a t-att-class="'oe_i next-page' + (next ? '' : ' disabled')" 
+                       data-pager-action="next" 
+                       type="button">)</a>
+                </li>
+            </ul>
+        </div>
+    
+    </t>
+    
+
+
+
+    <t t-name="UnleashedBase.Pager.range">
+        <select class="range-selector">
+            <t t-foreach="ranges" t-as="range">
+                <option t-att-value="range" t-att-selected="(range == current_range ? 'selected' : undefined)"><t t-esc="range" /></option>
+            </t>
+        </select>
+    </t>
+    
+</template>
