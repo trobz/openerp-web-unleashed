@@ -1,4 +1,4 @@
-# Introduction
+# MVC for OpenERP web module 
 
 By default, the web part of OpenERP is not easy, the documentation is minimalist and the architecture is hard to understand.
 
@@ -6,10 +6,15 @@ The module is a pure web module with one objective: providing good bases to buil
 
 ## Features
 
+- clear MVC pattern, based on Backbone and Marionnette
+- ...and all their relative documentations ! 
 - new namespace to organize and get access to your objects
-- native support of latest Backbone / Marionnette version, and all their relative documentations ! 
 - auto-binding of Backbone Model with the OpenERP JSON-RPC API
 - load/configuration of commonly used lib (momentjs, numeraljs, awesome-font,...) 
+
+## Exemple
+
+Checkout the [demo_toto module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_toto), it's a full featured example with comments. 
 
 # Architecture
 
