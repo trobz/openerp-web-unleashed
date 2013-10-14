@@ -14,7 +14,7 @@ The module is a pure web module with one objective: providing good bases to buil
 
 ## Exemple
 
-Checkout the [demo_toto module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_todo), it's a full featured example with comments. 
+Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_todo), it's a full featured example with comments. 
 
 # Architecture
 
