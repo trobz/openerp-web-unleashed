@@ -187,9 +187,9 @@ next, previous, first, last, select,...
 
 # Libraries
 
-- [Backbone 1.0.0](http://backbonejs.org)
-- [Underscore 1.4.4](http://underscorejs.org)
-- [Marionnette 1.0.0](https://github.com/marionettejs/backbone.marionette/)
+- [Backbone 1.1.0](http://backbonejs.org)
+- [Underscore 1.5.2](http://underscorejs.org)
+- [Marionnette 1.1.0](https://github.com/marionettejs/backbone.marionette/)
 - [MomentJS 2.0.0](http://momentjs.com)
 - [NumeralJS 1.4.9](http://adamwdraper.github.com/Numeral-js/)
 - [Font Awesome 3.2.1](http://fontawesome.io)
