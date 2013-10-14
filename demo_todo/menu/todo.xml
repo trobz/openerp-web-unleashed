@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- access to the todo list view -->
+        <record id="action_demo_toto" model="ir.actions.act_window">
+            <field name="name">Todo List</field>
+            <!-- required to load the todo view registered in js/todo.js -->
+            <field name="view_mode">todo</field>
+            <field name="view_type">tree</field>
+            <field name="res_model">demo.todo</field>
+        </record>
+        
+        <menuitem action="action_demo_toto" 
+            id="menu_demo_toto" 
+            sequence="100" />
+      
+    </data>
+</openerp>
