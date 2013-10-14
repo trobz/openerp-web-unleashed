@@ -51,20 +51,23 @@ This is a basic organization, ```js``` subfolder can have specific folders to or
 
 `openerp.unleashed`
 
-This namespace will contain all modules using Web Unleashed. 
-
-Each module will dynamically create a new namespace in unleashed to store his own object.
+This namespace is a Marionette Application, each web OpenERP module using Unleashed are submodules of this Application.
 
 A module object has few helpers to set/get object in his namespace:
 
 ```js
-openerp.unleashed.my_module.views(view_name, object)
-openerp.unleashed.my_module.collections(collection_name, object)
-openerp.unleashed.my_module.models(model_name, object)
-openerp.unleashed.my_module.utils(name, object)
+// basic getter/setter
+openerp.unleashed.module('my_module').set(namespace, name, object)
+openerp.unleashed.module('my_module').get(namespace, name)
+// helpers
+openerp.unleashed.module('my_module').views(view_name, object)
+openerp.unleashed.module('my_module').collections(collection_name, object)
+openerp.unleashed.module('my_module').models(model_name, object)
+openerp.unleashed.module('my_module').utils(name, object)
 ```
 
 Notes: 
+
 - you never have to call the full namespace path, the module object is always passed to your module scope when you have declare a new object, see [object declaration](#object-declaration) for details 
 - the module name has to be the technical name of your OpenERP module
 
