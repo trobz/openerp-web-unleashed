@@ -1,4 +1,3 @@
-# MVC for OpenERP web module 
 
 By default, the web part of OpenERP is not easy, the documentation is minimalist and the architecture is hard to understand.
 
@@ -124,7 +123,7 @@ We are working on requirejs support for OpenERP, it's planned for the next relea
 
 
 
-### the base module
+## Base module
 
 Unleash provide some useful Backbone extension:
 
@@ -170,14 +169,14 @@ openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
 filter, order, limit, offset, context, fields  
  
 
-#### Pager
+### Pager
 
 Provide everything to have a pagination on any collection, similar than the OpenERP one but without any depends
 
 - Paginated collection
 - A pager view, with the same layout than the native OpenERP pager
 
-#### Iterator
+### Iterator
 
 A Backbone collection with selectable model, this collection implement several methods like: 
 next, previous, first, last, select,... 
