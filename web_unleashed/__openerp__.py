@@ -41,35 +41,12 @@ Core Web Module:
     ],
        
     'js': [
-        # version 1.0 used in no conflict mode, see `unleashed.js` for more details
+        # backbone 1.1.0 and underscore 1.5.2 used in no conflict mode, see `unleashed.js` for more details
         'static/lib/underscore/underscore.js',
         'static/lib/backbone/backbone.js',
         
-        # backbone.marionette dependencies
-        'static/lib/marionette/public/javascripts/backbone.augment.js',
-        'static/lib/marionette/public/javascripts/backbone.wreqr.js',
-        'static/lib/marionette/public/javascripts/backbone.babysitter.js',
-    
-        # backbone.marionette 1.0.3
-        'static/lib/marionette/src/build/marionette.core.js',
-        'static/lib/marionette/src/marionette.helpers.js',
-        'static/lib/marionette/src/marionette.triggermethod.js',
-        'static/lib/marionette/src/marionette.domRefresh.js',
-        'static/lib/marionette/src/marionette.bindEntityEvents.js',
-        'static/lib/marionette/src/marionette.callbacks.js',
-        'static/lib/marionette/src/marionette.controller.js',
-        'static/lib/marionette/src/marionette.region.js',
-        'static/lib/marionette/src/marionette.regionManager.js',
-        'static/lib/marionette/src/marionette.templatecache.js',
-        'static/lib/marionette/src/marionette.renderer.js',
-        'static/lib/marionette/src/marionette.view.js',
-        'static/lib/marionette/src/marionette.itemview.js',
-        'static/lib/marionette/src/marionette.collectionview.js',
-        'static/lib/marionette/src/marionette.compositeview.js',
-        'static/lib/marionette/src/marionette.layout.js',
-        'static/lib/marionette/src/marionette.approuter.js',
-        'static/lib/marionette/src/marionette.application.js',
-        'static/lib/marionette/src/marionette.module.js',
+        # backbone.marionette 1.1.0
+        'static/lib/marionette/marionette.js',
         
         
         'static/lib/numeral/numeral.js', 
