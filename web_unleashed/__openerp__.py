@@ -87,8 +87,13 @@ Core Web Module:
         
         'static/lib/jquery-transit/jquery.transit.min.js',
         
+        # boostrap libs
+        'static/lib/bootstrap-scoped/bootstrap.min.js',
+        
         # addons for libs
         'static/lib/jquery-addons/jquery.when_all.js',
+        'static/lib/jquery-addons/jquery.serialize_object.js',
+        'static/lib/jquery-addons/jquery.form_reset.js',
         'static/lib/underscore-addons/underscore.deep_extend.js',
         'static/lib/underscore-addons/underscore.find_index_where.js',
         
