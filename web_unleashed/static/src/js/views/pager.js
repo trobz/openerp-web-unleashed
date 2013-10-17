@@ -1,16 +1,33 @@
 openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
 
 
-    var PagerController = base.utils('Pager');
+    var PagerController = base.controllers('Pager');
     
-    var Renderer = Marionette.Renderer,
+    var Renderer = Backbone.Marionette.Renderer,
         BaseView = base.views('BaseView'),
         _super = BaseView.prototype;
 
-    var Pager = BaseView.extend({
+
+    /*
+     * @class
+     * @module      web_unleashed
+     * @name        PagerView
+     * @classdesc   Display a Pager, similar than the OpenERP default pager on list
+     * @mixes       BaseView
+     * 
+     * @author Michel Meyer <michel[at]zazabe.com>
+     */    
+    var PagerView = BaseView.extend({
         
+        /*
+         * @property {String} className the class used to create the main pager DOM Element
+         */
         className:  'unleashed-pager',
         
+        
+        /*
+         * @property {Object} events DOM listeners
+         */
         events: {
             'click .prev-page': 'previous',
             'click .next-page': 'next',
@@ -18,33 +35,35 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             'change .range-selector': 'rangeChanged'
         },
         
+        /*
+         * Set the model to work on
+         * 
+         * @param {Object} options pass the model to work on
+         */
         initialize: function(options){
-            options = options || {};
-            // use collection or model for the pagination
-            if(options.collection && options.collection instanceof PagerController){
-                this.data = options.collection;
-                this.listener = 'sync';
-            }
-            else if(options.model && options.model instanceof PagerController){
-                this.data = options.model;
-                this.listener = 'change';
-            }
-            else {
-                throw new Error('you have to pass an model or a collection to the pager view, and this object has to inherit from a Pager Controller')
-            }
+            // TODO: check because extending views are using options.model instead of options.collection (see dashboard/widgets/pager), 
+            // should not be done because of a specific pager view... 
+            this.data = this.data ? this.data : options.collection;
             _super.initialize.apply(this, arguments);    
         },
         
-        // render
-        
+        /*
+         * Bind model event to update the pager view
+         */
         bind: function(){
-            this.data.on(this.listener, this.render, this);
+            this.data.on('sync', this.render, this);
         },
         
+        /*
+         * Unbind model listener
+         */
         unbind: function(){
             this.data.off(null, null, this);
         },
         
+        /*
+         * Render the view, hide the pager navigation if there's only one page
+         */
         render: function(){
             return this.$el.html(Renderer.render('UnleashedBase.Pager', {
                 ranges: this.data.pager.ranges,
@@ -59,14 +78,23 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         
         // UI event
 
+        /*
+         * Go to previous page on the model
+         */
         previous: function(){
             this.data.prev();
         },
         
+        /*
+         * Go to next page on the model
+         */
         next: function(){
             this.data.next();
         },
         
+        /*
+         * Render the pager limit selector
+         */
         range: function(e){
             var $range = $(e.currentTarget), collection = this.data;
             $range.html(Renderer.render('UnleashedBase.Pager.range', {
@@ -75,12 +103,14 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             }));
         },
         
+        /*
+         * Change the pager limit
+         */
         rangeChanged: function(e){
             var $selector = $(e.currentTarget);
             this.data.changeLimit($selector.val());
         }
     });
 
-    base.views('Pager', Pager);
-
+    base.views('Pager', PagerView);
 });

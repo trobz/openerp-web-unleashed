@@ -27,17 +27,9 @@ Core Web Module:
     
     'css' : [
         'static/lib/font-awesome/css/font-awesome.min.css', 
-   
-        'static/lib/lightbox/css/lightbox.css',
-        'static/lib/jsoneditor/jsoneditor.css',
-        
-        'static/src/css/field_serialized.css',
-        'static/src/css/image_viewer.css',
         
         'static/lib/bootstrap-scoped/bootstrap-reset-openerp.css',
         'static/lib/bootstrap-scoped/bootstrap-scoped.css',
-        'static/lib/colorbox/colorbox.css',
-        'static/src/css/progress_bar_enhanced.css',
     ],
        
     'js': [
@@ -48,21 +40,12 @@ Core Web Module:
         # backbone.marionette 1.1.0
         'static/lib/marionette/marionette.js',
         
-        
         'static/lib/numeral/numeral.js', 
         'static/lib/moment/moment.js',
 
 		# language of momentjs
 		'static/lib/moment/lang/fr.js',
 		'static/lib/moment/lang/vi.js',
-
-        'static/lib/lightbox/js/lightbox.js',
-        'static/lib/colorbox/jquery.colorbox-min.js',
-
-        'static/lib/jsoneditor/jsoneditor.js',
-        'static/lib/jsoneditor/lib/jsonlint/jsonlint.js',
-        
-        'static/lib/jquery-transit/jquery.transit.min.js',
         
         # boostrap libs
         'static/lib/bootstrap-scoped/bootstrap.min.js',
@@ -81,7 +64,7 @@ Core Web Module:
         'static/src/js/utils/connector.js',
         
         # controller
-        'static/src/js/controller/pager.js',
+        'static/src/js/controllers/pager.js',
         
         # backbone base models
         'static/src/js/models/base.js',
