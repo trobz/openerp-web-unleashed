@@ -1,13 +1,29 @@
 (function(openerp){
-    //FIXME: current BackboneJS version is 0.9.2 on OpenERP, to get the latest features from Backbone 1.0, a local version is used there under Backbone
-    //       can be removed when BackboneJs will be updated on OpenERP...
+
+    //FIXME: use Backbone and Underscore in no conflict mode to get the latest version for Unleashed
+    //       should be removed when Backbone will be updated on OpenERP core...
     var LatestBackbone = Backbone.noConflict(),
         LatestUnderscore = _.noConflict(),
         Marionette = LatestBackbone.Marionette;
     
 
-    // AttributeHolder access
+    /*
+     * Local helpers to access to objects defined in a module
+     * 
+     * @module      web_unleashed
+     * @name        AttributeAccess
+     * @author Michel Meyer <michel[at]zazabe.com>
+     */
     var AttributeAccess = {
+        
+        /*
+         * Add an object to the Class namespace
+         * 
+         * @param {String} namespace subnamespace of Class, used to store the object
+         * @param {String} name      name to refer to the object
+         * @param {Object} obj       the object to store
+         * @returns {Object} the stored object
+         */
         add: function(namespace, name, obj){
             
             this.Class = this.Class || {}; 
@@ -20,6 +36,13 @@
             return AttributeAccess.get.apply(this, [namespace, name]);
         },
         
+        /*
+         * Get an object in the Class namespace
+         * 
+         * @param {String} namespace subnamespace of Class, used to store the object
+         * @param {String} name      name to refer to the object
+         * @returns {Object} the stored object
+         */
         get: function(namespace, name){
             var obj = this.Class && this.Class[namespace] && this.Class[namespace][name] ?  this.Class[namespace][name] : null; 
             if(!obj){
@@ -28,10 +51,51 @@
             return obj;
         },
     };
+    
+    
+    /*
+     * Local helpers to access to OpenERP instance.web method
+     * 
+     * @module      web_unleashed
+     * @name        InstanceWebAccess
+     * @author Michel Meyer <michel[at]zazabe.com>
+     */
+    var InstanceWebAccess = {
+        execute: function(name, args, scope){
+            if(!this.methods){
+                throw new Error('the OpenERP instance.web wrapper is not ready yet.');
+            }   
+            if(typeof this.methods[name] != 'function'){
+                throw new Error(name + ' is not a method from OpenERP instance.web');
+            }   
+            return this.methods[name].apply(scope, args);
+        },
+        
+        methods: null
+    };
        
+       
+    /*
+     * Add useful method to the Marionette.Module.prototype object:
+     * - accessor for object stored in the module namespace
+     * - helpers initialization 
+     * 
+     * @module web_unleashed
+     * @name   Marionette.Module
+     * @author Michel Meyer <michel[at]zazabe.com>
+     */
     _.extend(Marionette.Module.prototype, {
+        
         /*
-         * wrap a module initializer and pass useful object to the callback
+         * Wrap a module initializer and pass useful object to the callback
+         * 
+         * @param {readyCallback} callback called when the module is initialized
+         *
+         * @callback readyCallback
+         * @param {Object} instance   OpenERP instance, available when a module is ready, @see https://doc.openerp.com/trunk/web/module/#getting-things-done
+         * @param {Object} Underscore Latest version of underscore library, @see http://underscorejs.org/
+         * @param {Object} Backbone   Latest version of backbone library, @see http://backbonejs.org/
+         * @param {Object} base       the web_unleashed module, useful to inherit from useful basic object (ie. BaseCollection, ...)
          */
         ready: function(callback){
             this.addInitializer(function(options){
@@ -40,6 +104,14 @@
             });
         },
         
+        
+        /*
+         * Get an object stored in the module namespace
+         * 
+         * @param {String} namespace subnamespace of Class, used to store the object
+         * @param {String} name      name to refer to the object
+         * @returns {Object}         the stored object
+         */
         get: function(namespace, name){
             // handle no namespace definition
             if(!name){
@@ -49,6 +121,14 @@
             return AttributeAccess.get.apply(this, [namespace, name]);
         },
         
+        /*
+         * Set an object stored in the module namespace
+         * 
+         * @param {String} namespace subnamespace of Class, used to store the object, if omitted, use "Misc" namespace by default
+         * @param {String} name      name to refer to the object
+         * @param {Object} obj       the object to store
+         * @returns {Object}         the stored object
+         */
         set: function(namespace, name, obj){
             // handle no namespace definition
             if(!obj){
@@ -59,36 +139,99 @@
             return AttributeAccess.add.apply(this, [namespace, name, obj]);
         },
         
-        // helpers
-        
+        /*
+         * Helper: Get/Set an object in module's Models namespace
+         * if obj is passed in parameter, the method will set the object, if not, it will get it
+         * 
+         * @param {String} name      name to refer to the object
+         * @param {Object} obj       the object to store
+         * @returns {Object}         the stored object
+         */
         models: function(name, obj){
             return AttributeAccess.add.apply(this, ['Models', name, obj]);
         },
         
+        /*
+         * Helper: Get/Set an object in module's Collections namespace
+         * 
+         * @param {String} name      name to refer to the object
+         * @param {Object} obj       the object to store
+         * @returns {Object}         the stored object
+         */
         collections: function(name, obj){
             return AttributeAccess.add.apply(this, ['Collections', name, obj]);
         },
         
+        /*
+         * Helper: Get/Set an object in module's Views namespace
+         * if obj is passed in parameter, the method will set the object, if not, it will get it
+         * 
+         * @param {String} name      name to refer to the object
+         * @param {Object} obj       the object to store
+         * @returns {Object}         the stored object
+         */
         views: function(name, obj){
             return AttributeAccess.add.apply(this, ['Views', name, obj]);
         },
         
+        /*
+         * Helper: Get/Set an object in module's Controllers namespace
+         * if obj is passed in parameter, the method will set the object, if not, it will get it
+         * 
+         * @param {String} name      name to refer to the object
+         * @param {Object} obj       the object to store
+         * @returns {Object}         the stored object
+         */
+        controllers: function(name, obj){
+            return AttributeAccess.add.apply(this, ['Controllers', name, obj]);
+        },
+        
+        /*
+         * Helper: Get/Set an object in module's Utils namespace
+         * if obj is passed in parameter, the method will set the object, if not, it will get it
+         * 
+         * @param {String} name      name to refer to the object
+         * @param {Object} obj       the object to store
+         * @returns {Object}         the stored object
+         */
         utils: function(name, obj){
             return AttributeAccess.add.apply(this, ['Utils', name, obj]);
-        }
+        },
+        
+        /*
+         * Wrap methods from OpenERP instance.web
+         */
+        _t: function(){ return InstanceWebAccess.execute('_t', arguments, this); },
+        _lt: function(){ return InstanceWebAccess.execute('_lt', arguments, this); },
+        
     });   
     
 
-    // add some specific method to Marionette.Module 
+    // keep a reference to the original Module.create function
     var moduleCreate = Marionette.Module.create;
+    
+    
+    /*
+     * Add useful method to the Marionette.Module object:
+     * - Class namespace to store module's objects
+     * - override create function
+     * 
+     * @module web_unleashed
+     * @name   Marionette.Module
+     * @author Michel Meyer <michel[at]zazabe.com>
+     */
     _.extend(Marionette.Module, {
 
-        // manage Class, to be able to split the architecture 
-        // in many files and keep all organized in on object
+        // @property {Object} Class namespace to store module's objects, useful to split the architecture in different files and keep all organized in on object
         Class: {},
 
         /*
-         * override the create module to autostart it when OpenERP is ready
+         * Override the create module to autostart it when OpenERP module is ready, @see https://doc.openerp.com/trunk/web/module/#getting-things-done
+         * 
+         * @param {Object} app              Marionette Application object (openerp.unleashed)
+         * @param {String} moduleNames      module name, used for module creation, the name has to be the same has the OpenERP module name
+         * @param {String} moduleDefinition module parameters
+         * @returns {Marionette.Module}     the module 
          */
         create: function(app, moduleNames, moduleDefinition){
             var module = moduleCreate.apply(this, arguments);
@@ -103,21 +246,31 @@
         }
     });  
        
-       
-    /*
-     * Initialize a  Unleashed JS namespace, with Backbone MVC architecture and JSON-RPC connection support.
-     */
-    
-    // null until the web_unleashed is initialized...
+    // null until web_unleashed module is initialized...
     var sync = null;
     
+    // create the Unleashed Marionette.Application, used to organize modules
     var Unleashed = openerp.unleashed = new Marionette.Application();
     
+    // called at Unleashed start
     Unleashed.addInitializer(function(options){
+        
         var module = this.module,
             app = this;
         
-        // override the module creation function to have all modules in startWithParent false mode
+        /*
+         * Override the module creation function to have all modules in startWithParent false mode
+         * 
+         * @param {String}                   name module name, has to be the same as the OpenERP module name
+         * @param {moduleCallback} callback  use to declare new object in the module namespace (executed before module start)
+         * @returns {Marionette.Module}      the module instance (singleton)
+         * 
+         * @callback moduleCallback
+         * @param {Object} module     the module instance (singleton)
+         * @param {Object} Underscore Latest version of underscore library, @see http://underscorejs.org/
+         * @param {Object} Backbone   Latest version of backbone library, @see http://backbonejs.org/
+         * @param {Object} base       the web_unleashed module, useful to inherit from useful basic object (ie. BaseCollection, ...)
+         */
         this.module = function(name, callback){
             var call = function(){
                 this.startWithParent = false;
@@ -128,7 +281,16 @@
             return module.apply(app, [name, call]);
         };
         
-        // sync method used by Backbone Models to access to OpenERP data by the JSON-RPC API
+        
+        /*
+         * Sync method used by Backbone Model to be connected with data by the JSON-RPC API.
+         * Note: this method is available only when the "web_unleashed" model is initialized
+         * 
+         * @param {String} method   the Backbone CRUD method ("create", "read", "update", or "delete") 
+         * @param {String} model    a compatible Backbone.Model|Collection, with at least the "model_name" property set
+         * @param {Object} options  JSON-RPC API query
+         * @returns {jQuery.Deferred.promise}
+         */
         this.sync = function(method, model, options){
             if(!sync){
                 throw new Error('Model ' + model + ' can not be sync (' + method + ') yet, waiting for OpenERP module initalization...');
@@ -139,43 +301,42 @@
         };    
     });
     
-    // start the app
+    // start the Unleashed Application
     Unleashed.start();
     
-    
-    
     /*
-     * prepare OpenERP translation methods on Backbone, only available when the base module is initialized 
+     * Setup core features required for all modules, but only available from the OpenERP instance object
      */
-   
+
     Unleashed.module('web_unleashed').ready(function(instance, base, _, Backbone){
-        // link instance.web object and provide it to each modules
-        web = instance.web; 
         
-        // setup the connection with JSON-RPC API for Backbone
+        /*
+         * Setup access to OpenERP instance.web methods
+         */
+        InstanceWebAccess.methods = instance.web;
         
+        /*
+         * Setup the connection with JSON-RPC API for Backbone and define the specific sync method 
+         * @see http://doc.openerp.com/trunk/developers/web/rpc/
+         * @see http://backbonejs.org/#Sync
+         */
         var connection = instance.web.Model;
         var Connector = base.utils('Connector');
-        
-        debug = connection;
-        /*
-         * Backbone Sync method adapted for OpenERP JSON-RPC connection
-         * see: http://doc.openerp.com/trunk/developers/web/rpc/
-         */
         sync = function(method, model, options){
             return Connector[method].apply(Connector, [model, options, connection]);
         };
         
-        
-        // setup the rendering method for Backbone.Marionette
-        
+        /*
+         * Setup the QWeb rendering method for Backbone.Marionette
+         */
         var QWeb = instance.web.qweb;
-        
         Marionette.Renderer.render = function( templateName, data ) {
             return QWeb.render(templateName, data);
         };
     
-        // display console.debug message only in debug mode
+        /*
+         * Display console.debug message only when OpenERP debug mode is on
+         */
         console = console || {};
         var console_debug = console.debug;
         
@@ -185,6 +346,5 @@
             }
         };
     });
-    
-    
+
 })(openerp)

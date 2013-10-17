@@ -4,11 +4,26 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
     var Iterator = base.models('Iterator'),
         _super = BaseCollection.prototype;
     
+    /*
+     * @class
+     * @module      web_unleashed
+     * @name        IteratorsCollection
+     * @classdesc   Collection with selectable model 
+     * @mixes       BaseCollection
+     * 
+     * @author Michel Meyer <michel[at]zazabe.com>
+     */
     var Iterators = BaseCollection.extend({
 
+        /*
+         * @property {Backbone.Model} model default model used to create collection items
+         */
         model: Iterator,
-        model_name: null,
         
+        /*
+         * - initialize the position to an undefined index
+         * - bind events
+         */
         initialize: function(){
             this.current_index = null;
             this.bind();
@@ -16,14 +31,25 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             _super.initialize.apply(this, arguments);
         },
         
+        /*
+         * bind model selection event, used to update the current selected element
+         */
         bind: function(){
             this.on('select', this.select, this);
         },
         
+        /*
+         * unbind all event listeners
+         */
         unbind: function(){
             this.off(null, null, this);
         },
         
+        /*
+         * select a model in the collection
+         * 
+         * @param {Backbone.Model} model model to select in the collection
+         */
         select: function(model){
             var index = this.indexOf(model);
             if(index < 0){
@@ -40,6 +66,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             model.set({selected: true});
         },
         
+        /*
+         * define the current index based on model index in the collection
+         * 
+         * @param {Integer} val model index
+         * @returns {Integer} current selected index
+         */
         index: function(val){
             if(val != null){
                 if(!this.at(val)){
@@ -54,35 +86,62 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             
         },
         
+        /*
+         * get the first model
+         * 
+         * @returns {Backbone.Model} 
+         */
         first: function(){
             return this.at(0);
         },
         
+        /*
+         * get the last model
+         * 
+         * @returns {Backbone.Model} 
+         */
         last: function(){
             return this.length > 0 ? this.at(this.length - 1) : null;
         },
         
+        /*
+         * get the current selected model
+         * 
+         * @returns {Backbone.Model} 
+         */
         current: function(){
             return this.current != null ? this.at(this.index()) : null; 
         },
         
-        // return next model or the beginning if at the end
+        /*
+         * get the next model, or the first if the selected model is the last
+         * 
+         * @returns {Backbone.Model} 
+         */
         next: function() {
             return this.at((this.index() + 1) % _.size(this));
         },
     
-        // return the previous model or the end if at the beginning 
+        /*
+         * get the previous model, or the last if the selected model is the first
+         * 
+         * @returns {Backbone.Model} 
+         */
         prev: function() {
             var index = this.index() - 1;
             return this.at(index > -1 ? index : _.size(this) - 1);
         },
         
+        /*
+         * get all model ids
+         * 
+         * @returns {Array} 
+         */
         ids: function(){
             return this.map(function(model){
                 return model.get('id');
             });
         }
-        
     });
 
     base.collections('Iterators', Iterators);

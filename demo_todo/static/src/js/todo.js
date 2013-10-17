@@ -67,7 +67,8 @@ openerp.unleashed.module('demo_todo').ready(function(instance, todo, _, Backbone
             // apply the search from the OpenERP search widget
             this.collection.fetch({
                 filter: domain,
-                context: context
+                context: context,
+                persistent: true
             });
         },
         
