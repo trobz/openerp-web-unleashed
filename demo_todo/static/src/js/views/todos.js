@@ -8,7 +8,8 @@ openerp.unleashed.module('demo_todo',function(todo, _, Backbone, base){
     // get the Todo Model constructor, used to save new Toto item
     var TodoModel = todo.models('Todo');
  
-    var Todo = todo.views('Todo'),
+    var Empty = todo.views('Empty'),
+        Todo = todo.views('Todo'),
         View = Backbone.Marionette.CompositeView,
         _super = View.prototype;
 
@@ -22,9 +23,49 @@ openerp.unleashed.module('demo_todo',function(todo, _, Backbone, base){
         itemViewContainer: '.todos',
         
         itemView: Todo,
+        
+        emptyView: Empty,
    
         events: {
-            'click .save-todo': 'addTodo'
+            'click .save-todo': 'addTodo',
+            'submit .todo-form': 'addTodo',
+            'click .add-todo': 'openForm',
+            'keypress': 'keyOpenForm'
+        },
+        
+        ui: {
+            modal: '#todoModal',
+            open: '.add-todo',
+            form: '.todo-form',
+            button: '.save-todo'
+        },
+        
+        
+        initialize: function(options){
+            $(document).bind('keypress', _.bind(this.keyOpenForm, this));
+        },
+        
+        onClose: function(){
+            $(document).unbind('keypress');
+        },
+        
+        /*
+         * focus on the name field when the modal is shown
+         */
+        onRender: function(){
+            var $name = this.ui.form.find('#name').focus();
+            this.ui.modal.on('shown.bs.modal', function(){
+                $name.get(0).focus();
+            });
+        },
+        
+        /*
+         * open the modal form at "+" key down
+         */
+        keyOpenForm: function(e){
+            if(e.keyCode == 43 /* + */){
+                this.ui.modal.modal('show');
+            }
         },
         
         /*
@@ -32,9 +73,8 @@ openerp.unleashed.module('demo_todo',function(todo, _, Backbone, base){
          */
         addTodo: function(e){
             e.preventDefault();
-            var $el = $(e.currentTarget),
-                $btn = $el.find('span'),
-                $form = $el.parent().prev().find('form');
+            var $btn = this.ui.button.find('span'),
+                $form = this.ui.form;
                 
                 
             var data = $form.serializeObject(),
@@ -51,7 +91,7 @@ openerp.unleashed.module('demo_todo',function(todo, _, Backbone, base){
                 .done(function(){
                     view.alert('Todo item saved successfully', 'success');  
                     // reload the collection -> list view refreshed
-                    view.collection.fetch();
+                    view.collection.load();
                 })
                 .fail(function(){
                     view.alert('Failed to save the todo item', 'danger');    
@@ -61,6 +101,7 @@ openerp.unleashed.module('demo_todo',function(todo, _, Backbone, base){
                     $btn.text('Save').attr('class', '');
                     $form.reset();
                 });
+                
         },
         
         /*

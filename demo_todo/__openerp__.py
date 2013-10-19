@@ -28,8 +28,10 @@ feature in demo:
     ],
     
     'js': [
+        'static/src/js/models/state.js',
         'static/src/js/models/todo.js',
         'static/src/js/collections/todos.js',
+        'static/src/js/views/empty.js',
         'static/src/js/views/todo.js',
         'static/src/js/views/todos.js',
         'static/src/js/todo.js',

@@ -71,14 +71,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             if(!this.model_name){
                 throw new Error('The collection can not be connected via the API without the model_name property');
             }
-            
-            query = this.search(query);
-            
-            if(query.persistent){
-                this.query = query;
-            }
-                
-            return _super.fetch.apply(this, [query]);
+            return _super.fetch.apply(this, [this.search(query)]);
         },
         
         /*
@@ -98,7 +91,13 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {Object} JSON-RPC API query options
          */
         search: function(query){
-            return _.extend({}, query, {
+            query = query || {};
+            
+            if(query.persistent){
+                this.query = _.clone(query);
+            }
+            
+            return _.extend({}, this.query, query, {
                 // force some query parameters here...
             });
         },

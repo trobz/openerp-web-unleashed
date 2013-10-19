@@ -3,13 +3,11 @@
 <!-- Main Web Module template, the Todos composite view is injected into .todo-list region -->
 <t t-name="DemoTodo">
     <div id="todo" class="bootstrap_scope">
-        <div class="panel panel-default">
-          <div class="panel-heading">Todo List</div>
-          <div class="todo-list panel-body">
-          </div>
-        </div>
     </div>
 </t>
+
+
+
 
 <!-- Todos composite view template, Todo items are injected into .todos, the edit form is included has an external template (DemoTodo.edit) -->
 <t t-name="DemoTodo.list">
@@ -19,6 +17,15 @@
     </a>
     <t t-call="DemoTodo.edit"></t>
 </t>
+
+<!-- Todos empty template -->
+<t t-name="DemoTodo.empty">
+    <li class="list-group-item">
+        <h3>Click here to add more todo !</h3>
+        <span class="icon-reply-all todo-empty-arrow"></span>
+    </li>
+</t>
+
 
 <!-- Todos item view template, display and add the delete Todo item button -->
 <t t-name="DemoTodo.item">
@@ -51,7 +58,7 @@
           </div>
           <div class="modal-body">
           
-            <form class="form-horizontal dish-form" role="form">
+            <form class="form-horizontal todo-form" role="form">
                 
                 <input id="id" type="hidden" />
              
