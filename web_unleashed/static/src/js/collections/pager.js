@@ -40,14 +40,27 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         initialize: function(data, options){
             _superCollection.initialize.apply(this, arguments);
             _superPager.initialize.apply(this, [options]);
-        },  
+            
+            this.on('remove add', function(){
+                this.load();
+            }, this);
+        },
+               
+       /*
+        * Proxy between pager controller update method and base collection fetch
+        */
+        update: function(){
+            return _superCollection.fetch.apply(this, arguments);
+        },
        
         /*
-         * get the search query, depending of the current page
+         * Get the search query, depending of the current page
+         * 
          * @see PagerController.search
          */    
-        search: function(){
-            return _superPager.search.apply(this, arguments);
+        search: function(query){
+            query = _superCollection.search.apply(this, [query]);
+            return _superPager.search.apply(this, [query]);
         }
     });
 

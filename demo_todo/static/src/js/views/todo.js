@@ -15,8 +15,20 @@ openerp.unleashed.module('demo_todo',function(todo, _, Backbone, base){
             'click .remove-todo': 'removeTodo'
         },
         
-        removeTodo: function(){
-            this.model.destroy();
+        /*
+         * Keep a reference to the collection
+         */
+        initialize: function(){
+            this.collection = this.model.collection;
+        },
+        
+        removeTodo: function(e){
+            e.preventDefault();
+            
+            this.model.destroy({ silent: true }).done(_.bind(function(){
+                //reload the collection : refresh the layout
+                this.collection.load();
+            }, this));
         },
         
         /*

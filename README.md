@@ -152,6 +152,7 @@ openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
 ```
 
 Now, you are ready to use this model, somewhere else, you can do:
+
 ```js
 openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
     var Employees = my_module.collections('Employees'),
@@ -171,6 +172,86 @@ openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
 - you can pass to ```fetch``` method all JSON-RPC API js client options:      
 filter, order, limit, offset, context, fields  
  
+
+### Unleashed View
+
+OpenERP View has been extended to add some default behavior/features.
+
+**instanciation**
+
+```js
+openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Backbone, base) {
+
+    var UnleashedView = base.views('Unleashed');
+
+    instance.web.views.add('foo', 'instance.my_module.FooView');
+    instance.booking_chart.FooView = UnleashedView.extend({
+        
+        display_name: base._lt('Foo'),
+        template: "Foo",
+        view_type: 'foo',
+        
+        /*
+         * You can redefine views and models used by UnleashedView, 
+         * specially for the State, usually each view has his own way to keep the view state persistent.
+         */
+        Panel: base.views('Panel'),
+        State: base.models('State'),
+        
+        /*
+         * Configure the state before processing it
+         *
+         * Depending of your state model, you will certainly have to configure it 
+         * before his processing, usually by linking some objects and listening events to update the
+         * state. 
+         * An example is available in "demo_todo" module.
+         */
+        stateConfig: function(){
+        },
+        
+        
+        /*
+         * The view is ready to be used, called by listening to OpenERP View "view_loaded" event
+         *
+         *  @param {Object} data
+         *    View configuration object:
+         *    - arch: Object
+         *    - field_parent: Boolean
+         *    - fields: Object
+         *    - model: String
+         *    - name: String
+         *    - toolbar: Object
+         *    - type: String
+         *    - view_id: Integer
+         */
+        ready: function(data){
+            /*
+             * A Marionette Panel is available, with all OpenERP part defined as Regions:
+             * - this.panel.buttons
+             * - this.panel.pager
+             * - this.panel.sidebar
+             * - this.panel.body
+             */
+        }
+    });
+});
+```
+
+Features automatically handled by the Unleashed View:
+
+- The State of the view is managed by a Model, automatically pushed into the URL at modification     
+  You can extend the state base model to had your own state logic.
+- Add a Marionette Panel to manage all elements available in an OpenERP view: buttons, sidebar, pager, body areas. 
+
+Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_todo) example for more details.
+
+**custom view type**
+
+To support custom `view_type` in `ir.ui.view` model and to have specific view description (use `arch` config,...), you have to extend the python `irUiView` model and specify your
+new view.
+You can add `arch` validation and build highly configurable view in the same way than standard OpenERP view.
+  
+A simple example of a custom type declaration is available here: https://github.com/trobz/openerp-web-unleashed/blob/master/demo_todo/view/todo.py
 
 ### Pager
 
