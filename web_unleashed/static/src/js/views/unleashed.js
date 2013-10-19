@@ -53,6 +53,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          */
         view_loading: function(data){
             this.panel = new this.Panel({
+                
                 el: $('.oe_application'),
                 
                 regions: {
@@ -102,14 +103,6 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
         },
         
         /*
-         * Remove view listeners
-         */
-        unbindView: function(){
-        	this.module.off(null, null, this);
-        	this.state.off(null, null, this);
-        },
-        
-        /*
          * Push state changes into the URL
          */
         stateChanged: function(){
@@ -139,7 +132,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * 
          * @param {String} model_name   record model name
          */
-        openList: function(model_name){
+        openRecord: function(model_name){
             this.do_action({
                 type: 'ir.actions.act_window',
                 res_model: model_name,
@@ -153,8 +146,6 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * Properly destroy the view by stopping regions in the panel layout
          */
         destroy: function() {
-        	this.unbindView();
-        
             if(this.panel && this.panel.regionManager){
                 this.panel.regionManager.closeRegions();
             }
