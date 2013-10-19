@@ -61,14 +61,25 @@
      * @author Michel Meyer <michel[at]zazabe.com>
      */
     var InstanceWebAccess = {
-        execute: function(name, args, scope){
+        execute: function(name, args){
             if(!this.methods){
                 throw new Error('the OpenERP instance.web wrapper is not ready yet.');
             }   
-            if(typeof this.methods[name] != 'function'){
-                throw new Error(name + ' is not a method from OpenERP instance.web');
+            
+            var path = /\./.test(name) ? name.split('.') : [name],
+                object = this.methods, level;
+            
+            while(path.length){
+                level = path.shift();
+                if(typeof object[level] == 'object'){
+                    object = object[level];
+                }
+            }
+            
+            if(typeof object[level] != 'function'){
+                throw new Error(level + ' is not a method from OpenERP instance.web.' + name);
             }   
-            return this.methods[name].apply(scope, args);
+            return object[level].apply(object, args);
         },
         
         methods: null
@@ -201,8 +212,9 @@
         /*
          * Wrap methods from OpenERP instance.web
          */
-        _t: function(){ return InstanceWebAccess.execute('_t', arguments, this); },
-        _lt: function(){ return InstanceWebAccess.execute('_lt', arguments, this); },
+        _t: function(){ return InstanceWebAccess.execute('_t', arguments); },
+        _lt: function(){ return InstanceWebAccess.execute('_lt', arguments); },
+        render: function(){return InstanceWebAccess.execute('qweb.render', arguments); }
         
     });   
     
@@ -338,13 +350,26 @@
          * Display console.debug message only when OpenERP debug mode is on
          */
         console = console || {};
-        var console_debug = console.debug;
         
-        console.debug = function(){
-            if(instance.session.debug){
-                console_debug.apply(console, arguments);
-            }
-        };
+        var console_debug = console.debug || function(){},
+            console_time = console.time || function(){},
+            console_timeEnd = console.timeEnd || function(){};
+            
+        if(!instance.session.debug){
+            console.debug = console.time = console.timeEnd = function(){};
+        }
+        else {
+            console.debug = function(){
+                console_debug.apply(console, arguments);    
+            };
+            console.time = function(){
+                console_time.apply(console, arguments);    
+            };
+            console.timeEnd = function(){
+                console_timeEnd.apply(console, arguments);    
+            };
+        }
+        
     });
 
 })(openerp)

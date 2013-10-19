@@ -51,7 +51,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * Bind model event to update the pager view
          */
         bind: function(){
-            this.data.on('sync', this.render, this);
+            this.data.on('sync reset add remove change', this.render, this);
         },
         
         /*
@@ -68,7 +68,10 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.$el.html(Renderer.render('UnleashedBase.Pager', {
                 ranges: this.data.pager.ranges,
                 info: this.data.info(),
-                current_range: this.data.pager.limit
+                current_range: this.data.pager.limit,
+                previous: this.data.hasPrevious(),
+                next: this.data.hasNext()
+                
             }));    
     
             if(this.data.pager.nb_pages <= 1){

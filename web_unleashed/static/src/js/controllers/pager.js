@@ -44,10 +44,10 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * This method is called when items have to be refreshed, return a deferrer
          * 
          * @abstract
-         * @param {Object} search a search query
+         * @param {Object} query a search query
          * @returns {jQuery.Deferred.promise}
          */
-        update: function(search){
+        update: function(query){
             throw new Error('abstract object, you should implement here the way to get paginated data')
         },
         
@@ -55,10 +55,10 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * This method has to return a deferrer with the count of element in parameter
          * 
          * @abstract
-         * @param {Object} search a search query
+         * @param {Object} query a search query
          * @returns {jQuery.Deferred.promise}
          */
-        count: function(search){
+        count: function(query){
             throw new Error('abstract object, you should implement here the way to get count data')
         },
         
@@ -66,43 +66,41 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * Internal update method, should never be called directly (use abstract method)
          *
          * @private 
+         * @param {Object} query a search query
          * @returns {jQuery.Deferred.promise}
          */
-        _update: function(){
-            return this.update(this.search());
+        _update: function(query){
+            return this.update(this.search(query));
         },
         
         /*
          * Internal count method, should never be called directly (use abstract method)
          *
          * @private 
+         * @param {Object} query a search query
          * @returns {jQuery.Deferred.promise}
          */
-        _count: function(options){
-            var search = this.search();
-            delete search.reset;
-            delete search.limit;
-            delete search.offset;
-            
-            return this.count(_.extend(options || {}, search));
+        _count: function(query){
+            return this.count(this.search(query));
         },
         
         /*
          * Initialize the pager by counting the nb of element to paginate
          * Note: after promise resolving, the pagination is still not populated with elements
          *
-         * @params {Object} options search query  
+         * @param {Object} query search query  
          * @fires ready
          * @returns {jQuery.Deferred.promise}
          */
-        init: function(options){
-            var self = this, def = new $.Deferred();
+        init: function(query){
+            query = query || {};
+             
+            var def = new $.Deferred();
                 
-            this._count(options).done(function(nb_models){
-                self.changeCount(nb_models);
-                self.trigger('ready');
-                def.resolveWith(self);
-            });
+            this._count(query).done(_.bind(function(nb_models){
+                this.changeCount(nb_models).refresh().trigger('ready');
+                def.resolveWith(this);
+            }, this));
             
             return def.promise();
         },
@@ -110,14 +108,14 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         /*
          * Init and load the current page
          *
-         * @params {Object} options search query  
+         * @param {Object} query search query  
          * @returns {jQuery.Deferred.promise}
          */
-        load: function(options){
+        load: function(query){
             var def = $.Deferred();
             
-            this.init(options).done(function(){
-               this._update(options).done(function(){
+            this.init(_.clone(query)).done(function(){
+               this._update(_.clone(query)).done(function(){
                    def.resolve();
                }); 
             });
@@ -131,8 +129,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {PagerController}
          */
         refresh: function(){
-            this.pager.page = 0;
             this.pager.nb_pages = Math.ceil(this.pager.total / this.pager.limit);
+            
+            if(this.pager.page >= this.pager.nb_pages){
+                this.pager.page = this.pager.nb_pages - 1 >= 0 ? this.pager.nb_pages - 1 : 0;
+            }
+                
             return this;
         },
         
@@ -144,8 +146,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          */
         changeCount: function(nb_models){
             this.pager.total = nb_models;
-            this.refresh();
             this.trigger('change change:count', this, this.pager);    
+            return this;
         },
         
         /*
@@ -197,7 +199,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {Boolean}
          */
         hasPrevious: function(){
-            return this.pager.page > 0;
+            return this.refresh().pager.page > 0;
         },
         
         /*
@@ -206,7 +208,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {Boolean}
          */
         hasNext: function(){
-            return this.pager.page + 1 < this.nbPages();
+            return this.refresh().pager.page + 1 < this.nbPages();
         },
         
         /*
@@ -278,12 +280,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * 
          * @returns {Object} 
          */
-        search: function(){
-            return {
+        search: function(query){
+            return _.extend(query || {}, {
                 reset: true,
                 limit: this.pager.limit,
                 offset: this.pager.page * this.pager.limit
-            };
+            });
         },
         
         

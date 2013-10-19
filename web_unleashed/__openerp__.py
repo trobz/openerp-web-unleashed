@@ -30,6 +30,8 @@ Core Web Module:
         
         'static/lib/bootstrap-scoped/bootstrap-reset-openerp.css',
         'static/lib/bootstrap-scoped/bootstrap-scoped.css',
+    
+        'static/src/css/pager.css',
     ],
        
     'js': [
@@ -70,6 +72,7 @@ Core Web Module:
         'static/src/js/models/base.js',
         'static/src/js/models/iterator.js',
         'static/src/js/models/period.js',
+        'static/src/js/models/state.js',
         
         # backbone base collections
         'static/src/js/collections/base.js',
@@ -79,7 +82,8 @@ Core Web Module:
         # backbone base views
         'static/src/js/views/base.js',
         'static/src/js/views/pager.js',
-        
+        'static/src/js/views/panel.js',
+        'static/src/js/views/unleashed.js',
     ],
     
     'test': [
