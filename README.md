@@ -265,7 +265,7 @@ Provide everything to have a pagination on any collection, similar than the Open
 A Backbone collection with selectable model, this collection implement several methods like: 
 next, previous, first, last, select,... 
 
-## web_unleashed_extra module
+## `web_unleashed_extra` module
 
 This module contain all extra libraries and widget, not necessary useful for all modules using unleashed.
 
@@ -285,7 +285,7 @@ Features:
 - [Underscore 1.5.2](http://underscorejs.org)
 - [Marionnette 1.1.0](https://github.com/marionettejs/backbone.marionette/)
 
-**Libraries in web_unleashed_extra module**
+**Libraries in `web_unleashed_extra` module**
 
 - [MomentJS 2.0.0](http://momentjs.com)
 - [NumeralJS 1.4.9](http://adamwdraper.github.com/Numeral-js/)
