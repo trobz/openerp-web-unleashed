@@ -12,7 +12,7 @@ Core Web Module:
     """,
     
     'author': 'Trobz',
-    'website': 'http://trobz.github.io/openerp-web-unleashed',
+    'website': 'http://www.trobz.com',
     
     'depends': [
         'web'
@@ -26,11 +26,6 @@ Core Web Module:
     ],
     
     'css' : [
-        'static/lib/font-awesome/css/font-awesome.min.css', 
-        
-        'static/lib/bootstrap-scoped/bootstrap-reset-openerp.css',
-        'static/lib/bootstrap-scoped/bootstrap-scoped.css',
-    
         'static/src/css/pager.css',
     ],
        
@@ -41,17 +36,7 @@ Core Web Module:
         
         # backbone.marionette 1.1.0
         'static/lib/marionette/marionette.js',
-        
-        'static/lib/numeral/numeral.js', 
-        'static/lib/moment/moment.js',
-
-		# language of momentjs
-		'static/lib/moment/lang/fr.js',
-		'static/lib/moment/lang/vi.js',
-        
-        # boostrap libs
-        'static/lib/bootstrap-scoped/bootstrap.min.js',
-        
+                
         # addons for libs
         'static/lib/jquery-addons/jquery.when_all.js',
         'static/lib/jquery-addons/jquery.serialize_object.js',
@@ -71,7 +56,6 @@ Core Web Module:
         # backbone base models
         'static/src/js/models/base.js',
         'static/src/js/models/iterator.js',
-        'static/src/js/models/period.js',
         'static/src/js/models/state.js',
         
         # backbone base collections

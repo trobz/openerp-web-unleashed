@@ -16,7 +16,7 @@ feature in demo:
     """,
     
     'depends': [
-        'web_unleashed',
+        'web_unleashed_extra',
     ],
     
     'data': [
