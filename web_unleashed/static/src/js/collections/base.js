@@ -37,6 +37,40 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          */
         query: {},
         
+        /*
+         * @property {GroupQuery} group_model Model use to populate the Collection with group_by query
+         */
+        group_model: base.models('GroupQuery'),
+        
+        
+        /*
+         * Check if the collection is grouped
+         * 
+         * @returns {Boolean}
+         */
+        grouped: function(){
+            return this.every(function(model){ 
+                return model instanceof this.group_model; 
+            }, this);    
+        },
+        
+        /*
+         * Get a model by looking in groups, 
+         * use the default Collection.get method is the collection is not grouped
+         * 
+         * @param {Integer|String|Backbone.Model} id an id, a cid, or by passing in a model 
+         * @return {Backbone.Model} 
+         */
+        getInGroup: function(id){
+            var collection = this, Model = this.model;
+            if(this.grouped()){
+                var query = this.find(function(model){
+                    return model.group.get(id) instanceof Model;
+                });
+                collection = query ? query.group : collection;
+            }
+            return collection.get(id);
+        },
         
         /*
          * Count collection model with a JSON-RPC call 
@@ -71,6 +105,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             if(!this.model_name){
                 throw new Error('The collection can not be connected via the API without the model_name property');
             }
+            // add the QueryGroup model
+            if(query && query.group_by && query.group_by.length > 0){
+                query.group_model = this.group_model;
+                query.silent = false;
+            }
+            
             return _super.fetch.apply(this, [this.search(query)]);
         },
         
@@ -102,8 +142,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             });
         },
         
+        
+        
         /*
          * Auto set the model_name for Model instanciated
+         * 
+         * Warning: Backbone API could change, specially method prefixed by an underscore...
          * 
          * @param {Backbone.Model|Object} attrs  model attributes or a Backbone.Model
          * @param {Object} options               options passed at model instanciation
