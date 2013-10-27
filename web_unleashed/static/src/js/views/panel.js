@@ -1,32 +1,6 @@
 openerp.unleashed.module('web_unleashed',function(base, _, Backbone, base){
-    
-    var Region = Backbone.Marionette.Region,
-        _superRegion = Region.prototype;
-    
-    /*
-     * @class
-     * @module      web_unleashed
-     * @name        OpenRegion
-     * @classdesc   Marionette Region build with existing jQuery element
-     * @mixes       Marionette.Region
-     * 
-     * @author Michel Meyer <michel[at]zazabe.com>
-     */
-    var OpenRegion = Region.extend({
-        
-        /*
-         * Set the region element based on $el parameter
-         * 
-         * @param {Object} options Region option, options.$el is required 
-         */
-        initialize: function(options){
-            if(this.el instanceof jQuery && this.el.length == 1){
-                this.$el = this.el;
-            }
-        }
-    });
 
-
+    var Region = base.views('Region');
 
     var Layout = Backbone.Marionette.Layout,
         _superLayout = Layout.prototype;
@@ -42,6 +16,8 @@ openerp.unleashed.module('web_unleashed',function(base, _, Backbone, base){
      */
     var PanelLayout = Layout.extend({
         
+        regionType: Region,
+        
         /*
          * Setup regions based on options parameters
          * 
@@ -53,7 +29,7 @@ openerp.unleashed.module('web_unleashed',function(base, _, Backbone, base){
             if(options.regions){
                 _(options.regions).each(function($element, name){
                     if($element instanceof jQuery && $element.length == 1){
-                        this.addRegion(name, new OpenRegion({
+                        this.addRegion(name, new Region({
                             el: $element
                         }));
                     }

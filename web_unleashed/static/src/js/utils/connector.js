@@ -142,11 +142,11 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 q = $.isArray(options.order) ? q.order_by.apply(q, options.order) : q.order_by(options.order);
                 log_args.push('order:', options.order);
             }
-            if(options.limit){
+            if(options.hasOwnProperty('limit')){
                 q = q.limit(options.limit);
                 log_args.push('limit:', options.limit);
             }
-            if(options.offset){
+            if(options.hasOwnProperty('offset')){
                 q = q.offset(options.offset);
                 log_args.push('offset:', options.offset);
             }
@@ -159,46 +159,45 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             var def = $.Deferred();
             
             
-            //TODO: change the way group_by is implemented and avoid auto queries each QueryGroup...
+            //TODO: change the way group_by is implemented and avoid auto queries on each QueryGroup...
             if(options.group_by && options.group_by.length > 0 && options.type != 'count'){
-                
-                log_args.push('group:', options.group_by);
             
-                var group_result = [];
                 var qdef = q.group_by(options.group_by);
+                
+                var prefix = '[Connector][ group ][' + id() + ']', 
+                    logger = log(prefix);
+                
+                console.time(prefix);
+            
+                log_args.push('group by:', options.group_by);
+                log_args.unshift('group on');
+            
+                logger.apply(console, log_args);
+                
                 qdef.done(function(groups){
-                    var defs = [];
+                    // populate the collection with query groups
+                    var queries = [], Query = options.group_model || base.models('GroupQuery');
                     _.each(groups, function(group){
-                        var gdef = group.query(options.fields || undefined).all().done(function(result){
-                            var name = group.attributes.value[1];
-                            _.each(result, function(model){
-                                group_result.push(
-                                    _.extend(model, { group: name })
-                                );    
-                            });
-                        });
-                        defs.push(gdef);
+                        queries.push(new Query(group.attributes, {
+                            options: options,
+                            groupQuery: group
+                        }));
                     });
                     
-                    var gqdef = $.when.apply($, defs);
+                    logger(queries.length, 'group(s)', 'on', model.model_name);
                     
-                    gqdef.done(function(){
-                        def.resolve(group_result);
-                    });
-                    gqdef.fail(function(){
-                        def.reject.apply(def, _.toArray(arguments));
-                    });
+                    def.resolve(queries);
                 });
                 qdef.fail(function(){
                     def.reject.apply(def, _.toArray(arguments));
                 });
+                qdef.always(function(){ console.timeEnd(prefix); });
             }
             else {
                 var qdef = q[options.type]();
                 
                 var prefix = '[Connector][ read ][' + id() + ']', 
                     logger = log(prefix);
-            
                 
                 console.time(prefix);
                 log_args.unshift('execute on');

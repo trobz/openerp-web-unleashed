@@ -132,7 +132,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * 
          * @param {String} model_name   record model name
          */
-        openRecord: function(model_name){
+        openList: function(model_name){
             this.do_action({
                 type: 'ir.actions.act_window',
                 res_model: model_name,

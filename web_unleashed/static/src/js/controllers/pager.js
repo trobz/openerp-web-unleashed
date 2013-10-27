@@ -63,6 +63,18 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         },
         
         /*
+         * Check if the pager is enabled, override this method to define when the pager has to be disabled 
+         * This method is executed before the execution of count and update queries
+         * 
+         * @param {Object} query a search query
+         * @returns {Boolean} pager status
+         */
+        checkEnabled: function(query){
+            return this.enabled();    
+        },
+        
+        
+        /*
          * Internal update method, should never be called directly (use abstract method)
          *
          * @private 
@@ -70,7 +82,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {jQuery.Deferred.promise}
          */
         _update: function(query){
-            return this.update(this.search(query));
+            return this.update(query);
         },
         
         /*
@@ -81,7 +93,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {jQuery.Deferred.promise}
          */
         _count: function(query){
-            return this.count(this.search(query));
+            return this.count(query);
         },
         
         /*
@@ -96,11 +108,16 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             query = query || {};
              
             var def = new $.Deferred();
-                
-            this._count(query).done(_.bind(function(nb_models){
-                this.changeCount(nb_models).refresh().trigger('ready');
+            
+            if(this.checkEnabled(query)){
+                this._count(query).done(_.bind(function(nb_models){
+                    this.changeCount(nb_models).refresh().trigger('ready');
+                    def.resolveWith(this);
+                }, this));
+            }
+            else {
                 def.resolveWith(this);
-            }, this));
+            }    
             
             return def.promise();
         },
@@ -114,11 +131,18 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         load: function(query){
             var def = $.Deferred();
             
-            this.init(_.clone(query)).done(function(){
+            if(this.checkEnabled(query)){
+                this.init(_.clone(query)).done(function(){
+                   this._update(_.clone(query)).done(function(){
+                       def.resolve();
+                   }); 
+                });
+            }
+            else {
                this._update(_.clone(query)).done(function(){
                    def.resolve();
-               }); 
-            });
+               });
+            }
             
             return def.promise();
         },
@@ -129,13 +153,43 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {PagerController}
          */
         refresh: function(){
-            this.pager.nb_pages = Math.ceil(this.pager.total / this.pager.limit);
+            this.pager.nb_pages = Math.ceil(this.pager.total / this.limit());
             
             if(this.pager.page >= this.pager.nb_pages){
                 this.pager.page = this.pager.nb_pages - 1 >= 0 ? this.pager.nb_pages - 1 : 0;
             }
                 
             return this;
+        },
+        
+        /*
+         * @property {Boolean} isEnabled  enable status of the pager 
+         */
+        isEnabled: true,
+        
+        /*
+         * Disable the pagination
+         */
+        disable: function(){
+            this.isEnabled = false;
+            this.trigger('disable');
+        },
+        
+        /*
+         * Enable the pagination
+         */
+        enable: function(){
+            this.isEnabled = true;
+            this.trigger('enable');
+        },
+        
+        /*
+         * Check if the pager is enabled
+         *
+         * @returns {Boolean}
+         */
+        enabled: function(){
+            return this.isEnabled;    
         },
         
         /*
@@ -195,6 +249,15 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         },
         
         /*
+         * Get the limit, if not numeric, return the total of elements
+         */
+        limit: function(){
+            // ensure limit is an integer, if possible
+            this.pager.limit = $.isNumeric(this.pager.limit) ? parseInt(this.pager.limit) : this.pager.limit;
+            return  !$.isNumeric(this.pager.limit) ? this.pager.total : (this.pager.limit === 0 ? 100 : this.pager.limit);
+        },
+        
+        /*
          * Check if the pager has a previous page
          * @returns {Boolean}
          */
@@ -212,20 +275,43 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         },
         
         /*
-         * Load the last page
+         * Check if the pager is on the first page
          * 
-         * @fires change, change:last
-         * @returns {jQuery.Deferred.promise}
+         * @returns {Boolean}
          */
-        last: function(){
-            var def = null;
-            if(this.pager.page  != this.pager.nb_pages - 1){
-                this.pager.page = this.pager.nb_pages - 1;
-                this.trigger('change change:last', this, this.pager);    
-                def = this._update();
-            }
-            return $.when(def); 
+        isFirst: function(){
+            return this.pager.page == 0;
         },
+        
+        /*
+         * Check if the pager is on the last page
+         * 
+         * @returns {Boolean}
+         */
+        isLast: function(){
+            return this.pager.page == this.pager.nb_pages - 1;
+        },
+        
+        /*
+         * First index of the current page
+         * 
+         * @returns {Integer}
+         */
+        firstIndex: function(){
+            return (this.pager.page * this.limit()) + 1;
+        },
+        
+        /*
+         * Last index of the current page
+         * 
+         * @returns {Integer}
+         */
+        lastIndex: function(){
+            var before = this.firstIndex() - 1,
+                next = this.pager.total - before;
+            return next < this.pager.limit ? before + next : before + this.limit();
+        },
+        
         
         /*
          * Load the first page
@@ -235,7 +321,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          */
         first: function(){
             var def = null;
-            if(this.pager.page != 0){
+            if(this.enabled() && !this.isFirst()){
                 this.pager.page = 0;
                 this.trigger('change change:first', this, this.pager);    
                 def = this._update();
@@ -244,16 +330,16 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         },
         
         /*
-         * Load the previous page
+         * Load the last page
          * 
-         * @fires change, change:previous
+         * @fires change, change:last
          * @returns {jQuery.Deferred.promise}
          */
-        prev: function(){
+        last: function(){
             var def = null;
-            if(this.hasPrevious()){
-                this.pager.page -= 1;
-                this.trigger('change change:previous', this, this.pager);    
+            if(this.enabled() && !this.isLast()){
+                this.pager.page = this.pager.nb_pages - 1;
+                this.trigger('change change:last', this, this.pager);    
                 def = this._update();
             }
             return $.when(def); 
@@ -267,7 +353,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          */
         next: function(){
             var def = null;
-            if(this.hasNext()){
+            if(this.enabled() && this.hasNext()){
                 this.pager.page += 1;    
                 this.trigger('change change:next', this, this.pager);    
                 def = this._update();
@@ -276,34 +362,37 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         },
         
         /*
+         * Load the previous page
+         * 
+         * @fires change, change:previous
+         * @returns {jQuery.Deferred.promise}
+         */
+        prev: function(){
+            var def = null;
+            if(this.enabled() && this.hasPrevious()){
+                this.pager.page -= 1;
+                this.trigger('change change:previous', this, this.pager);    
+                def = this._update();
+            }
+            return $.when(def); 
+        },
+        
+        
+        /*
          * Define the search query according to the current page
          * 
          * @returns {Object} 
          */
         search: function(query){
-            return _.extend(query || {}, {
-                reset: true,
-                limit: this.pager.limit,
-                offset: this.pager.page * this.pager.limit
-            });
-        },
-        
-        
-        /*
-         * Get a textual representation of the pager state
-         * 
-         * @returns {String} 
-         */
-        info: function(){
-            
-            var pager = this.pager,
-                nb_before = pager.page * pager.limit,
-                nb_next = pager.total - nb_before,
-                limit = nb_next < pager.limit ? nb_before + nb_next : nb_before + pager.limit; 
-            
-            return (nb_before + 1) + ' - ' + limit + ' / ' + pager.total;
-        }
-
+            if(this.checkEnabled(query)){
+                _.extend(query || {}, {
+                    reset: true,
+                    limit: this.limit(),
+                    offset: this.pager.page * this.limit()
+                });
+            }
+            return query;
+        }         
     });
 
     base.controllers('Pager', PagerController);
