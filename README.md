@@ -288,6 +288,7 @@ Features:
 **Libraries in `web_unleashed_extra` module**
 
 - [MomentJS 2.0.0](http://momentjs.com)
+- [MomentJS Twix Plugin 0.3](https://github.com/icambron/twix.js)
 - [NumeralJS 1.4.9](http://adamwdraper.github.com/Numeral-js/)
 - [Font Awesome 3.2.1](http://fontawesome.io)
 - [Bootstrap 3.0.0](http://getbootstrap.com)    

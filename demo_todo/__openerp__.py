@@ -9,6 +9,7 @@
 Demo of a simple todo list, powered by the web unleashed core.
 
 feature in demo:
+
 - module initialization
 - data access Backbone and the JSON-RPC API
 - layout definition based on Marionnette
