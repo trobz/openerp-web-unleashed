@@ -42,15 +42,21 @@ Extra components for unleashed module:
         # serialized widget
         'static/lib/jsoneditor/jsoneditor.css',
         'static/src/css/field_serialized.css',
+    
+        # global css classes
+        'static/src/css/global.css',
     ],
        
     'js': [
         
         # boostrap libs
-        'static/lib/bootstrap-scoped/bootstrap.min.js',
+        'static/lib/bootstrap-scoped/bootstrap.js',
         
         # momentjs
         'static/lib/moment/moment.js',
+        
+        # momentjs twix plugin
+        'static/lib/moment-twix/twix.js',
         
         # numeraljs
         'static/lib/numeral/numeral.js',

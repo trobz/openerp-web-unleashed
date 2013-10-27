@@ -6,13 +6,14 @@
     
     'description': """
 Core Web Module:
+
 - improve code architecture and organization
-- add support of Backbone and Marionnette frameworks
+- add support of Backbone and Marionette frameworks
 - native support of JSON-RPC API for Backbone
     """,
     
     'author': 'Trobz',
-    'website': 'http://www.trobz.com',
+    'website': 'https://github.com/trobz/openerp-web-unleashed',
     
     'depends': [
         'web'
@@ -38,6 +39,7 @@ Core Web Module:
         'static/lib/marionette/marionette.js',
                 
         # addons for libs
+        'static/lib/jquery-addons/jquery.font_size.js',
         'static/lib/jquery-addons/jquery.when_all.js',
         'static/lib/jquery-addons/jquery.serialize_object.js',
         'static/lib/jquery-addons/jquery.form_reset.js',
@@ -55,23 +57,28 @@ Core Web Module:
         
         # backbone base models
         'static/src/js/models/base.js',
+        'static/src/js/models/query.js',
         'static/src/js/models/iterator.js',
         'static/src/js/models/state.js',
         
         # backbone base collections
         'static/src/js/collections/base.js',
         'static/src/js/collections/pager.js',
-        'static/src/js/collections/iterators.js',
+        'static/src/js/collections/group.js',
+        'static/src/js/collections/iterator.js',
 
         # backbone base views
+        'static/src/js/views/view.js',
         'static/src/js/views/base.js',
+        'static/src/js/views/region.js',
         'static/src/js/views/pager.js',
         'static/src/js/views/panel.js',
         'static/src/js/views/unleashed.js',
     ],
     
     'test': [
+        'static/src/tests/group.js',
+        'static/src/tests/pager.js',
         'static/src/tests/connector.js',
-        'static/src/tests/pager.js'
     ]
 }

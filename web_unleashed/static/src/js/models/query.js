@@ -22,11 +22,6 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             this.options = options.options;
             this.groupQuery = options.groupQuery;
             
-            // in case the group value is a ref to a model like [id, name]
-            if(_.isArray(this.get('value')) && this.get('value').length >= 2){
-                this.set('value', this.get('value')[1]);
-            }
-            
             if(this.has('aggregates')){
                 this.set(model.aggregates);
                 this.unset('aggregates');

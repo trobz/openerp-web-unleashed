@@ -1,4 +1,4 @@
-openerp.trobz.module('web_unleashed_extra').ready(function(instance){
+openerp.unleashed.module('web_unleashed_extra').ready(function(instance){
     
     
     var FieldSerialized = instance.web.form.AbstractField.extend(instance.web.form.ReinitializeFieldMixin, {

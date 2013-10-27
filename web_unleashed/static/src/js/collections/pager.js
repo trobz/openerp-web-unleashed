@@ -20,7 +20,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
     /*
      * inherit from BaseCollection and extends PagerController and BaseCollection prototypes
      */
-    MixedPagerCollection = function(){
+    var MixedPagerCollection = function(){
         BaseCollection.apply(this, arguments);
     };
     
@@ -36,14 +36,31 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
     
         /*
          * - initialize all extended objects
+         * - bind events
          */
         initialize: function(data, options){
             _superCollection.initialize.apply(this, arguments);
             _superPager.initialize.apply(this, [options]);
-            
-            this.on('remove add', function(){
-                this.load();
-            }, this);
+        },
+        
+        
+        /*
+         * Override the Pager.checkEnabled
+         * Disable the pager for group_by queries
+         * 
+         * @param {Object} query a search query
+         * @returns {Boolean} pager status
+         */
+        checkEnabled: function(query){
+            if(query && query.group_by && query.group_by.length > 0){
+                this.disable();
+                // force query reset
+                query.reset = true;
+            }
+            else {
+                this.enable();
+            }
+            return this.enabled();
         },
                
        /*
@@ -52,7 +69,21 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         update: function(){
             return _superCollection.fetch.apply(this, arguments);
         },
-       
+        
+        /*
+         * Override the Collection.first method by the Pager Controller one
+         */
+        first: function(){
+            return _superPager.first.apply(this, arguments);
+        },
+        
+        /*
+         * Override the Collection.last method by the Pager Controller one
+         */
+        last: function(){
+            return _superPager.last.apply(this, arguments);
+        },
+        
         /*
          * Get the search query, depending of the current page
          * 

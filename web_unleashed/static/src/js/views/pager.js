@@ -3,9 +3,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
 
     var PagerController = base.controllers('Pager');
     
-    var Renderer = Backbone.Marionette.Renderer,
-        BaseView = base.views('BaseView'),
-        _super = BaseView.prototype;
+    var ItemView = Backbone.Marionette.ItemView,
+        _super = ItemView.prototype;
 
 
     /*
@@ -17,7 +16,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * 
      * @author Michel Meyer <michel[at]zazabe.com>
      */    
-    var PagerView = BaseView.extend({
+    var PagerView = ItemView.extend({
+        
+        template: 'Base.Pager',
         
         /*
          * @property {String} className the class used to create the main pager DOM Element
@@ -43,41 +44,44 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         initialize: function(options){
             // TODO: check because extending views are using options.model instead of options.collection (see dashboard/widgets/pager), 
             // should not be done because of a specific pager view... 
-            this.data = this.data ? this.data : options.collection;
-            _super.initialize.apply(this, arguments);    
-        },
-        
-        /*
-         * Bind model event to update the pager view
-         */
-        bind: function(){
-            this.data.on('sync reset add remove change', this.render, this);
-        },
-        
-        /*
-         * Unbind model listener
-         */
-        unbind: function(){
-            this.data.off(null, null, this);
-        },
-        
-        /*
-         * Render the view, hide the pager navigation if there's only one page
-         */
-        render: function(){
-            return this.$el.html(Renderer.render('UnleashedBase.Pager', {
-                ranges: this.data.pager.ranges,
-                info: this.data.info(),
-                current_range: this.data.pager.limit,
-                previous: this.data.hasPrevious(),
-                next: this.data.hasNext()
-                
-            }));    
-    
-            if(this.data.pager.nb_pages <= 1){
-                this.$el.find('.oe_pager_group').hide();    
+            
+            this.data = options.collection ? options.collection : ( options.model ? options.model : null);
+            if(!this.data){
+                throw new Error('The Pager view has to be initialized with a model or a collection.');
             }
         },
+        
+        /*
+         * Listen to data event to render the pager
+         */
+        onShow: function(){
+            this.listenTo(this.data, 'sync reset change', this.render);
+        },
+        
+        
+        /*
+         * Serialize pager data
+         * 
+         * @returns {Object} 
+         */
+        serializeData: function(){
+            var disabled = this.data.pager.nb_pages <= 1 ? true : false;
+            disabled = _.isFunction(this.data.grouped) ? this.data.grouped() : disabled;
+            
+            return {
+                ranges: this.data.pager.ranges,
+                current_range: this.data.pager.limit,
+                
+                firstIndex: this.data.firstIndex(),
+                lastIndex: this.data.lastIndex(),
+                total: this.data.pager.total,
+                
+                disabled: disabled,
+                previous: this.data.hasPrevious(),
+                next: this.data.hasNext(),
+            };
+        },
+        
         
         // UI event
 
@@ -99,8 +103,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * Render the pager limit selector
          */
         range: function(e){
-            var $range = $(e.currentTarget), collection = this.data;
-            $range.html(Renderer.render('UnleashedBase.Pager.range', {
+            var $range = $(e.currentTarget);
+            
+            $range.html(base.render('Base.Pager.range', {
                 ranges: this.data.pager.ranges,
                 current_range: this.data.pager.limit
             }));

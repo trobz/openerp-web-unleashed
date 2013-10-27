@@ -40,11 +40,6 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
                 removed: []
             }, this.data || {});
             
-                        
-            // max group length in the collection
-            this.max = 0;
-
-            
             _super.initialize.apply(this, arguments);
         },
         
@@ -57,14 +52,13 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
         },
         
         reset: function(){
+                        
             if(!this.isGroup()){
-                this.eachGroup(function(group, index){
+                _.each(this.groups(), function(group, index){
                     group.reset();
                     delete this.data.groups[index];
                 }, this);
             }
-            
-            this.max = 0;
 
             _super.reset.apply(this, arguments);
         },
@@ -73,7 +67,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
         fetch: function(){
             
             if(!this.isGroup()){
-                this.eachGroup(function(group){
+                _.each(this.groups(), function(group){
                     group.status = {
                         updated: false,
                         created: false
@@ -106,7 +100,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
             
             this.status.updated = true;
             
-            if(options.group){
+            if(!!options.group){
                 this.groupModels(prepared);
             }
         },
@@ -118,7 +112,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
         
             //TODO: review this "technique"... method to know if a modification has been applied to the collection...
             var lengths = {};
-            lengths.before = this.length;
+            lengths.before = this.length
             _super.remove.apply(this, arguments);
             lengths.after = this.length;
             
@@ -143,12 +137,6 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
             return this.data.groups;
         },
         
-        
-        eachGroup: function(callback, context){
-        	return _.each(this.groups(), callback, context);
-        },
-        
-        
         groupByIndice: function(model){
             var indice = null, group_by = this.options.group_by;
             
@@ -170,16 +158,13 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
                 if(!this.isGroup()){
                     if(index){
                         this.addToGroup(model, index);
-        			}
+                    }
                 }
                 else {
                     if(this.options.index != index){
                         throw new Error('can not add a model in a group which has not the same index');
                     }
                     this.options.parent.add(model, {group: false});
-    
-                    this.options.parent.max = this.length > this.options.parent.max 
-                    						? this.length : this.options.parent.max;
                 }
             }, this);
         },
@@ -188,34 +173,23 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
             var groups = this.data.groups;     
             groups[index] = groups[index] || new Group([], { group_by: this.group_by, grouped: true, parent: this, index: index });
             groups[index].add(model, {group: false});
-    
-        	this.max = groups[index].length > this.max 
-        			 ? groups[index].length : this.max;
         },
         
         ungroupModels: function(models, lengths){
-          	if(!this.isGroup()){
-            	this.eachGroup(function(group){
+            var self = this;
+            if(!this.isGroup()){
+            
+                _.each(this.data.groups, function(group){
                     group.remove(models, {group: false});
-          	
+          
                     if(group.length <= 0){
-                        this.removeGroup(group.options.index);
+                        self.removeGroup(group.options.index);
                     }
-                }, this);
- 				this.recalculateMax();
+                });
             }
             else if(lengths.before > lengths.after){
                 this.options.parent.remove(models, {group: false});
-            	this.options.parent.recalculateMax();
             }   
-        },
-        
-        recalculateMax: function(){
-            var max = 0;
-        	this.eachGroup(function(group){
-        		max = group.length > max ? group.length : max;
-            });
-    		this.max = max;
         },
         
         removeGroup: function(index){
@@ -224,7 +198,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
                 this.data.groups[index].reset();
                 delete this.data.groups[index];   
             }
-        }
+        } 
     });
 
     base.collections('Group', Group);

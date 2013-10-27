@@ -45,7 +45,7 @@ openerp.unleashed.module('demo_todo').ready(function(instance, todo, _, Backbone
         },
         
         /*
-         * executed when the View is started
+         * executed when the View is rendered
          */
         ready: function(data){
             
