@@ -173,6 +173,90 @@ openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
 filter, order, limit, offset, context, fields  
  
 
+### Collection with `group_by` lazy loading support
+
+When you fetch your collection with a `group_by` option, the collection is populated with special `GroupQuery` object.
+
+This special Models are able to get the result of each groups, allowing to list the group first in the interface and lazy load each of them after
+an action.
+
+To get the result of each of them, you simply have to call `fetch` on them, the `GroupQuery` will make an instance of the Collection his coming from and 
+populate it with the groupment result.
+
+
+Notes:
+- If a grouped collection is fetched without a `group_by` query later, the collection is the same has before again
+- The Pager collection support `group_by` queries too, the pagination is simply disabled during grouping
+- No tests have been done with multiple grouping, but it should not be a so big pain :)
+
+
+
+**example**
+
+```js
+var BaseCollection = base.collections('BaseCollection'),
+    BaseModel = base.models('BaseModel'),
+    GroupQuery = base.models('GroupQuery');
+
+
+var CustomGroupQuery = GroupQuery.extend({
+    some_method: function(){...}
+});
+
+var CustomModel = BaseModel.extend({
+    model_name: 'your.model'
+});
+
+
+var CustomCollection = BaseCollection.extend({
+    model_name: 'your.model',
+    model: CustomModel,
+    // you can define the GroupQuery to use when a collection is fetched with a group_by
+    // useful to add some specific method on the group itself
+    // otherwise GroupQuery Model is used instead 
+    group_model: CustomGroupQuery
+});
+
+
+// create a new instance of collection
+var collection = new CustomCollection();
+
+var promise = collection.fetch({
+    group_by: ['type']
+});
+
+promise.done(function(){
+
+    // collection.length == your.model grouped by type
+  
+    // collection.grouped() == true
+    
+    var group_query = collection.at(0);
+    
+    // group_query instanceof CustomGroupQuery
+    // group_query.get('value') == type group name
+    // group_query.get('length') == number of element in the group
+    
+    // collection where will be set group results
+    var list = group_query.group;
+    
+    // list instanceof CustomCollection
+        
+    // get all grouped items
+    var group_promise = group_query.fetch():
+    
+    group_promise.done(function(){
+    
+        // list.length == group_query.get('length') 
+    
+        var model = list.at(0);
+        
+        // model instanceof CustomModel
+    });
+});
+```
+
+
 ### Unleashed View
 
 OpenERP View has been extended to add some default behavior/features.
