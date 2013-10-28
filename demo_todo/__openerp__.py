@@ -2,8 +2,8 @@
 {
     'name': 'Web Unleashed - Todo Demo',
     'version': '1.0',
-    'author': 'trobz',
-    'website': 'http://trobz.com',
+    'author': 'Trobz',
+    'website': 'https://github.com/trobz/openerp-web-unleashed',
     'category': 'Demo',
     'description': """
 Demo of a simple todo list, powered by the web unleashed core.
@@ -12,7 +12,7 @@ feature in demo:
 
 - module initialization
 - data access Backbone and the JSON-RPC API
-- layout definition based on Marionnette
+- layout definition based on Marionette
 - native OpenERP search widget support 
     """,
     
@@ -48,6 +48,5 @@ feature in demo:
     'sequence': -99,
     'installable': True,
     'active': False,
-    'post_objects': [],
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

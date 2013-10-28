@@ -24,9 +24,6 @@ Extra components for unleashed module:
         'web_unleashed'
     ],
     
-     "update_xml" : [
-     ],
-    
     'qweb' : [
         'static/src/templates/*.xml',
     ],
