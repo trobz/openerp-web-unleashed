@@ -53,7 +53,6 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          */
         view_loading: function(data){
             this.panel = new this.Panel({
-                
                 el: $('.oe_application'),
                 
                 regions: {
