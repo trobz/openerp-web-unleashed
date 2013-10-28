@@ -19,9 +19,6 @@ Core Web Module:
         'web'
     ],
     
-     "update_xml" : [
-     ],
-    
     'qweb' : [
         'static/src/templates/*.xml',
     ],
