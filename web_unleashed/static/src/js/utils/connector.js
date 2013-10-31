@@ -18,7 +18,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             var args = _.toArray(arguments);
             args.unshift('%c' + prefix + ':', 'color: #aaa');
             console.debug.apply(console, args);
-        }
+        };
     };
   
     /*
