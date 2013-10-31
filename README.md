@@ -139,7 +139,7 @@ openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
 In this example, a new view extend the basic Backbone View and is added 
 to ```my_module``` namespace with the name "GreatView".
 
-Now you have access to this object from anywhere by simply using the name you use to declare it:
+Now you have access to this object from anywhere by simply using the name you used to declare it:
 
 ```js
     ...
@@ -199,7 +199,7 @@ openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
 });
 ```
 
-- ```employees``` is a Backbone Collection, populated with Backbone Model, with all what it's imply !
+- ```employees``` is a Backbone Collection, populated with Backbone Model, with all what it imply !
 - you can pass to ```fetch``` method all JSON-RPC API js client options:      
 `filter`, `order`, `limit`, `offset`, `context`, `fields`
  
@@ -242,9 +242,11 @@ var CustomModel = BaseModel.extend({
 var CustomCollection = BaseCollection.extend({
     model_name: 'your.model',
     model: CustomModel,
-    // you can define the GroupQuery to use when a collection is fetched with a group_by
-    // useful to add some specific method on the group itself
-    // otherwise GroupQuery Model is used instead 
+    
+    /*  you can define the GroupQuery to use when a collection is 
+     *  fetched with a group_by query, useful to add specific methods 
+     *  on group themself,
+     */ otherwise GroupQuery Model is used instead 
     group_model: CustomGroupQuery
 });
 
@@ -323,7 +325,7 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
         State: base.models('State'),
         
         /*
-         * Configure the state before processing it
+         * Configure the state before processing it (done automatically by UnleashedView)
          *
          * Depending of your state model, you will certainly have to configure it 
          * before his processing, usually by linking some objects and listening 
@@ -336,7 +338,8 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
         
         
         /*
-         * The view is ready to be used, called by listening to OpenERP View "view_loaded" event
+         * The view is ready to be used, called by a listener on  
+         * OpenERP View "view_loaded" event
          *
          *  @param {Object} data
          *    View configuration object:
@@ -351,7 +354,7 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
          */
         ready: function(data){
             /*
-             * A Marionette Panel is available, with all OpenERP part defined as Regions:
+             * A Marionette Panel is available, with all OpenERP part defined as Region:
              * - this.panel.buttons
              * - this.panel.pager
              * - this.panel.sidebar
@@ -364,10 +367,10 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
 
 Features automatically handled by the Unleashed View:
 
-- the State of the view is managed by a Model, automatically pushed into the URL at modification,     
-  you can extend the state model to had your own state logic.
+- the State of the view is managed by a Model, automatically pushed into the URL at state 
+  modification, you can extend the state model to had your own state logic.
 - add a Marionette Panel to manage all elements available in an OpenERP view: 
-`buttons`, `sidebar`, `pager`, `body` regions. 
+  `buttons`, `sidebar`, `pager`, `body` regions. 
 
 Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_todo) for more details.
 
@@ -378,9 +381,9 @@ description (use `arch` config,...), you have to extend the python `irUiView` mo
 and specify your new view.
 
 You can add `arch` validation and build highly configurable view in the same way 
-than standard OpenERP view.
+than standard OpenERP views.
   
-A simple example of a custom type declaration is available here: 
+A simple example of a custom type declaration is available here:             
 https://github.com/trobz/openerp-web-unleashed/blob/master/demo_todo/view/todo.py
 
 ### Pager
@@ -395,8 +398,8 @@ Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/t
 
 ### Iterator
 
-A Backbone collection with selectable model, this collection implement several methods like: 
-next, previous, first, last, select,... 
+A Backbone collection with selectable model, this collection implement several methods like:    
+`next`, `previous`, `first`, `last`, `select`,... 
 
 ## Extra module
 
@@ -409,9 +412,9 @@ Features:
 - fontawesome library
 - twitter bootstrap, scoped with 'bootstrap-scoped' css class
 - extra base model
-  - period model: used to manage a period of time as a Backbone Model, use momentjs
+  - period model: used to manage a period of time as a Backbone Model
 - extra openerp widgets
-  - serialized: widget to use with `fields.serialized` field type
+  - serialized: widget for `fields.serialized` field type
 
 
 # Libraries
