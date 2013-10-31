@@ -48,7 +48,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {jQuery.Deferred.promise}
          */
         update: function(query){
-            throw new Error('abstract object, you should implement here the way to get paginated data')
+            throw new Error('abstract object, you should implement here the way to get paginated data');
         },
         
         /*
@@ -59,7 +59,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {jQuery.Deferred.promise}
          */
         count: function(query){
-            throw new Error('abstract object, you should implement here the way to get count data')
+            throw new Error('abstract object, you should implement here the way to get count data');
         },
         
         /*

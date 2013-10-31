@@ -111,7 +111,7 @@
         ready: function(callback){
             this.addInitializer(function(options){
                 var instance = options.instance;
-                callback.apply(this, [instance, this, LatestUnderscore, LatestBackbone, this.app.module('web_unleashed')])
+                callback.apply(this, [instance, this, LatestUnderscore, LatestBackbone, this.app.module('web_unleashed')]);
             });
         },
         
@@ -287,7 +287,7 @@
             var call = function(){
                 this.startWithParent = false;
                 if(callback){
-                    callback.apply(this, [this, LatestUnderscore, LatestBackbone, this.app.module('web_unleashed')])
+                    callback.apply(this, [this, LatestUnderscore, LatestBackbone, this.app.module('web_unleashed')]);
                 }
             };
             return module.apply(app, [name, call]);
@@ -372,4 +372,4 @@
         
     });
 
-})(openerp)
+})(openerp);
