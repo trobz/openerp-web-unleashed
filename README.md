@@ -44,7 +44,7 @@ A module build with Web Unleashed will look like:
       - collections/
       - views/
       - utils/         // any useful lib
-      - my\_module.js  // the web module entry point
+      - my_module.js  // the web module entry point
     - templates/       // QWeb templates
     - tests/           // jsunit tests
     - images/
