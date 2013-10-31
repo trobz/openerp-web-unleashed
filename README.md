@@ -44,7 +44,7 @@ A module build with Web Unleashed will look like:
       - collections/
       - views/
       - utils/         // any useful lib
-      - my_module.js  // the web module entry point
+      - my_module.js   // the web module entry point
     - templates/       // QWeb templates
     - tests/           // jsunit tests
     - images/
@@ -83,7 +83,7 @@ passed to your module scope when you have declare a new object,
 see [object declaration](#object-declaration) for details 
 - the module name has to be the technical name of your OpenERP module
 
-### module initialization
+### Module initialization
 
 In OpenERP web, you need to define a method on openerp namespace to know 
 when OpenERP is ready to process your code, like this:
@@ -103,7 +103,8 @@ and the current module object.
 
 ```js
 openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Backbone, base_module) {
-    //openerp is ready, and you can benefit from the lastest Backbone and Underscore version here !
+    // openerp is ready and you can benefit from 
+    // the lastest Backbone and Underscore version here !
 });
 ```
 
@@ -112,7 +113,7 @@ Notes:
 - Backbone and Underscore are already included in OpenERP, but they are using old version. Unleashed
 include the latest version of these libraries in noConflict mode.
 
-### object declaration
+### Object declaration
 
 To be able to split object in different files, and keep the code organization in the global scope, 
 you have to use the module scope.
@@ -159,7 +160,7 @@ We are working on requirejs support for OpenERP, it's planned for the next relea
 
 Unleash provide some useful Backbone extension:
 
-### support of JSON-RPC API
+### JSON-RPC API Model support
 
 By using the ```BaseModel``` and ```BaseCollection``` from the base module, 
 the JSON-RPC API is automatically implemented.
@@ -320,12 +321,15 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
          * You can redefine views and models used by UnleashedView, 
          * specially for the State, usually each view has his own way 
          * to keep the view state persistent.
+         *
+         * Check comment on State and Panel objects for more details.
          */
         Panel: base.views('Panel'),
         State: base.models('State'),
         
         /*
-         * Configure the state before processing it (done automatically by UnleashedView)
+         * Configure the state before processing it 
+         * the state is processed after "start" and before "ready" execution.
          *
          * Depending of your state model, you will certainly have to configure it 
          * before his processing, usually by linking some objects and listening 
@@ -336,6 +340,13 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
         stateConfig: function(){
         },
         
+        
+        /*
+         * Executed by OpenERP before view loading, usual place to instanciate 
+         * your views and models.
+         */
+        start: function(){
+        },
         
         /*
          * The view is ready to be used, called by a listener on  
@@ -369,7 +380,7 @@ Features automatically handled by the Unleashed View:
 
 - the State of the view is managed by a Model, automatically pushed into the URL at state 
   modification, you can extend the state model to had your own state logic.
-- add a Marionette Panel to manage all elements available in an OpenERP view: 
+- add a Marionette Panel to manage all elements available in an OpenERP view:   
   `buttons`, `sidebar`, `pager`, `body` regions. 
 
 Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_todo) for more details.
