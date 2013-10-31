@@ -102,6 +102,14 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
         },
         
         /*
+         * Remove view listeners
+         */
+        unbindView: function(){
+        	this.module.off(null, null, this);
+        	this.state.off(null, null, this);
+        },
+        
+        /*
          * Push state changes into the URL
          */
         stateChanged: function(){
@@ -145,6 +153,8 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * Properly destroy the view by stopping regions in the panel layout
          */
         destroy: function() {
+        	this.unbindView();
+        
             if(this.panel && this.panel.regionManager){
                 this.panel.regionManager.closeRegions();
             }
