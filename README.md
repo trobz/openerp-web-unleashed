@@ -365,7 +365,8 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
          */
         ready: function(data){
             /*
-             * A Marionette Panel is available, with all OpenERP part defined as Region:
+             * A Marionette Panel is available, 
+             * with all OpenERP part defined as Region:
              * - this.panel.buttons
              * - this.panel.pager
              * - this.panel.sidebar
@@ -416,8 +417,6 @@ A Backbone collection with selectable model, this collection implement several m
 
 `web_unleashed_extra` module contain all libraries and widget not necessary 
 useful for all modules that uses unleashed.
-
-Features:
 
 - momentjs / numeraljs libraries
 - fontawesome library
