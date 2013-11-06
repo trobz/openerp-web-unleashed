@@ -4,12 +4,18 @@ python:
 virtualenv:
   system_site_packages: true
 
+services:
+  - postgresql
+
+before_script:
+  - psql -c "CREATE USER openerp WITH PASSWORD 'admin';" -U postgres
+  - psql -c 'create database web_unleashed_test with owner openerp;' -U postgres
 
 install:
-    - ./.travis_install_nightly.sh
+  - ./.travis_install_nightly.sh
 
 script:
-    - ./.travis_test.sh
+  - ./.travis_test.sh
 
 notifications:
   email:
