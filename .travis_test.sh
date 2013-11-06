@@ -16,8 +16,13 @@ cd ..
 DIR=$( cd "$( dirname "$0" )" && pwd )
 ADDONS="$DIR/openerp/openerp/addons,$DIR/$REPO_NAME"
 
+echo "location: $DIR"
+ls
+
+echo "start openerp"
+
 # launch openerp server
-./openerp/openerp-server --addons $ADDONS > /dev/null &
+./openerp/openerp-server -d web_unleashed_test -r openerp --addons $ADDONS > /dev/null &
 server_pid=$!
 
 echo "openerp server started"
