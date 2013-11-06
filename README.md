@@ -1,6 +1,9 @@
+[![Build Status](https://travis-ci.org/trobz/openerp-web-unleashed.png?branch=master)](https://travis-ci.org/trobz/openerp-web-unleashed)
+
 By default, the web part of OpenERP is not easy, the documentation is minimalist and the architecture is hard to understand.
 
 This is a pure web module with one objective: providing good bases to build rich web application in OpenERP.
+
 
 ## Features
 
