@@ -14,10 +14,16 @@ cd ..
 
 
 DIR=$( cd "$( dirname "$0" )" && pwd )
+
+COMMAND_REPO="$DIR/cmd"
+SERVER_REPO="$DIR/openerp"
+export PYTHONPATH=$SERVER_REPO:$COMMAND_REPO
+export PATH=$SERVER_REPO:$COMMAND_REPO:$PATH
+
 ADDONS="$DIR/openerp/openerp/addons,$DIR/$REPO_NAME"
 
 echo "location: $DIR"
-ls
+echo "PYTHONPATH: $PYTHONPATH"
 
 echo "start openerp"
 
