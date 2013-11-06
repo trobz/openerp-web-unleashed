@@ -11,7 +11,7 @@ sudo pip install unittest2 QUnitSuite
 
 
 # get openerp nightly build
-#wget http://nightly.openerp.com/7.0/nightly/src/openerp-7.0-latest.tar.gz
+wget http://nightly.openerp.com/7.0/nightly/src/openerp-7.0-latest.tar.gz
 
 # extract and setup openerp
 mkdir -p src
