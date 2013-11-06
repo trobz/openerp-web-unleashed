@@ -1,0 +1,36 @@
+# 
+# Test OpenERP web module with Travis and Github
+# 
+ 
+# Parameters for web module tests
+
+
+REPO_NAME="openerp-web-unleashed"
+MODULE_NAME="web_unleashed"
+
+# Script...
+
+cd ..
+
+
+DIR=$( cd "$( dirname "$0" )" && pwd )
+ADDONS="$DIR/openerp/openerp/addons,$DIR/$REPO_NAME"
+
+# launch openerp server
+./openerp/openerp-server --addons $ADDONS > /dev/null &
+server_pid=$!
+
+echo "openerp server started"
+
+# wait for server init
+echo "sleep 5s"
+sleep 5
+
+echo "run web tests"
+./cmd/oe run-tests -d ignored --addons $ADDONS -m $MODULE_NAME
+exit_code=$?
+
+echo "kill openerp server with pid ${server_pid}"
+sudo kill -9 $server_pid
+
+exit $exit_code
