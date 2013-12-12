@@ -343,12 +343,28 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
         stateConfig: function(){
         },
         
-        
         /*
          * Executed by OpenERP before view loading, usual place to instanciate 
          * your views and models.
          */
         start: function(){
+        },
+
+        /*
+         * Pre configure the view before state processing
+         *
+         *  @param {Object} data
+         *    View configuration object:
+         *    - arch: Object
+         *    - field_parent: Boolean
+         *    - fields: Object
+         *    - model: String
+         *    - name: String
+         *    - toolbar: Object
+         *    - type: String
+         *    - view_id: Integer
+         */
+        configure: function(data){
         },
         
         /*

@@ -10,7 +10,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
      * @classdesc   Common operations simplifying the use of OpenERP Views
      * @mixes       instance.web.View
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var UnleashedView = View.extend({
         
@@ -37,6 +37,12 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
             this.context = dataset.get_context().eval();
             this.on('view_loaded', this, this.ready);
         },
+
+        /*
+         * Pre configure the view before state processing
+         * "arch" parameters passed in argument
+         */
+        configure: function(data){},
         
         /*
          * Implement this method to do some actions when the view is ready
@@ -52,6 +58,9 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * Executed when the Unleashed View has been injected in the DOM
          */
         view_loading: function(data){
+
+            this.configure(data);
+
             this.panel = new this.Panel({
                 el: $('.oe_application'),
                 
