@@ -69,7 +69,9 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                     buttons: this.options.$buttons,
                     sidebar: this.options.$sidebar,
                     body: this.$el
-                }
+                },
+
+                data: data
             }); 
             
             var def = $.Deferred();
