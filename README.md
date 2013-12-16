@@ -442,8 +442,6 @@ useful for all modules that uses unleashed.
 - twitter bootstrap, scoped with 'bootstrap-scoped' css class
 - extra base model
   - period model: used to manage a period of time as a Backbone Model
-- extra openerp widgets
-  - serialized: widget for `fields.serialized` field type
 
 
 # Libraries

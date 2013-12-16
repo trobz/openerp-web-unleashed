@@ -13,8 +13,6 @@ Extra components for unleashed module:
 - MomentJs lib: http://momentjs.com/
 - Font Awesome lib: http://fortawesome.github.io/Font-Awesome/
 - Additional base models: period
-- Additional widgets for OpenERP: serialized
-
     """,
     
     'author': 'Trobz',
@@ -36,10 +34,6 @@ Extra components for unleashed module:
         #font awesome
         'static/lib/font-awesome/css/font-awesome.min.css', 
         
-        # serialized widget
-        'static/lib/jsoneditor/jsoneditor.css',
-        'static/src/css/field_serialized.css',
-    
         # global css classes
         'static/src/css/global.css',
     ],
@@ -63,12 +57,6 @@ Extra components for unleashed module:
 
         # models
         'static/src/js/models/period.js',
-        
-        # serialized widget
-        'static/lib/jsoneditor/jsoneditor.js',
-        'static/lib/jsoneditor/lib/jsonlint/jsonlint.js',
-        'static/src/js/widgets/field_serialized.js',
-
     ],
     
     'test': [
