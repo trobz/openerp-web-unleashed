@@ -33,7 +33,8 @@ Extra components for unleashed module:
         
         #font awesome
         'static/lib/font-awesome/css/font-awesome.min.css', 
-        
+        'static/src/css/custom-font.css',
+
         # global css classes
         'static/src/css/global.css',
     ],
