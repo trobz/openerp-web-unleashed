@@ -59,6 +59,8 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          */
         view_loading: function(data){
 
+            this.extractArch(data.arch);
+
             this.configure(data);
 
             this.panel = new this.Panel({
@@ -84,10 +86,77 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                 }, this));
                 
             }, this));
-            
+
             return def.promise();
         },
-        
+
+        /*
+         * Extract configuration parameters from "arch" xml structure
+         *
+         *   <field name="arch" type="xml">
+         *       <foo attr1="bar" attr2="foobar">
+         *           <bar attr="foo1" />
+         *           <bar attr="foo2" />
+         *           <foobar>
+         *               <bar attr3="foo3" />
+         *           </foobar>
+         *       </foo>
+         *   </field>
+         *
+         *   this.arch.foo.attr1 = "bar"
+         *   this.arch.foo[1].attr = "foo1"
+         *   this.atch.foo.foobar.bar.attr3 = "foo3"
+         *
+         */
+        extractArch: function(arch){
+            var AttributeHolder = base.utils('AttributeHolder');
+
+            var convert = function(obj){
+                obj = obj || {};
+                var name, val;
+                for(name in obj){
+                    val = obj[name];
+                    if(/true/i.test(val)){
+                        obj[name] = true;
+                    }
+                    else if(/false/i.test(val)){
+                        obj[name] = false;
+                    }
+                    else if(/^[0-9]+$/.test(val)){
+                        obj[name] = parseInt(val);
+                    }
+                }
+                return obj;
+            };
+
+            var process = function(data, ret){
+                ret = ret || {};
+
+                if(data && data.tag){
+                    var i=0;
+                    if(data.tag in ret && !_.isArray(ret[data.tag])){
+                        ret[data.tag] = [ret[data.tag]]
+                    }
+
+                    if(data.tag in ret){
+                        ret[data.tag].push(convert(data.attrs));
+                    }
+                    else {
+                        ret[data.tag] = convert(data.attrs);
+                    }
+
+                    for(; i < data.children.length ; i++) {
+                        process(data.children[i], ret[data.tag]);
+                    }
+                }
+
+                return ret;
+            };
+
+            var data = process(arch);
+            this.arch = new AttributeHolder(data);
+        },
+
         /*
          * Initialize the view state with current URL parameters and process it
          */
