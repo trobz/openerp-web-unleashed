@@ -47,6 +47,7 @@ Core Web Module:
         'static/src/js/core/unleashed.js',
         
         # utils
+        'static/src/js/utils/holder.js',
         'static/src/js/utils/connector.js',
         
         # controller

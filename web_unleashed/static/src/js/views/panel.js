@@ -1,4 +1,4 @@
-openerp.unleashed.module('web_unleashed',function(base, _, Backbone, base){
+openerp.unleashed.module('web_unleashed',function(base, _, Backbone){
 
     var Region = base.views('Region');
 
