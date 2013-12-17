@@ -154,7 +154,8 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
             };
 
             var data = process(arch);
-            this.arch = new AttributeHolder(data);
+            this.module.arch = this.arch = new AttributeHolder(data);
+
         },
 
         /*
