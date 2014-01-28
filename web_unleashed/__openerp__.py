@@ -20,7 +20,7 @@ Core Web Module:
     ],
     
     'qweb' : [
-        'static/src/templates/*.xml',
+        'static/src/xml/*.xml',
     ],
     
     'css' : [
