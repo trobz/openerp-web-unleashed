@@ -49,7 +49,7 @@
                 throw new Error('"' + namespace + '.' + name + '" can not be found in module "' + this.moduleName + '"');
             }
             return obj;
-        },
+        }
     };
     
     
@@ -332,9 +332,23 @@
          * @see http://doc.openerp.com/trunk/developers/web/rpc/
          * @see http://backbonejs.org/#Sync
          */
-        var connection = instance.web.Model;
-        var Connector = base.utils('Connector');
+        var Model = instance.web.Model,
+            Connector = base.utils('Connector');
+
         sync = function(method, model, options){
+            if(!model.model_name){
+                throw new Error('The "model_name" is not defined on Backbone Model.');
+            }
+
+            // compound query context with user context
+            options = options || {};
+
+            // instantiate a JSON-RPC model object to communicate with OpenERP by JSON-RPC
+            var connection = new Model(
+                model.model_name,
+                options.context
+            );
+
             return Connector[method].apply(Connector, [model, options, connection]);
         };
         

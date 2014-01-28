@@ -1,6 +1,5 @@
 openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
 
-  
     var query = 0;
     
     var fill = function(number, size) {
@@ -28,10 +27,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @module      web_unleashed
      * @name        Connector
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */ 
     var Connector = {
-    
+
+
+
         /*
          * Direct call to the Python method accessible by an API call 
          * 
@@ -41,22 +42,20 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @returns {jQuery.Deferred.promise}
          */
         call: function(model, options, connection){
+            options = options || {};
+
             var prefix = '[Connector] [ call ] [' + id() + ']' +  options.method, 
                 logger = log(prefix);
-            
-            if(!model.model_name){
-                throw new Error('the OpenERP "model_name" is not defined');
-            }
-            
+
             console.time(prefix);
             
-            var qdef = new connection(model.model_name).call(options.method, options.args);
+            var qdef = connection.call(options.method, options.args);
             qdef.done(function(result){
                 if(_.isArray(result)){
                     logger(result.length, 'result(s)', 'on', model.model_name);
                 }
                 else if(_.isNumber(result)){
-                    logger(result, 'count', 'on', model.model_name);
+                    logger(result, 'number', 'on', model.model_name);
                 }
                 else if(_.isObject(result)){
                     logger(result, 'object', 'on', model.model_name);
@@ -110,10 +109,6 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         search: function(model, options, connection){
             options = options || {};
             
-            if(!model.model_name){
-                throw new Error('the OpenERP "model_name" is not defined for this model');
-            }
-            
             if(options.type && options.type == 'count'){
                 delete options.limit;
                 delete options.offset;
@@ -122,7 +117,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 delete options.fields;
             }
             
-            var q = new connection(model.model_name).query(options.fields || undefined);
+            var q = connection.query(options.fields || undefined);
             
             var log_args = ['model:', model.model_name];
             
@@ -242,19 +237,21 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         
             console.time(prefix);
             logger('execute on', 'model:',  model.model_name, 'data:', model.attributes);
-            var q = new connection(model.model_name);
-            return q.call('create', [ model.attributes ], {context: q.context(options.context) })
-                    .done(function(id, status){
-                        if(status == "success"){
-                            model.set({id: id});
-                        }
-                        else {
-                            throw new Error('failed to save model ' + model.model_name);    
-                        }
-                        logger('done on', 'model:', model.model_name, 'id:', id);
-                    })
-                    .then(options.success, options.error)
-                    .always(function(){ console.timeEnd(prefix); });
+
+            return connection.call('create', [ 
+                model.attributes 
+            ])
+            .done(function(id, status){
+                if(status == "success"){
+                    model.set({id: id});
+                }
+                else {
+                    throw new Error('failed to create model %s', model.model_name);
+                }
+                logger('done on', 'model:', model.model_name, 'id:', id);
+            })
+            .then(options.success, options.error)
+            .always(function(){ console.timeEnd(prefix); });
         },
         
         /*
@@ -269,18 +266,22 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             var prefix = '[Connector][update][' + id() + ']', 
                 logger = log(prefix);
                 
+            var model_id = model.get('id');
+
             console.time(prefix);
-            logger('execute on', 'model:', model.model_name, 'id:', model.get('id'));
-            var q = new connection(model.model_name);
-            return q.call('write', [ [ model.get('id') ], model.attributes ], {context: q.context(options.context) })
-                    .done(function(id, status){
-                        if(status != "success"){
-                            throw new Error('failed to save model ' + model.model_name);    
-                        }
-                        logger('done on', 'model:', model.model_name, 'id:', id);
-                    })
-                    .then(options.success, options.error)
-                    .always(function(){ console.timeEnd(prefix); });
+            logger('execute on', 'model:', model.model_name, 'id:', model_id);
+
+            return connection.call('write', [
+                [ model_id ],  model.attributes
+            ])
+            .done(function(id, status){
+                if(status != "success"){
+                    throw new Error('failed to update model %s with id %s', model.model_name, model_id);
+                }
+                logger('done on', 'model:', model.model_name, 'id:', id);
+            })
+            .then(options.success, options.error)
+            .always(function(){ console.timeEnd(prefix); });
         },
         
         /*
@@ -296,16 +297,22 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 logger = log(prefix);
             
             var model_id = model.get('id');
+
             console.time(prefix);
             logger('execute on', 'model:', model.model_name, 'id:', model_id);
-            var q = new connection(model.model_name);
-            return q.call('unlink', [ model.get('id') ], {context: q.context(options.context) })
-                    .done(function(id, status){
-                        logger('done on', 'model:', model.model_name, 'id:', model_id);
-                    })
-                    .then(options.success, options.error)
-                    .always(function(){ console.timeEnd(prefix); });
-        },
+
+            return connection.call('unlink', [
+                model.get('id')
+            ])
+            .done(function(id, status){
+                if(status != "success"){
+                    throw new Error('failed to delete model %s with id %s', model.model_name, model_id);
+                }
+                logger('done on', 'model:', model.model_name, 'id:', model_id);
+            })
+            .then(options.success, options.error)
+            .always(function(){ console.timeEnd(prefix); });
+        }
     };
     
     base.utils('Connector', Connector);    

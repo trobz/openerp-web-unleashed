@@ -2,8 +2,28 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         
     openerp.testing.section('Group Collection', function (test) {
 
-        var Group = base.collections('Group'); 
-            
+        var Connector = base.utils('Connector'),
+            Model = null;
+
+        var sync = function(method, model, options){
+            if(!model.model_name){
+                throw base.error('The "model_name" is not defined on Backbone Model.');
+            }
+
+            // compound query context with user context
+            options = options || {};
+
+            // instantiate a JSON-RPC model object to communicate with OpenERP by JSON-RPC
+            var connection = new Model(
+                model.model_name,
+                options.context
+            );
+
+            return Connector[method].apply(Connector, [model, options, connection]);
+        };
+
+
+
         test('fetch', {templates: false, rpc: 'mock', asserts: 50 }, function (instance, $fixture, mock) {
             
             var nb_records = 105, nb_groups = 10;
@@ -19,13 +39,19 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
     
                 return { records: result };
             });
-            
+
+            Model = instance.web.Model;
+
             // group by id
         
             var def1 = $.Deferred();
             
+            var Group = base.collections('Group');
+
             var List1 = Group.extend({
                 model_name: 'unit.test',
+                sync: sync,
+
                 group_by: 'item_id'
             });
                     
@@ -122,6 +148,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         
             var List2 = Group.extend({
                 model_name: 'unit.test',
+                sync: sync,
+
                 group_by: 'str'
             });
                     
@@ -180,6 +208,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         
             var List3 = Group.extend({
                 model_name: 'unit.test',
+                sync: sync,
+
                 group_by: function(model){
                     return model.str;
                 }
