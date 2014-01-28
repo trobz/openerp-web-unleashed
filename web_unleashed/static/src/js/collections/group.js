@@ -10,7 +10,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
      * @classdesc   keep the collection behavior but add a notion of grouped results in data namespace 
      * @mixes       BaseCollection, PagerController
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var Group = BaseCollection.extend({
         
@@ -186,7 +186,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
         
         addToGroup: function(model, index){
             var groups = this.data.groups;     
-            groups[index] = groups[index] || new Group([], { group_by: this.group_by, grouped: true, parent: this, index: index });
+            groups[index] = groups[index] || new Group([], {
+                group_by: this.group_by,
+                grouped: true,
+                parent: this,
+                index: index
+            });
             groups[index].add(model, {group: false});
     
         	this.max = groups[index].length > this.max 
@@ -228,5 +233,4 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
     });
 
     base.collections('Group', Group);
-
 });

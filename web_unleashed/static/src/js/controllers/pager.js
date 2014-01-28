@@ -7,10 +7,10 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @class
      * @module      web_unleashed
      * @name        PagerController
-     * @classdesc   Abtracted Pager Controller, usable by any object able to implement the count and update methods
+     * @classdesc   Abstracted Pager Controller, usable by any object able to implement the count and update methods
      * @mixes       Marionette.Controller
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var PagerController = Controller.extend({
         
@@ -254,7 +254,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         limit: function(){
             // ensure limit is an integer, if possible
             this.pager.limit = $.isNumeric(this.pager.limit) ? parseInt(this.pager.limit) : this.pager.limit;
-            return  !$.isNumeric(this.pager.limit) ? this.pager.total : (this.pager.limit === 0 ? 100 : this.pager.limit);
+            return  !$.isNumeric(this.pager.limit)
+                    ? this.pager.total
+                    : (this.pager.limit === 0 ? 100 : this.pager.limit);
         },
         
         /*
