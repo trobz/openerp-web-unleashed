@@ -9,7 +9,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   Base Model, with OpenERP JSON-RPC API support
      * @mixes       Backbone.Model
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */	
     var BaseModel = Backbone.Model.extend({
     
@@ -20,7 +20,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         sync: openerp.unleashed.sync,
         
         /*
-         * @property {String} model_name OpenERP model name, used by the sync function to connect data with the JSON-RPC API
+         * @property {String} model_name OpenERP model name, used by the sync function to connect data
+         *                               with the JSON-RPC API
          */
         model_name: null,
         
@@ -30,7 +31,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * Fetch data, by using the JSON-RPC API
          * Note: the model id has to be set to make it works
          *  
-         * @param {Object} query JSON-RPC API query options (@see https://doc.openerp.com/trunk/web/rpc/#openerp.web.Query.context): 
+         * @param {Object} query JSON-RPC API query options
+         *                       (@see https://doc.openerp.com/trunk/web/rpc/#openerp.web.Query.context):
          * {
          *     filter: [], 
          *     order: [] || "", 

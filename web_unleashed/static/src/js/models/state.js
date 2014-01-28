@@ -9,7 +9,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   manage the state of a view, useful to keep the state persistent by using URL parameters
      * @mixes       Backbone.Model
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var State = Backbone.Model.extend({
         
@@ -20,7 +20,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             action: null,
             menu_id: null,
             model: null,
-            view_type: null,
+            view_type: null
         },
         
         /*

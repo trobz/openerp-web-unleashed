@@ -14,7 +14,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   Display a Pager, similar than the OpenERP default pager on list
      * @mixes       BaseView
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */    
     var PagerView = ItemView.extend({
         

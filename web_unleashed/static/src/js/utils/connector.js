@@ -246,7 +246,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                     model.set({id: id});
                 }
                 else {
-                    throw new Error('failed to create model %s', model.model_name);
+                    throw base.error('failed to create model %s', model.model_name);
                 }
                 logger('done on', 'model:', model.model_name, 'id:', id);
             })
@@ -276,7 +276,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             ])
             .done(function(id, status){
                 if(status != "success"){
-                    throw new Error('failed to update model %s with id %s', model.model_name, model_id);
+                    throw base.error('failed to update model %s with id %s', model.model_name, model_id);
                 }
                 logger('done on', 'model:', model.model_name, 'id:', id);
             })
@@ -306,7 +306,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             ])
             .done(function(id, status){
                 if(status != "success"){
-                    throw new Error('failed to delete model %s with id %s', model.model_name, model_id);
+                    throw base.error('failed to delete model %s with id %s', model.model_name, model_id);
                 }
                 logger('done on', 'model:', model.model_name, 'id:', model_id);
             })
