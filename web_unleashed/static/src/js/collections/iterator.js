@@ -11,7 +11,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   Collection with selectable model 
      * @mixes       BaseCollection
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var Iterators = BaseCollection.extend({
 

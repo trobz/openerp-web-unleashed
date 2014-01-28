@@ -12,7 +12,7 @@ openerp.unleashed.module('web_unleashed',function(base, _, Backbone){
      * @classdesc   give Marionette.Layout access to all OpenERP view elements
      * @mixes       Marionette.Layout
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var PanelLayout = Layout.extend({
         

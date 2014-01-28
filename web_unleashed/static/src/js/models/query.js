@@ -10,7 +10,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   OpenERP Group Query Model, used to populate group_by collection  
      * @mixes       Backbone.Model
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */ 
     var GroupQuery = Model.extend({
         
