@@ -10,7 +10,7 @@ openerp.unleashed.module('web_unleashed',function(base, _, Backbone, base){
      * @classdesc   Marionette Region build with existing jQuery element
      * @mixes       Marionette.Region
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var OpenRegion = Region.extend({
         

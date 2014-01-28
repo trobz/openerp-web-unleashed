@@ -10,7 +10,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   Depreciate: use Marionette Views instead. Basic View, with auto unbinding at destruction
      * @mixes       Backbone.View
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */ 
     var BaseView = Backbone.View.extend({
         

@@ -34,7 +34,6 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          */
         init: function(parent, dataset, view_id, options) {
             this._super(parent, dataset, view_id, options);
-            this.context = dataset.get_context().eval();
             this.on('view_loaded', this, this.ready);
         },
 
@@ -186,8 +185,8 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * Remove view listeners
          */
         unbindView: function(){
-        	this.module.off(null, null, this);
-        	this.state.off(null, null, this);
+        	if(this.module) this.module.off(null, null, this);
+        	if(this.state)  this.state.off(null, null, this);
         },
         
         /*

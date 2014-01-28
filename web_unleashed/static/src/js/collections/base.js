@@ -12,7 +12,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   Base Collection, with OpenERP JSON-RPC API support
      * @mixes       Backbone.Collection
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var BaseCollection = Collection.extend({
         
@@ -23,7 +23,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         sync: openerp.unleashed.sync,
         
         /*
-         * @property {String} model_name OpenERP model name, used by the sync function to connect data with the JSON-RPC API
+         * @property {String} model_name OpenERP model name, used by the sync function to connect data
+         *                               with the JSON-RPC API
          */
         model_name: null,
         
@@ -33,7 +34,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         model: BaseModel,
         
         /*
-         * @property {Object} query persistent query merged at search call, use persistent: true in a query parameter to keep it alive 
+         * @property {Object} query persistent query merged at search call, use persistent: true in a query
+         *                          parameter to keep it alive
          */
         query: {},
         
@@ -151,7 +153,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * 
          * @param {Backbone.Model|Object} attrs  model attributes or a Backbone.Model
          * @param {Object} options               options passed at model instanciation
-         * @returns {Backbone.Model|Boolean}     the model passed in parameter or created. False if the model is not valid. 
+         * @returns {Backbone.Model|Boolean}     the model passed in parameter or created. False
+         *                                       if the model is not valid.
          */     
         _prepareModel: function(attrs, options) {
             if(typeof this.model.prototype.model_name != 'string'){

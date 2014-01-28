@@ -14,7 +14,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   Paginated collection, use JSON-RPC API to navigate between pages 
      * @mixes       BaseCollection, PagerController
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */
    
     /*

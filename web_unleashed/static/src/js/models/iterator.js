@@ -10,7 +10,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @classdesc   Iterator Model, with selection support
      * @mixes       BaseModel
      * 
-     * @author Michel Meyer <michel[at]zazabe.com>
+     * @author Michel Meyer <michel[at]zazabe.fr>
      */ 
     var Iterator = BaseModel.extend({
         
