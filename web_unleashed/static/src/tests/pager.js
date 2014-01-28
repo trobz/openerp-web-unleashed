@@ -4,20 +4,37 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
         
     openerp.testing.section('Pager Collection', function (test) {
         
-        var Connector = base.utils('Connector');
-        var connection = null;
+        var Connector = base.utils('Connector'),
+            Model = null;
+
         var sync = function(method, model, options){
+            if(!model.model_name){
+                throw base.error('The "model_name" is not defined on Backbone Model.');
+            }
+
+            // compound query context with user context
+            options = options || {};
+
+            // instantiate a JSON-RPC model object to communicate with OpenERP by JSON-RPC
+            var connection = new Model(
+                model.model_name,
+                options.context
+            );
+
             return Connector[method].apply(Connector, [model, options, connection]);
         };
+
+
+
         var List = Pager.extend({
             model_name: 'unit.test',
-            sync: sync,
+            sync: sync
         });
     
             
         test('fetch', {templates: false, rpc: 'mock', asserts: 79 }, function (instance, $fixture, mock) {
          
-            connection = instance.web.Model;
+            Model = instance.web.Model;
         
             var nb_records = 123;
             

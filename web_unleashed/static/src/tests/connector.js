@@ -2,9 +2,23 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         
     openerp.testing.section('JSON-RPC Backbone Sync Connector', function (test) {
 
-        var Connector = base.utils('Connector');
-        var connection = null;
+        var Connector = base.utils('Connector'),
+            Model = null;
+
         var sync = function(method, model, options){
+            if(!model.model_name){
+                throw base.error('The "model_name" is not defined on Backbone Model.');
+            }
+
+            // compound query context with user context
+            options = options || {};
+
+            // instantiate a JSON-RPC model object to communicate with OpenERP by JSON-RPC
+            var connection = new Model(
+                model.model_name,
+                options.context
+            );
+
             return Connector[method].apply(Connector, [model, options, connection]);
         };
         
@@ -23,11 +37,11 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 
             });
             
-            connection = instance.web.Model;
+            Model = instance.web.Model;
             
             var List = Backbone.Collection.extend({
                 sync: sync,
-                model_name: 'unit.test',
+                model_name: 'unit.test'
             });
             
             var list = new List();            
@@ -66,11 +80,11 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             });
             
     
-            connection = instance.web.Model;
+            Model = instance.web.Model;
             
             var List = Backbone.Collection.extend({
                 sync: sync,
-                model_name: 'unit.test',
+                model_name: 'unit.test'
             });
             
             var list = new List();            
@@ -148,11 +162,11 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 return { records: result };
             });
     
-            connection = instance.web.Model;
+            Model = instance.web.Model;
                 
             var List = Backbone.Collection.extend({
                 sync: sync,
-                model_name: 'unit.test',
+                model_name: 'unit.test'
             });
             
             var def1 = $.Deferred();
