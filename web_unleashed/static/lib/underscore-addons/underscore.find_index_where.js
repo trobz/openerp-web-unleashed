@@ -2,20 +2,23 @@
     var _ = Underscore;
     var findIndexWhere = function(obj, find) {
 
-        var index = null, name;
-        _.each(obj, function(item, i) {
-            var found = true;
+        var name, index, item;
+
+        for(index in obj){
+            item = obj[index];
+
             for(name in find){
-                if(item[name] !== find[name]){
-                    found = false;
+                if(
+                    (find[name] instanceof RegExp && find[name].test(item[name]))
+                    ||
+                    (item[name] === find[name])
+                ){
+                    return index;
                 }
             }
-            if(found){
-                index = i;
-            }
-        });
+        }
 
-        return obj;
+        return null;
     };
 
     Underscore.mixin({

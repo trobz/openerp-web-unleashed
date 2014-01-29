@@ -47,7 +47,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             
             this.data = options.collection ? options.collection : ( options.model ? options.model : null);
             if(!this.data){
-                throw new Error('The Pager view has to be initialized with a model or a collection.');
+                throw base.error('The Pager view has to be initialized with a model or a collection.');
             }
         },
         

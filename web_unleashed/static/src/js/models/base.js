@@ -46,11 +46,11 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         fetch: function(query){
             // check if the model can fetch via the JSON-RPC API
             if(!this.model_name){
-                throw new Error('The model can not be connected via the API without the model_name property');
+                throw base.error('The model can not be connected via the API without the model_name property');
             }
             // check if the model has an id to fetch with
             if(!this.has('id')){
-                throw new Error('The model ' + this.model_name + ' has no id, impossible to fetch data');
+                throw base.error('The model "%s" has no id, impossible to fetch data', this.model_name);
             }
             return _super.fetch.apply(this, [this.search(query)]);
         },

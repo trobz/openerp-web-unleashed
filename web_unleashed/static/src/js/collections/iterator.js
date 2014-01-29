@@ -53,7 +53,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         select: function(model){
             var index = this.indexOf(model);
             if(index < 0){
-                throw new Error('model can not be found in the collection');
+                throw base.error('model can not be found in the collection');
             }
             this.current_index = index;
             
@@ -75,12 +75,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         index: function(val){
             if(val != null){
                 if(!this.at(val)){
-                    throw new Error('no item at index ' +  val);
+                    throw base.error('no item at index %s',  val);
                 }
                 this.current_index = val;
             }
             if(this.current_index == null){
-               throw new Error('no item have been selected yet.');
+               throw base.error('no item have been selected yet.');
             }
             return this.current_index;
             

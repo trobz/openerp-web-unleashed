@@ -252,7 +252,8 @@
          */
         _t: function(){ return InstanceWebAccess.execute(this, '_t', arguments); },
         _lt: function(){ return InstanceWebAccess.execute(this, '_lt', arguments); },
-        render: function(){ return InstanceWebAccess.execute(this, 'qweb.render', arguments); }
+        render: function(){ return InstanceWebAccess.execute(this, 'qweb.render', arguments); },
+        add_template: function(){ return InstanceWebAccess.execute(this, 'qweb.add_template', arguments); }
         
     });   
     
@@ -387,13 +388,12 @@
                 throw base.error('The "model_name" is not defined on Backbone Model.');
             }
 
-            // compound query context with user context
             options = options || {};
 
             // instantiate a JSON-RPC model object to communicate with OpenERP by JSON-RPC
             var connection = new Model(
                 model.model_name,
-                options.context
+                options.context || {}
             );
 
             return Connector[method].apply(Connector, [model, options, connection]);

@@ -27,12 +27,14 @@ Extra components for unleashed module:
     ],
     
     'css' : [
-        #bootstrap css
+
+
+        # bootstrap css
         'static/lib/bootstrap-scoped/bootstrap-reset-openerp.css',
-        'static/lib/bootstrap-scoped/bootstrap-scoped.css',
-        
-        #font awesome
-        'static/lib/font-awesome/css/font-awesome.min.css', 
+        'static/lib/bootstrap-scoped/css/bootstrap.css',
+
+        # font awesome
+        'static/lib/font-awesome/css/font-awesome.min.css',
         'static/src/css/custom-font.css',
 
         # global css classes
@@ -40,10 +42,15 @@ Extra components for unleashed module:
     ],
        
     'js': [
-        
+        # modernizr libs
+        'static/lib/modernizr/modernizr.js',
+
         # boostrap libs
-        'static/lib/bootstrap-scoped/bootstrap.js',
-        
+        'static/lib/bootstrap-scoped/js/bootstrap.js',
+
+        # jquery form validator plugin 1.11.1 (OpenERP use version 1.8.1)
+        'static/lib/jquery-validate/jquery.validate.js',
+
         # momentjs
         'static/lib/moment/moment.js',
         
@@ -52,6 +59,7 @@ Extra components for unleashed module:
         
         # numeraljs
         'static/lib/numeral/numeral.js',
+        'static/lib/numeral/languages/vi.js',
 
         # jquery transit
         'static/lib/jquery-transit/jquery.transit.min.js',

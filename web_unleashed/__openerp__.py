@@ -42,7 +42,8 @@ Core Web Module:
         'static/lib/jquery-addons/jquery.form_reset.js',
         'static/lib/underscore-addons/underscore.deep_extend.js',
         'static/lib/underscore-addons/underscore.find_index_where.js',
-        
+        'static/lib/underscore-addons/underscore.parse.js',
+
         # manage object instanciation and sync support for backbone models
         'static/src/js/core/unleashed.js',
         
