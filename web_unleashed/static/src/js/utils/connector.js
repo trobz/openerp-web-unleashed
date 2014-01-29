@@ -1,5 +1,6 @@
 openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
 
+  
     var query = 0;
     
     var fill = function(number, size) {
@@ -65,7 +66,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 }
             });
           
-            return qdef.always(function(){ console.timeEnd('%c' + prefix, 'color: #900;'); });
+            return qdef.always(function(){ console.timeEnd(prefix); });
         },
         
         /*
@@ -233,22 +234,36 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          */
         create: function(model, options, connection){
             var prefix = '[Connector][create][' + id() + ']', 
-                logger = log(prefix);
-        
+                logger = log(prefix),
+                attrs = options.attrs || model.toJSON();
+
+            options = options || {};
+
+            var error = options.error || function(){};
+            options.error = function(response){
+                console.group(prefix + '[failed]');
+                console.error('message:   ', response.message);
+                console.error('fault:     ', response.data.fault_code);
+                console.error('model:     ', model);
+                console.error('attributes:', attrs);
+                console.error('options:   ', options);
+                console.groupEnd();
+                error.apply(this, arguments);
+            };
+
             console.time(prefix);
             logger('execute on', 'model:',  model.model_name, 'data:', model.attributes);
-
             return connection.call('create', [ 
-                model.attributes 
+                attrs 
             ])
             .done(function(id, status){
                 if(status == "success"){
                     model.set({id: id});
                 }
                 else {
-                    throw base.error('failed to create model %s', model.model_name);
+                    throw base.error('failed to save model ' + model.model_name);    
                 }
-                logger('done on', 'model:', model.model_name, 'id:', id);
+                logger('done on', 'model:', model.model_name, 'id:', id, 'attributes:', attrs);
             })
             .then(options.success, options.error)
             .always(function(){ console.timeEnd(prefix); });
@@ -264,21 +279,35 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          */
         update: function(model, options, connection){
             var prefix = '[Connector][update][' + id() + ']', 
-                logger = log(prefix);
-                
-            var model_id = model.get('id');
+                logger = log(prefix),
+                attrs = options.attrs || model.toJSON();
+
+            options = options || {};
+
+            var error = options.error || function(){};
+            options.error = function(response){
+                console.group(prefix + '[failed]');
+                console.error('message:   ', response.message);
+                console.error('fault:     ', response.data.fault_code);
+                console.error('model:     ', model);
+                console.error('attributes:', attrs);
+                console.error('options:   ', options);
+                console.groupEnd();
+                error.apply(this, arguments);
+            };
 
             console.time(prefix);
-            logger('execute on', 'model:', model.model_name, 'id:', model_id);
-
-            return connection.call('write', [
-                [ model_id ],  model.attributes
+            logger('execute on', 'model:', model.model_name, 'id:', model.get('id'));
+            
+            return connection.call('write', [ 
+                [ model.get('id') ], 
+                attrs 
             ])
             .done(function(id, status){
                 if(status != "success"){
-                    throw base.error('failed to update model %s with id %s', model.model_name, model_id);
+                    throw base.error('failed to save model ' + model.model_name);    
                 }
-                logger('done on', 'model:', model.model_name, 'id:', id);
+                logger('done on', 'model:', model.model_name, 'id:', id, 'attributes:', attrs);
             })
             .then(options.success, options.error)
             .always(function(){ console.timeEnd(prefix); });

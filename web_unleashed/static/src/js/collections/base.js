@@ -105,7 +105,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         fetch: function(query){
             // check if the collection can fetch via the JSON-RPC API
             if(!this.model_name){
-                throw new Error('The collection can not be connected via the API without the model_name property');
+                throw base.error('The collection can not be connected via the API without the model_name property');
             }
             // add the QueryGroup model
             if(query && query.group_by && query.group_by.length > 0){

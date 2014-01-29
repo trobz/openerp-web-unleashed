@@ -104,7 +104,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          *
          *   this.arch.foo.attr1 = "bar"
          *   this.arch.foo[1].attr = "foo1"
-         *   this.atch.foo.foobar.bar.attr3 = "foo3"
+         *   this.arch.foo.foobar.bar.attr3 = "foo3"
          *
          */
         extractArch: function(arch){
@@ -137,7 +137,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                         ret[data.tag] = [ret[data.tag]]
                     }
 
-                    if(data.tag in ret){
+                    if(ret && data.tag in ret){
                         ret[data.tag].push(convert(data.attrs));
                     }
                     else {
@@ -145,7 +145,12 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                     }
 
                     for(; i < data.children.length ; i++) {
-                        process(data.children[i], ret[data.tag]);
+                        if(_.isString(data.children[i])){
+                            ret[data.tag] = data.children[i];
+                        }
+                        else {
+                            process(data.children[i], ret[data.tag]);
+                        }
                     }
                 }
 
@@ -161,11 +166,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * Initialize the view state with current URL parameters and process it
          */
         stateInit: function(){
-            var data = $.bbq.getState();
-            _(data).each(function(val, name){
-                data[name] = $.isNumeric(val) ? parseInt(val) : val;
-            });
-            this.state = new this.State(data);
+            this.state = new this.State(_.parse($.bbq.getState()));
             this.stateConfig();
             return this.state.process();    
         },
@@ -203,12 +204,14 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * @param {String} model_name   record model name
          * @param {Integer} id          record id 
          */
-        openRecord: function(model_name, id){
+        openRecord: function(model_name, id, views){
+            views = views || ['form'];
+            views = _(views).map(function(item){ return [false, item]});
             this.do_action({
                 type: 'ir.actions.act_window',
                 res_model: model_name,
                 res_id: id,
-                views: [[false, 'form']],
+                views: views,
                 target: 'current',
                 context: this.context,
             });
@@ -219,11 +222,13 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * 
          * @param {String} model_name   record model name
          */
-        openList: function(model_name){
+        openList: function(model_name, views){
+            views = views || ['form'];
+            views = _(views).map(function(item){ return [false, item]});
             this.do_action({
                 type: 'ir.actions.act_window',
                 res_model: model_name,
-                views: [[false, 'form']],
+                views: views,
                 target: 'current',
                 context: this.context,
             });

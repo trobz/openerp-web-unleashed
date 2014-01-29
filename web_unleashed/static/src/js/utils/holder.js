@@ -20,7 +20,7 @@ openerp.unleashed.module('web_unleashed', function(base, _){
                 if(matches && matches.length > 2){
                     data = data[matches[1]][matches[2]];
                 }
-                else if(part in data){
+                else if(data && part in data){
                     data = data[part];
                 }
                 else {

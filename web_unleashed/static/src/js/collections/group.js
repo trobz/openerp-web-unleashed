@@ -27,7 +27,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
             }, options);
             
             if(!this.options.grouped && !this.group_by){
-                throw new Error('group_by property is required for Group Collection');
+                throw base.error('group_by property is required for Group Collection');
             }
             
             this.status = {
@@ -174,7 +174,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
                 }
                 else {
                     if(this.options.index != index){
-                        throw new Error('can not add a model in a group which has not the same index');
+                        throw base.error('can not add a model in a group which has not the same index');
                     }
                     this.options.parent.add(model, {group: false});
     
