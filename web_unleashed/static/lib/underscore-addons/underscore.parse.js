@@ -16,10 +16,21 @@
                 value = JSON.parse(value);
             }
             catch(e){
-                value = yes.test(value) ? true : value;
-                value = no.test(value) ? false : value;
-                value = number.test(value) ? parseInt(value) : value;
-                value = float.test(value) ? parseFloat(value) : value;
+                try {
+                    // try to handle json defined as a JS object with simple quote.
+                    // could be managed with an eval, but seems more dirty...
+                    value = JSON.parse(
+                        value.replace(/"/g, '\\"')
+                             .replace(/([^\\])'/g, '$1"')
+                             .replace(/[\\]'/g, "'")
+                    );    
+                }
+                catch(e){
+                    value = yes.test(value) ? true : value;
+                    value = no.test(value) ? false : value;
+                    value = number.test(value) ? parseInt(value) : value;
+                    value = float.test(value) ? parseFloat(value) : value;
+                }
             }
 
             if(_.isFunction(func)){
