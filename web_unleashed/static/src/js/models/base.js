@@ -49,7 +49,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 throw base.error('The model can not be connected via the API without the model_name property');
             }
             // check if the model has an id to fetch with
-            if(!this.has('id')){
+            if(!this.has('id') && !query.hasOwnProperty('filter')){
                 throw base.error('The model "%s" has no id, impossible to fetch data', this.model_name);
             }
             return _super.fetch.apply(this, [this.search(query)]);
