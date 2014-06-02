@@ -1,0 +1,8 @@
+# Python compiled files
+*.py[cod]
+
+# tmp files
+.~*
+
+# Logs
+*.log
