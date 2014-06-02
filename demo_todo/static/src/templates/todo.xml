@@ -1,0 +1,99 @@
+<template>
+
+<!-- Main Web Module template, the Todos composite view is injected into .todo-list region -->
+<t t-name="DemoTodo">
+    <div id="todo" class="bootstrap_scope">
+    </div>
+</t>
+
+
+
+
+<!-- Todos composite view template, Todo items are injected into .todos, the edit form is included has an external template (DemoTodo.edit) -->
+<t t-name="DemoTodo.list">
+    <ul class="list-group todos"></ul>
+    <a data-toggle="modal" href="#todoModal" class="btn btn-primary add-todo">
+        <span class="icon-plus-sign icon-large"></span>
+    </a>
+    <t t-call="DemoTodo.edit"></t>
+</t>
+
+<!-- Todos empty template -->
+<t t-name="DemoTodo.empty">
+    <li class="list-group-item">
+        <h3>Click here to add more todo !</h3>
+        <span class="icon-reply-all todo-empty-arrow"></span>
+    </li>
+</t>
+
+
+<!-- Todos item view template, display and add the delete Todo item button -->
+<t t-name="DemoTodo.item">
+    <li class="list-group-item">
+        <h3>
+            <t t-esc="name" />
+        </h3>
+        
+        <t t-if="description">
+            <p><t t-esc="description" /></p>
+        </t>
+        
+        <span t-att-class="'label priority label-' + priority.cls"><t t-esc="priority.label" /></span>
+        
+        <a href="#" class="btn btn-danger remove-todo">
+            <span class="icon-trash icon-large"></span>
+        </a>
+        
+    </li>
+</t>
+
+<!-- Todos item edit form template -->
+<t t-name="DemoTodo.edit">
+    <div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="todoModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Edit Todo</h4>
+          </div>
+          <div class="modal-body">
+          
+            <form class="form-horizontal todo-form" role="form">
+                
+                <input id="id" type="hidden" />
+             
+                <div class="modal-body">
+    
+                    <div class="form-group">
+                        <input id="name" name="name" minlength="2" type="text" placeholder="Name" class="form-control" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label" for="description">Description</label>
+                        <textarea id="description" class="form-control" rows="5" name="description" minlength="2"></textarea>
+                    </div>
+            
+                    <div class="form-group">
+                        <label class="control-label" for="priority">Priority</label>
+                        <select  class="form-control" id="priority" name="priority">
+                            <option value="3">low</option>
+                            <option value="2">medium</option>
+                            <option value="1">high</option>
+                        </select>
+                    </div>
+                    
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            
+            <a href="#" class="btn btn-primary save-todo">
+                <span class="icon-save icon-large"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+</t>
+
+</template>

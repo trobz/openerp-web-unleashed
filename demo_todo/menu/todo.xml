@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- access to the todo list view -->
+        <record id="action_demo_toto" model="ir.actions.act_window">
+            <field name="name">Todo List</field>
+            <field name="view_mode">todo</field>
+            <field name="view_type">tree</field>
+            <field name="res_model">demo.todo</field>
+        </record>
+        
+        <menuitem action="action_demo_toto" 
+            id="menu_demo_toto" 
+            sequence="100" />
+      
+        <record id="view_demo_todo" model="ir.ui.view">
+            <field name="name">demo.todo.todo</field>
+            <field name="model">demo.todo</field>
+            <field name="view_type">todo</field>
+            
+            <field name="arch" type="xml">
+                <todo version="7.0"></todo>    
+            </field>
+        </record>
+        
+    </data>
+</openerp>
