@@ -21,51 +21,14 @@ Extra components for unleashed module:
     'depends': [
         'web_unleashed'
     ],
-    
+
+    'data': [
+        # JS/CSS Assets files
+        'views/web_unleashed_extra.xml',
+    ],
+
     'qweb' : [
         'static/src/templates/*.xml',
-    ],
-    
-    'css' : [
-
-
-        # bootstrap css
-        'static/lib/bootstrap-scoped/bootstrap-reset-openerp.css',
-        'static/lib/bootstrap-scoped/css/bootstrap.css',
-
-        # font awesome
-        'static/lib/font-awesome/css/font-awesome.min.css',
-        'static/src/css/custom-font.css',
-
-        # global css classes
-        'static/src/css/global.css',
-    ],
-       
-    'js': [
-        # modernizr libs
-        'static/lib/modernizr/modernizr.js',
-
-        # boostrap libs
-        'static/lib/bootstrap-scoped/js/bootstrap.js',
-
-        # jquery form validator plugin 1.11.1 (OpenERP use version 1.8.1)
-        'static/lib/jquery-validate/jquery.validate.js',
-
-        # momentjs
-        'static/lib/moment/moment.js',
-        
-        # momentjs twix plugin
-        'static/lib/moment-twix/twix.js',
-        
-        # numeraljs
-        'static/lib/numeral/numeral.js',
-        'static/lib/numeral/languages/vi.js',
-
-        # jquery transit
-        'static/lib/jquery-transit/jquery.transit.min.js',
-
-        # models
-        'static/src/js/models/period.js',
     ],
     
     'test': [
