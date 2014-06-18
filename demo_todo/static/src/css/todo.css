@@ -1,0 +1,51 @@
+#todo {
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+#todo .remove-todo {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#todo .priority {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+#todo .list-group-item {
+    min-height: 100px;
+}
+
+#todo .panel {
+    overflow: auto;
+}
+
+
+#todo .add-todo {
+    float: left;
+}
+
+#todo .alert {
+    float: right;
+    margin: 0;
+}
+
+
+#todo .todo-empty-arrow:before {
+    -webkit-transform: rotate(237deg);
+    -moz-transform: rotate(237deg);
+    -ms-transform: rotate(237deg);
+    -o-transform: rotate(237deg);
+    transform: rotate(237deg);
+}
+
+#todo .todo-empty-arrow {
+    font-size: 70px;
+    color: #7FD126;
+    position: absolute;
+    left: -30px;
+    top: 55px;
+}
