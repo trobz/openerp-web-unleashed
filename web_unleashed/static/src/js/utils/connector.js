@@ -256,8 +256,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return connection.call('create', [ 
                 attrs 
             ])
-            .done(function(id, status){
-                if(status == "success"){
+            .done(function(id){
+                if(typeof id == 'number'){
                     model.set({id: id});
                 }
                 else {
@@ -337,8 +337,8 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return connection.call('unlink', [
                 model.get('id')
             ])
-            .done(function(id, status){
-                if(status != "success"){
+            .done(function(status){
+                if(!status){
                     throw base.error('failed to delete model %s with id %s', model.model_name, model_id);
                 }
                 logger('done on', 'model:', model.model_name, 'id:', model_id);

@@ -3,8 +3,8 @@
 -->
 <openerp>
     <data>
-        <template id="assets_backend" name="web_unleashed_extra assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
+        <template id="assets_backend" name="web_unleashed_extra assets" inherit_id="web_unleashed.assets_backend">
+            <xpath expr="//script[last()]" position="after">
                 
                 <link rel="stylesheet" href="/web_unleashed_extra/static/lib/bootstrap-scoped/bootstrap-reset-openerp.css"/>
                 <link rel="stylesheet" href="/web_unleashed_extra/static/lib/bootstrap-scoped/css/bootstrap.css"/>
