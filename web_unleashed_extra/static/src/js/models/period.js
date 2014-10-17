@@ -8,9 +8,9 @@ openerp.unleashed.module('web_unleashed_extra', function(base_extra, _, Backbone
      * @name        Period
      * @classdesc   Period of time, use momentjs
      * @mixes       Backbone.Model
-     * 
+     *
      * @author Michel Meyer <michel[at]zazabe.com>
-     */ 
+     */
     var Period = Backbone.Model.extend({
 
         set: function(key, val, options) {
@@ -73,7 +73,7 @@ openerp.unleashed.module('web_unleashed_extra', function(base_extra, _, Backbone
         /*
          * Get the duration between 'start' and 'end'
          * moment of a period)
-         * 
+         *
          * @param {String} type: unit used to calculate the duration
          * (miliseconds,seconds,minutes,hours,days,weeks,months,years)
          *      default: 'days'
@@ -86,10 +86,10 @@ openerp.unleashed.module('web_unleashed_extra', function(base_extra, _, Backbone
 
         /*
          * Get/Format the period start moment
-         * 
+         *
          * @param {String} format momentjs formatter, use "s" or "m" has format to get the default
          * format 'YYYY-MM-DD' or 'YYYY-MM-DD HH:mm:ss', no parameters to get the momentjs Object
-         * @return {String|moment} 
+         * @return {String|moment}
          */
         start: function(format){
             var val = this.get('start');
@@ -98,10 +98,10 @@ openerp.unleashed.module('web_unleashed_extra', function(base_extra, _, Backbone
 
         /*
          * Get/Format the period end moment
-         * 
+         *
          * @param {String} format momentjs formatter, use "s" or "m" has format to get the default
          * format 'YYYY-MM-DD' or 'YYYY-MM-DD HH:mm:ss', no parameters to get the momentjs Object
-         * @return {String|moment} 
+         * @return {String|moment}
          */
         end: function(format){
             var val = this.get('end');
@@ -128,23 +128,23 @@ openerp.unleashed.module('web_unleashed_extra', function(base_extra, _, Backbone
 
             return val.format(format)
         },
-        
+
         /*
          * Check if the period is valid (has a valid start and end date)
-         * 
+         *
          * @returns {Boolean}
          */
         isValid: function(){
-            return ( !!this.start() && this.start().isValid() ) && ( !!this.end() && this.end().isValid() );  
+            return ( !!this.start() && this.start().isValid() ) && ( !!this.end() && this.end().isValid() );
         },
-        
+
         /*
          * Destroy the period by properties reset
          */
         destroy: function(){
             this.options = null;
             this.attributes = null;
-        }    
+        }
     });
 
     base.models('Period', Period);
