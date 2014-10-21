@@ -27,7 +27,7 @@ Extra components for unleashed module:
         'views/web_unleashed_extra.xml',
     ],
 
-    'qweb' : [
+    'qweb': [
         'static/src/templates/*.xml',
     ],
     
