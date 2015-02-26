@@ -186,8 +186,8 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * Remove view listeners
          */
         unbindView: function(){
-        	if(this.module) this.module.off(null, null, this);
-        	if(this.state)  this.state.off(null, null, this);
+    if(this.module) this.module.off(null, null, this);
+    if(this.state)  this.state.off(null, null, this);
         },
 
         /*

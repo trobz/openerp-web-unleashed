@@ -1,6 +1,6 @@
 openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
     
-	var _super = Backbone.Model.prototype;
+    var _super = Backbone.Model.prototype;
     
     /*
      * @class
@@ -10,7 +10,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      * @mixes       Backbone.Model
      * 
      * @author Michel Meyer <michel[at]zazabe.fr>
-     */	
+     */    
     var BaseModel = Backbone.Model.extend({
     
         /*

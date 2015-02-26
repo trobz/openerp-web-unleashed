@@ -68,7 +68,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 strictEqual(list.group(10) instanceof Group, true, 'group 10 is an instance of Group');
                 strictEqual(list.group(10).where({name: 'item 20'}).length, 1, 'group 10 has a model named item 20');
             
-            	strictEqual(list.max, 11, 'collection group max size is 11');
+    strictEqual(list.max, 11, 'collection group max size is 11');
                 
             
                 list.get(1).set({name: 'override name 1'});
@@ -85,7 +85,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             
                 strictEqual(list.group(1).length, 12, 'group 1 has 12 models');
             
-            	strictEqual(list.max, 12, 'collection group max size is 12');
+    strictEqual(list.max, 12, 'collection group max size is 12');
                 
             
                 var model2 = new Backbone.Model({
@@ -101,10 +101,10 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 
                 strictEqual(list.group(1).length, 11, 'group 1 has 11 models');
             
-            	
-            	strictEqual(list.max, 11, 'collection group max size is 11');
+    
+    strictEqual(list.max, 11, 'collection group max size is 11');
                 
-            	
+    
                 list.remove(model2);
                 
                 strictEqual(list.hasGroup(11), false, 'group 11 does not exist anymore');
@@ -116,7 +116,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 
                 strictEqual(list.max, 12, 'collection group max size is 12');
                 
-            	
+    
                 
                 model1.set({name: 'override name 2'});
                 strictEqual(list.get(106).get('name'), 'override name 2', 'reference is kept with the added model on the list');
@@ -129,7 +129,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 
                 strictEqual(list.max, 11, 'collection group max size is 11');
                 
-            	
+    
                 var catched = false;
                 try {
                     list.group(1).push(model2);
@@ -164,9 +164,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 strictEqual(list.group('item 10') instanceof Group, true, 'group 10 is an instance of Group');
                 strictEqual(list.group('item 10').where({name: 'item 20'}).length, 1, 'group 10 has a model named item 20');
             
-            	strictEqual(list.max, 11, 'collection group max size is 11');
+    strictEqual(list.max, 11, 'collection group max size is 11');
                 
-            	
+    
             
                 var model1 = new Backbone.Model({
                     id: nb_records + 1,
@@ -178,9 +178,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             
                 strictEqual(list.group('item 1').length, 12, 'group "item 10" has 12 models');
             
-            	strictEqual(list.max, 12, 'collection group max size is 12');
+    strictEqual(list.max, 12, 'collection group max size is 12');
                 
-            	
+    
                 var model2 = new Backbone.Model({
                     id: nb_records + 2,
                     name: 'item ' + (nb_records + 2),
@@ -195,9 +195,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 
                 strictEqual(list.group('item 1').length, 11, 'group "item 1" has 11 models');
             
-            	strictEqual(list.max, 11, 'collection group max size is 11');
+    strictEqual(list.max, 11, 'collection group max size is 11');
                 
-            	
+    
                 def2.resolve();
             });
 
@@ -226,9 +226,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 strictEqual(list.group('item 10') instanceof Group, true, 'group 10 is an instance of Group');
                 strictEqual(list.group('item 10').where({name: 'item 20'}).length, 1, 'group 10 has a model named item 20');
             
-            	strictEqual(list.max, 11, 'collection group max size is 11');
+    strictEqual(list.max, 11, 'collection group max size is 11');
                 
-            	
+    
                 var model1 = new Backbone.Model({
                     id: nb_records + 1,
                     name: 'item ' + (nb_records + 1),
@@ -238,10 +238,10 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 list.push(model1);
             
                 strictEqual(list.group('item 1').length, 12, 'group "item 10" has 12 models');
-            	
-            	strictEqual(list.max, 12, 'collection group max size is 12');
+    
+    strictEqual(list.max, 12, 'collection group max size is 12');
                 
-            	
+    
                 var model2 = new Backbone.Model({
                     id: nb_records + 2,
                     name: 'item ' + (nb_records + 2),
@@ -256,16 +256,16 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 
                 strictEqual(list.group('item 1').length, 11, 'group "item 1" has 11 models');
             
-            	strictEqual(list.max, 11, 'collection group max size is 11');
+    strictEqual(list.max, 11, 'collection group max size is 11');
                 
-            	
+    
                 list.reset();
             
                 strictEqual(_.size(list.groups()), 0, 'reset: no more groups');
                 strictEqual(list.length, 0, 'reset: no more models');
                 strictEqual(list.max, 0, 'collection group max size is 0');
                 
-            	
+    
             
                 def3.resolve();
             });

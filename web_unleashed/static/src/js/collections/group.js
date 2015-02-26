@@ -145,7 +145,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
         
         
         eachGroup: function(callback, context){
-        	return _.each(this.groups(), callback, context);
+    return _.each(this.groups(), callback, context);
         },
         
         
@@ -170,7 +170,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
                 if(!this.isGroup()){
                     if(index){
                         this.addToGroup(model, index);
-        			}
+            }
                 }
                 else {
                     if(this.options.index != index){
@@ -179,7 +179,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
                     this.options.parent.add(model, {group: false});
     
                     this.options.parent.max = this.length > this.options.parent.max 
-                    						? this.length : this.options.parent.max;
+                        ? this.length : this.options.parent.max;
                 }
             }, this);
         },
@@ -194,33 +194,33 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
             });
             groups[index].add(model, {group: false});
     
-        	this.max = groups[index].length > this.max 
-        			 ? groups[index].length : this.max;
+    this.max = groups[index].length > this.max 
+             ? groups[index].length : this.max;
         },
         
         ungroupModels: function(models, lengths){
-          	if(!this.isGroup()){
-            	this.eachGroup(function(group){
+    if(!this.isGroup()){
+    this.eachGroup(function(group){
                     group.remove(models, {group: false});
-          	
+    
                     if(group.length <= 0){
                         this.removeGroup(group.options.index);
                     }
                 }, this);
- 				this.recalculateMax();
+                this.recalculateMax();
             }
             else if(lengths.before > lengths.after){
                 this.options.parent.remove(models, {group: false});
-            	this.options.parent.recalculateMax();
+    this.options.parent.recalculateMax();
             }   
         },
         
         recalculateMax: function(){
             var max = 0;
-        	this.eachGroup(function(group){
-        		max = group.length > max ? group.length : max;
+    this.eachGroup(function(group){
+        max = group.length > max ? group.length : max;
             });
-    		this.max = max;
+        this.max = max;
         },
         
         removeGroup: function(index){
