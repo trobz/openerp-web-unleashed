@@ -4844,7 +4844,7 @@
 // moment.js language configuration
 // language : korean (ko)
 //
-// authors 
+// authors
 //
 // - Kyungwook, Park : https://github.com/kyungw00k
 // - Jeeeyul Lee <jeeeyul@gmail.com>
@@ -6823,7 +6823,7 @@
         },
 
 
-// refer http://ta.wikipedia.org/s/1er1      
+// refer http://ta.wikipedia.org/s/1er1
 
         meridiem : function (hour, minute, isLower) {
             if (hour >= 6 && hour <= 10) {
