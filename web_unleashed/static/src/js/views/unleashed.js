@@ -2,33 +2,33 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
 
     var View = instance.web.View,
         _super = instance.web.View.prototype;
-    
+
     /*
      * @class
      * @module      web_unleashed
      * @name        UnleashedView
      * @classdesc   Common operations simplifying the use of OpenERP Views
      * @mixes       instance.web.View
-     * 
+     *
      * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var UnleashedView = View.extend({
-        
+
         /*
          * @property {Marionette.Module} mainly used as a event proxy, required to reset it
          */
         module: base,
-        
+
         /*
          * @property {Marionette.Panel} default panel initialized
          */
-        Panel: base.views('Panel'), 
-        
+        Panel: base.views('Panel'),
+
         /*
          * @property {Backbone.Model} default state manager model, change it to support custom state in your app
          */
         State: base.models('State'),
-        
+
         /*
          * Initialize the View, called by OpenERP ViewManager
          */
@@ -42,17 +42,17 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
          * "arch" parameters passed in argument
          */
         configure: function(data){},
-        
+
         /*
          * Implement this method to do some actions when the view is ready
          */
         ready: function(data){},
-        
+
         /*
          * Configure the view state
          */
         stateConfig: function(){},
-        
+
         /*
          * Executed when the Unleashed View has been injected in the DOM
          */
@@ -64,7 +64,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
 
             this.panel = new this.Panel({
                 el: $('.oe_application'),
-                
+
                 regions: {
                     pager: this.options.$pager,
                     buttons: this.options.$buttons,
@@ -73,17 +73,17 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                 },
 
                 data: data
-            }); 
-            
+            });
+
             var def = $.Deferred();
             $.when(this._super(data)).done(_.bind(function(){
-                // setup the view state    
+                // setup the view state
                 this.stateInit().done(_.bind(function(){
                     this.stateChanged();
                     this.bindView();
                     def.resolve();
                 }, this));
-                
+
             }, this));
 
             return def.promise();
@@ -168,11 +168,11 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
         stateInit: function(){
             this.state = new this.State(_.parse($.bbq.getState()));
             this.stateConfig();
-            return this.state.process();    
+            return this.state.process();
         },
-        
+
         /*
-         * Bind some default events, managing state changes and redirection 
+         * Bind some default events, managing state changes and redirection
          */
         bindView: function(){
             this.module.on('do:action', this.do_action, this);
@@ -181,28 +181,28 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
             this.module.on('state:change', this.stateChanged, this);
             this.state.on('change', this.stateChanged, this);
         },
-        
+
         /*
          * Remove view listeners
          */
         unbindView: function(){
-        	if(this.module) this.module.off(null, null, this);
-        	if(this.state)  this.state.off(null, null, this);
+            if(this.module) this.module.off(null, null, this);
+            if(this.state)  this.state.off(null, null, this);
         },
-        
+
         /*
          * Push state changes into the URL
          */
         stateChanged: function(){
             this.do_push_state(this.state.attributes);
         },
-        
-        
+
+
         /*
          * Redirect to a form view on a specific record
-         * 
+         *
          * @param {String} model_name   record model name
-         * @param {Integer} id          record id 
+         * @param {Integer} id          record id
          */
         openRecord: function(model_name, id, views){
             views = views || ['form'];
@@ -216,10 +216,10 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                 context: this.context,
             });
         },
-        
+
         /*
          * Redirect to a list view on a specific model
-         * 
+         *
          * @param {String} model_name   record model name
          */
         openList: function(model_name, views){
@@ -233,19 +233,20 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
                 context: this.context,
             });
         },
-        
+
         /*
          * Properly destroy the view by stopping regions in the panel layout
          */
         destroy: function() {
-        	this.unbindView();
-        
+            this.state.clear();
+            this.unbindView();
+
             if(this.panel && this.panel.regionManager){
                 this.panel.regionManager.closeRegions();
             }
             return this._super();
         }
     });
-    
+
     base.views('Unleashed', UnleashedView);
 });
