@@ -199,7 +199,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
         },
 
         ungroupModels: function(models, lengths){
-              if(!this.isGroup()){
+            if(!this.isGroup()){
                 this.eachGroup(function(group){
                     group.remove(models, {group: false});
 
@@ -207,7 +207,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
                         this.removeGroup(group.options.index);
                     }
                 }, this);
-                 this.recalculateMax();
+                this.recalculateMax();
             }
             else if(lengths.before > lengths.after){
                 this.options.parent.remove(models, {group: false});
