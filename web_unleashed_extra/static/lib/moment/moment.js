@@ -2656,8 +2656,8 @@
     }
 
     return moment.lang('bs', {
-		months : "januar_februar_mart_april_maj_juni_juli_avgust_septembar_oktobar_novembar_decembar".split("_"),
-		monthsShort : "jan._feb._mar._apr._maj._jun._jul._avg._sep._okt._nov._dec.".split("_"),
+        months : "januar_februar_mart_april_maj_juni_juli_avgust_septembar_oktobar_novembar_decembar".split("_"),
+        monthsShort : "jan._feb._mar._apr._maj._jun._jul._avg._sep._okt._nov._dec.".split("_"),
         weekdays : "nedjelja_ponedjeljak_utorak_srijeda_četvrtak_petak_subota".split("_"),
         weekdaysShort : "ned._pon._uto._sri._čet._pet._sub.".split("_"),
         weekdaysMin : "ne_po_ut_sr_če_pe_su".split("_"),
@@ -4844,7 +4844,7 @@
 // moment.js language configuration
 // language : korean (ko)
 //
-// authors 
+// authors
 //
 // - Kyungwook, Park : https://github.com/kyungw00k
 // - Jeeeyul Lee <jeeeyul@gmail.com>
@@ -6823,7 +6823,7 @@
         },
 
 
-// refer http://ta.wikipedia.org/s/1er1      
+// refer http://ta.wikipedia.org/s/1er1
 
         meridiem : function (hour, minute, isLower) {
             if (hour >= 6 && hour <= 10) {
