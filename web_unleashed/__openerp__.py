@@ -25,6 +25,7 @@ Core Web Module:
     
     'css' : [
         'static/src/css/pager.css',
+        'static/src/css/fix_form.css'
     ],
        
     'js': [

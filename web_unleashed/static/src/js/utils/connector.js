@@ -269,6 +269,10 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             .always(function(){ console.timeEnd(prefix); });
         },
         
+        patch: function(){
+        	return this.update.apply(this, arguments);
+        },
+        
         /*
          * Update a model by using the API
          * 
