@@ -65,12 +65,14 @@
      */
     var InstanceWebAccess = {
         execute: function(module, name, args){
-            if(!this.methods){
+            var web = module.web();
+
+            if(!web){
                 throw this.error('the OpenERP instance.web wrapper is not ready yet.');
             }   
             
             var path = /\./.test(name) ? name.split('.') : [name],
-                object = this.methods, level;
+                object = web, level;
             
             while(path.length){
                 level = path.shift();
@@ -85,7 +87,7 @@
             return object[level].apply(object, args);
         },
         
-        methods: null
+        openerp_web: null
     };
        
        
@@ -253,7 +255,17 @@
         _t: function(){ return InstanceWebAccess.execute(this, '_t', arguments); },
         _lt: function(){ return InstanceWebAccess.execute(this, '_lt', arguments); },
         render: function(){ return InstanceWebAccess.execute(this, 'qweb.render', arguments); },
-        add_template: function(){ return InstanceWebAccess.execute(this, 'qweb.add_template', arguments); }
+        add_template: function(){ return InstanceWebAccess.execute(this, 'qweb.add_template', arguments); },
+
+        /*
+         * access to openerp.web object, useful in unit test to mock it
+         */
+        web: function(openerp_web){
+            if(openerp_web){
+                InstanceWebAccess.openerp_web = openerp_web;
+            }
+            return InstanceWebAccess.openerp_web;
+        }
         
     });   
     
@@ -372,8 +384,9 @@
         /*
          * Setup access to OpenERP instance.web methods
          */
-        InstanceWebAccess.methods = instance.web;
-        
+        base.web(instance.web);
+
+
         /*
          * Setup the connection with JSON-RPC API for Backbone and define the specific sync method 
          * @see http://doc.openerp.com/trunk/developers/web/rpc/

@@ -134,7 +134,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             
             // define 2 mocks, for prod and dev mode...
             mock('/web/dataset/call_kw', group_mock);
-            mock('/web/dataset/call_kw/unit.test:read_group', group_mock);
+            mock('/web/dataset/call_kw/unit.test/read_group', group_mock);
             
         
             mock('/web/dataset/search_read', function (call) {

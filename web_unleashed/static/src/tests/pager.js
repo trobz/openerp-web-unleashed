@@ -1,4 +1,4 @@
-openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Backbone){
+openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
     
     var Pager = base.collections('Pager'); 
         
@@ -35,6 +35,7 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
         test('fetch', {templates: false, rpc: 'mock', asserts: 79 }, function (instance, $fixture, mock) {
          
             Model = instance.web.Model;
+            base.web(instance.web);
         
             var nb_records = 123;
             
@@ -67,8 +68,8 @@ openerp.unleashed.module('web_unleashed').ready(function(instance, base, _, Back
             
             // define 2 mocks, for prod and dev mode...
             mock('/web/dataset/call_kw', group_mock);
-            mock('/web/dataset/call_kw/unit.test:read_group', group_mock);
-            mock('/web/dataset/call_kw/unit.test:search_count', group_mock);
+            mock('/web/dataset/call_kw/unit.test/read_group', group_mock);
+            mock('/web/dataset/call_kw/unit.test/search_count', group_mock);
             
             var list = new List();
             

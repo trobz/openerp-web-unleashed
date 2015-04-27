@@ -21,7 +21,10 @@ feature in demo:
     ],
     
     'data': [
-        'menu/todo.xml'
+        'menu/todo.xml',
+
+         # JS/CSS Assets files
+        'views/demo_todo.xml',
     ],
     
     'qweb' : [

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+        <template id="assets_backend" name="demo_todo assets" inherit_id="web_unleashed_extra.assets_backend">
+            <xpath expr="//script[last()]" position="after">
+                
+                <link rel="stylesheet" href="/demo_todo/static/src/css/todo.css"/>
+                
+                <script type="text/javascript" src="/demo_todo/static/src/js/models/state.js"></script>
+                <script type="text/javascript" src="/demo_todo/static/src/js/models/todo.js"></script>
+                <script type="text/javascript" src="/demo_todo/static/src/js/collections/todos.js"></script>
+                <script type="text/javascript" src="/demo_todo/static/src/js/views/empty.js"></script>
+                <script type="text/javascript" src="/demo_todo/static/src/js/views/todo.js"></script>
+                <script type="text/javascript" src="/demo_todo/static/src/js/views/todos.js"></script>
+                <script type="text/javascript" src="/demo_todo/static/src/js/todo.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>
+
