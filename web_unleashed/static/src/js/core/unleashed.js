@@ -1,12 +1,18 @@
 (function(openerp){
 
-    //FIXME: use Backbone and Underscore in no conflict mode to get the latest version for Unleashed
-    //       should be removed when Backbone will be updated on OpenERP core...
-    var LatestBackbone = Backbone.noConflict(),
+<<<<<<< HEAD
+    /**
+     * TODO: 
+     * use Underscore in no conflict mode to get the latest version for Unleashed
+     * use Backbone provided by the web module
+     */
+    var LatestBackbone = Backbone,
         LatestUnderscore = _.noConflict(),
         Marionette = LatestBackbone.Marionette;
     
 
+=======
+>>>>>>> fix_xpath_issue
     /*
      * Local helpers to access to objects defined in a module
      * 
@@ -122,8 +128,8 @@
                 callback.apply(this, [
                     instance,
                     this,
-                    LatestUnderscore,
-                    LatestBackbone,
+                    _,
+                    Backbone,
                     this.app.module('web_unleashed')
                 ]);
             });
@@ -343,7 +349,7 @@
             var call = function(){
                 this.startWithParent = false;
                 if(callback){
-                    callback.apply(this, [this, LatestUnderscore, LatestBackbone, this.app.module('web_unleashed')]);
+                    callback.apply(this, [this, _, Backbone, this.app.module('web_unleashed')]);
                 }
             };
             return module.apply(app, [name, call]);

@@ -4,7 +4,7 @@
 <openerp>
     <data>
         <template id="assets_backend" name="web_unleashed_extra assets" inherit_id="web_unleashed.assets_backend">
-            <xpath expr="//script[last()]" position="after">
+            <xpath expr="." position="inside">
 
                 <link rel="stylesheet" href="/web_unleashed_extra/static/lib/font-awesome/css/font-awesome.min.css"/>
                 <link rel="stylesheet" href="/web_unleashed_extra/static/src/css/custom-font.css"/>

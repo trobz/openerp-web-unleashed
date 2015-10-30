@@ -3,7 +3,7 @@
 <openerp>
     <data>
         <template id="assets_backend" name="demo_todo assets" inherit_id="web_unleashed_extra.assets_backend">
-            <xpath expr="//script[last()]" position="after">
+            <xpath expr="." position="inside">
                 
                 <link rel="stylesheet" href="/demo_todo/static/src/css/todo.css"/>
                 
