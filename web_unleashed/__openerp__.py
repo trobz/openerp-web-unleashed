@@ -5,11 +5,16 @@
     'category': 'Hidden',
     
     'description': """
-Core Web Module:
+Core Unleashed Web Module:
 
 - improve code architecture and organization
 - add support of Backbone and Marionette frameworks
 - native support of JSON-RPC API for Backbone
+
++ libraries version:
+  - Backbone: v1.2.3
+  - Marionette: v2.4.3
+  - Underscorejs: v1.8.3
     """,
     
     'author': 'Trobz',

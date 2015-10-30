@@ -1,12 +1,13 @@
-openerp.unleashed.module('web_unleashed', function(base, _){
+odoo.unleashed.module("web_unleashed", function(base){
 
     var AttributeHolder = function(data){
         this.data = data;
     };
 
     AttributeHolder.prototype = {
-        /*
-         * get a value according to a path defined, return the default value or null if not accessible
+        /**
+         * get a value according to a path defined,
+         * return the default value or null if not accessible
          */
         get: function(path, def){
             var name, part, data = this.data,

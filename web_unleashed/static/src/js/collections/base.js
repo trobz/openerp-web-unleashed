@@ -1,67 +1,69 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
     var BaseModel = base.models('BaseModel');
-    
+
     var Collection = Backbone.Collection,
         _super = Collection.prototype;
-     
-    /*
+
+    /**
      * @class
      * @module      web_unleashed
      * @name        BaseCollection
      * @classdesc   Base Collection, with OpenERP JSON-RPC API support
      * @mixes       Backbone.Collection
-     * 
+     *
      * @author Michel Meyer <michel[at]zazabe.fr>
      */
     var BaseCollection = Collection.extend({
-        
-        /*
-         * @property {Function} sync use a JSON-RPC API sync method 
-         * @see http://backbonejs.org/#Sync
+
+        /**
+         * @property {Function} sync use a JSON-RPC API sync method
          */
-        sync: openerp.unleashed.sync,
-        
-        /*
-         * @property {String} model_name OpenERP model name, used by the sync function to connect data
-         *                               with the JSON-RPC API
+        sync: odoo.unleashed.sync,
+
+        /**
+         * @property {String} model_name:
+         *  OpenERP model name, used by the sync function
+         *  to connect data with the JSON-RPC API
          */
         model_name: null,
-        
-        /*
-         * @property {Backbone.Model} model default model used to create collection items
+
+        /**
+         * @property {Backbone.Model} model:
+         *   default model used to create collection items
          */
         model: BaseModel,
-        
-        /*
-         * @property {Object} query persistent query merged at search call, use persistent: true in a query
-         *                          parameter to keep it alive
+
+        /**
+         * @property {Object} query:
+         *  persistent query merged at search call,
+         *  use persistent: true in a query parameter to keep it alive
          */
         query: {},
-        
-        /*
-         * @property {GroupQuery} group_model Model use to populate the Collection with group_by query
+
+        /**
+         * @property {GroupQuery} group_model:
+         *  Model use to populate the Collection with group_by query
          */
         group_model: base.models('GroupQuery'),
-        
-        
-        /*
+
+        /**
          * Check if the collection is grouped
-         * 
+         *
          * @returns {Boolean}
          */
         grouped: function(){
-            return this.every(function(model){ 
-                return model instanceof this.group_model; 
-            }, this);    
+            return this.every(function(model){
+                return model instanceof this.group_model;
+            }, this);
         },
-        
-        /*
-         * Get a model by looking in groups, 
+
+        /**
+         * Get a model by looking in groups,
          * use the default Collection.get method is the collection is not grouped
-         * 
-         * @param {Integer|String|Backbone.Model} id an id, a cid, or by passing in a model 
-         * @return {Backbone.Model} 
+         *
+         * @param {Integer|String|Backbone.Model} id an id, a cid, or by passing in a model
+         * @return {Backbone.Model}
          */
         getInGroup: function(id){
             var collection = this, Model = this.model;
@@ -73,27 +75,26 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             }
             return collection.get(id);
         },
-        
-        /*
-         * Count collection model with a JSON-RPC call 
+
+        /**
+         * Count collection model with a JSON-RPC call
          * no fetching, the deferrer is resolved with the number passed in parameter
-         * 
+         *
          * @param {Object} query JSON-RPC API query options
          * @returns {jQuery.Deferred.promise}
          */
         count: function(query){
             return this.sync('count', this, this.search(query));
         },
-        
-        
-        /*
+
+        /**
          * Fetch data, by using the JSON-RPC API
          * add support of persistent query parameters, useful to keep the search status
-         * 
-         * @param {Object} query JSON-RPC API query options 
+         *
+         * @param {Object} query JSON-RPC API query options
          * {
-         *     filter: [], 
-         *     order: [] || "", 
+         *     filter: [],
+         *     order: [] || "",
          *     limit: 1,
          *     offset: 1,
          *     context: {},
@@ -112,57 +113,55 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 query.group_model = this.group_model;
                 query.silent = false;
             }
-            
+
             return _super.fetch.apply(this, [this.search(query)]);
         },
-        
-        /*
+
+        /**
          *  Reset persistent query parameters
-         * 
+         *
          *  @returns {BaseCollection}
          */
         resetQuery: function(){
             this.query = {};
             return this;
         },
-        
-        /*
+
+        /**
          * Extend a query with custom parameters
          * Note: override this method to force default query parameters
-         * 
+         *
          * @returns {Object} JSON-RPC API query options
          */
         search: function(query){
             query = query || {};
-            
+
             if(query.persistent){
                 this.query = _.clone(query);
             }
-            
+
             return _.extend({}, this.query, query, {
                 // force some query parameters here...
             });
         },
-        
-        
-        
-        /*
-         * Auto set the model_name for Model instanciated
-         * 
+
+        /**
+         * Auto set the model_name for Model instantiated
+         *
          * Warning: Backbone API could change, specially method prefixed by an underscore...
-         * 
+         *
          * @param {Backbone.Model|Object} attrs  model attributes or a Backbone.Model
-         * @param {Object} options               options passed at model instanciation
+         * @param {Object} options               options passed at model instantiation
          * @returns {Backbone.Model|Boolean}     the model passed in parameter or created. False
          *                                       if the model is not valid.
-         */     
+         */
         _prepareModel: function(attrs, options) {
             if(typeof this.model.prototype.model_name != 'string'){
-                this.model.prototype.model_name = this.model_name;        
+                this.model.prototype.model_name = this.model_name;
             }
             return _super._prepareModel.apply(this, arguments);
         }
     });
-  
+
     base.collections('BaseCollection', BaseCollection);
 });

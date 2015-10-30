@@ -1,9 +1,9 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
     var Controller = Marionette.Controller,
         _super = Controller.prototype;
 
-    /*
+    /**
      * @class
      * @module      web_unleashed
      * @name        PagerController
@@ -14,7 +14,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      */
     var PagerController = Controller.extend({
 
-        /*
+        /**
          * Initialize the pagination
          *
          * @param {Object} options used to define the pager behavior
@@ -40,7 +40,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             }, options);
         },
 
-        /*
+        /**
          * This method is called when items have to be refreshed, return a deferrer
          *
          * @abstract
@@ -51,7 +51,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             throw base.error('abstract object, you should implement here the way to get paginated data');
         },
 
-        /*
+        /**
          * This method has to return a deferrer with the count of element in parameter
          *
          * @abstract
@@ -62,7 +62,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             throw base.error('abstract object, you should implement here the way to get count data');
         },
 
-        /*
+        /**
          * Check if the pager is enabled, override this method to define when the pager has to be disabled
          * This method is executed before the execution of count and update queries
          *
@@ -74,7 +74,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         },
 
 
-        /*
+        /**
          * Internal update method, should never be called directly (use abstract method)
          *
          * @private
@@ -85,7 +85,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.update(query);
         },
 
-        /*
+        /**
          * Internal count method, should never be called directly (use abstract method)
          *
          * @private
@@ -96,7 +96,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.count(query);
         },
 
-        /*
+        /**
          * Initialize the pager by counting the nb of element to paginate
          * Note: after promise resolving, the pagination is still not populated with elements
          *
@@ -122,7 +122,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return def.promise();
         },
 
-        /*
+        /**
          * Init and load the current page
          *
          * @param {Object} query search query
@@ -147,7 +147,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return def.promise();
         },
 
-        /*
+        /**
          * Refresh pager parameters, based on the current count and limit
          *
          * @returns {PagerController}
@@ -162,12 +162,12 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this;
         },
 
-        /*
+        /**
          * @property {Boolean} isEnabled  enable status of the pager
          */
         isEnabled: true,
 
-        /*
+        /**
          * Disable the pagination
          */
         disable: function(){
@@ -175,7 +175,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             this.trigger('disable');
         },
 
-        /*
+        /**
          * Enable the pagination
          */
         enable: function(){
@@ -183,7 +183,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             this.trigger('enable');
         },
 
-        /*
+        /**
          * Check if the pager is enabled
          *
          * @returns {Boolean}
@@ -192,7 +192,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.isEnabled;
         },
 
-        /*
+        /**
          * Reset the number of element to paginate
          *
          * @param {Number} nb_models element count to paginate
@@ -204,7 +204,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this;
         },
 
-        /*
+        /**
          * Change the current limit and update the pager
          *
          * @param {Number} limit number of element by page
@@ -239,7 +239,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return promise;
         },
 
-        /*
+        /**
          * Get the number of pages
          *
          * @returns {Number} nb_pages
@@ -248,18 +248,21 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.pager.nb_pages;
         },
 
-        /*
+        /**
          * Get the limit, if not numeric, return the total of elements
          */
         limit: function(){
             // ensure limit is an integer, if possible
-            this.pager.limit = $.isNumeric(this.pager.limit) ? parseInt(this.pager.limit) : this.pager.limit;
+            this.pager.limit = $.isNumeric(this.pager.limit)
+                ? parseInt(this.pager.limit)
+                : this.pager.limit;
+
             return  !$.isNumeric(this.pager.limit)
                     ? this.pager.total
                     : (this.pager.limit === 0 ? 100 : this.pager.limit);
         },
 
-        /*
+        /**
          * Check if the pager has a previous page
          * @returns {Boolean}
          */
@@ -267,7 +270,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.refresh().pager.page > 0;
         },
 
-        /*
+        /**
          * Check if the pager has a next page
          *
          * @returns {Boolean}
@@ -276,7 +279,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.refresh().pager.page + 1 < this.nbPages();
         },
 
-        /*
+        /**
          * Check if the pager is on the first page
          *
          * @returns {Boolean}
@@ -285,7 +288,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.pager.page == 0;
         },
 
-        /*
+        /**
          * Check if the pager is on the last page
          *
          * @returns {Boolean}
@@ -294,7 +297,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.pager.page == this.pager.nb_pages - 1;
         },
 
-        /*
+        /**
          * First index of the current page
          *
          * @returns {Integer}
@@ -303,7 +306,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return (this.pager.page * this.limit()) + 1;
         },
 
-        /*
+        /**
          * Last index of the current page
          *
          * @returns {Integer}
@@ -315,7 +318,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         },
 
 
-        /*
+        /**
          * Load the first page
          *
          * @fires change, change:first
@@ -331,7 +334,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return $.when(def);
         },
 
-        /*
+        /**
          * Load the last page
          *
          * @fires change, change:last
@@ -347,7 +350,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return $.when(def);
         },
 
-        /*
+        /**
          * Load the next page
          *
          * @fires change, change:next
@@ -363,7 +366,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return $.when(def);
         },
 
-        /*
+        /**
          * Load the previous page
          *
          * @fires change, change:previous
@@ -380,7 +383,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         },
 
 
-        /*
+        /**
          * Define the search query according to the current page
          *
          * @returns {Object}

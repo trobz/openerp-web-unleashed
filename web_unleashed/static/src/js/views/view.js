@@ -1,4 +1,4 @@
-openerp.unleashed.module('web_unleashed',function(base, _, Backbone, base){
+odoo.unleashed.module('web_unleashed',function(base, require, _, Backbone){
 
     /*
      * FIXBUG: https://github.com/marionettejs/backbone.marionette/pull/533

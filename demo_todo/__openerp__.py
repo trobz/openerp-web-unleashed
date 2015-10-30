@@ -13,40 +13,25 @@ feature in demo:
 - module initialization
 - data access Backbone and the JSON-RPC API
 - layout definition based on Marionette
-- native OpenERP search widget support 
+- native OpenERP search widget support
     """,
-    
     'depends': [
         'web_unleashed_extra',
     ],
-    
     'data': [
+        # view
+        'view/demo_todo_view.xml',
+
+        # menu
         'menu/todo.xml',
 
          # JS/CSS Assets files
         'views/demo_todo.xml',
     ],
-    
     'qweb' : [
         'static/src/templates/*.xml',
     ],
-    
-    'js': [
-        'static/src/js/models/state.js',
-        'static/src/js/models/todo.js',
-        'static/src/js/collections/todos.js',
-        'static/src/js/views/empty.js',
-        'static/src/js/views/todo.js',
-        'static/src/js/views/todos.js',
-        'static/src/js/todo.js',
-    ],
-    
-    'css': [
-        'static/src/css/todo.css'
-    ],
-    
     'demo': [],
-    
     'application': False,
     'sequence': -99,
     'installable': True,

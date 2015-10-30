@@ -1,6 +1,6 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
-    openerp.testing.section('Group Collection', function (test) {
+    odoo.define_section('web_unleashed - Group Collection', [], function (test, mock) {
 
         var Connector = base.utils('Connector'),
             Model = null;
@@ -22,14 +22,13 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return Connector[method].apply(Connector, [model, options, connection]);
         };
 
-
-
-        test('fetch', {templates: false, rpc: 'mock', asserts: 50 }, function (instance, $fixture, mock) {
-
+        test('fetch', ["web.Model"], function (assert, TestModel) {
+            assert.expect(50)
+            Model = TestModel;
             var nb_records = 105, nb_groups = 10;
 
             //fake response to JSON-RPC call
-            mock('/web/dataset/search_read', function (call) {
+            mock.add('/web/dataset/search_read', function (call) {
                 var result = [], item_id = null;
 
                 for(var i= 1 ; i <= nb_records ; i++){
@@ -40,8 +39,6 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 return { records: result };
             });
 
-            Model = instance.web.Model;
-
             // group by id
 
             var def1 = $.Deferred();
@@ -51,7 +48,6 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             var List1 = Group.extend({
                 model_name: 'unit.test',
                 sync: sync,
-
                 group_by: 'item_id'
             });
 
@@ -258,19 +254,14 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
 
                 strictEqual(list.max, 11, 'collection group max size is 11');
 
-
                 list.reset();
 
                 strictEqual(_.size(list.groups()), 0, 'reset: no more groups');
                 strictEqual(list.length, 0, 'reset: no more models');
                 strictEqual(list.max, 0, 'collection group max size is 0');
 
-
-
                 def3.resolve();
             });
-
-
 
             return $.when(def1, def2, def3);
         });

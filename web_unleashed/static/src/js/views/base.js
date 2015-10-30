@@ -1,8 +1,8 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
     var _super = Backbone.View.prototype;
 
-    /*
+    /**
      * @class
      * @depreciated
      * @module      web_unleashed
@@ -14,12 +14,11 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      */ 
     var BaseView = Backbone.View.extend({
         
-        /*
+        /**
          * Prepare the view:
          * - set all object in options.ref into a ref property
-         * - define a deferrer to call a start method when the view is ready (at resetElement call...)
-         * 
-         * 
+         * - define a deferrer to call a start method when the view is ready 
+         * (at resetElement call...)
          */
         initialize: function(options){
             if(options && options.ref){

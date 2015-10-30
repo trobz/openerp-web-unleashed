@@ -2,7 +2,6 @@
     display: none;
 }
 
-
 .jsoneditor button.switch-mode.tree,
 .jsoneditor button.switch-mode.code {
     background-image: none !important;
@@ -13,7 +12,6 @@
     right: 5px;
     z-index: 1;
 }
-
 
 .code .jsoneditor .outer,
 .code .jsoneditor textarea {

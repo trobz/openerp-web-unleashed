@@ -5,14 +5,32 @@
     'category': 'Hidden',
     
     'description': """
-Extra components for unleashed module:
 
-- Twitter bootstrap 3.0, prefixed with a `bootstrap-scoped` css class: http://getbootstrap.com/
-- jQuery Transit (css3 animation): http://ricostacruz.com/jquery.transit/
-- NumeralJs lib: https://numeraljs.com/
-- MomentJs lib: http://momentjs.com/
-- Font Awesome lib: http://fortawesome.github.io/Font-Awesome/
-- Additional base models: period
+Extra components for unleashed module:
+======================================
+    
+- Font Awesome (CSS):
+    - version: 4.4.0
+    - http://fortawesome.github.io/Font-Awesome/
+
+- jQuery Transit (css3 animation):
+    - version: 0.9.12
+    - http://ricostacruz.com/jquery.transit/
+
+- jQuery Validation:
+    - version: 1.14.0
+    - http://jqueryvalidation.org/
+
+- Modernizr:
+    - version: 3.0.0-alpha.4
+    - https://modernizr.com/
+
+- NumeralJs (languages support): 
+    - version: 1.5.3
+    - https://numeraljs.com/
+
+- Additional base models: 
+    - period
     """,
     
     'author': 'Trobz',

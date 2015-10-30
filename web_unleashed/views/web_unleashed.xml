@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- vim:fdn=3:
--->
 <openerp>
     <data>
-        <template id="assets_backend" name="web_unleashed assets" inherit_id="web.assets_backend">
+        <!-- inherit back-end assets to add more assets -->
+        <template id="assets_backend" name="web_unleashed backend assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
-                
+
+                <!-- stylesheet -->
                 <link rel="stylesheet" href="/web_unleashed/static/src/css/pager.css"/>
                 <link rel="stylesheet" href="/web_unleashed/static/src/css/fix_form.css"/>
-<<<<<<< HEAD
-                
-                <script type="text/javascript" src="/web_unleashed/static/lib/underscore/underscore.js"></script>
-                <!-- load backbone from web module -->
-                <script type="text/javascript" src="/web/static/lib/backbone/backbone.js"></script>
-=======
 
->>>>>>> fix_xpath_issue
+                <!-- Backbone: v1.2.3 - Marionette: v2.4.3 -->
+                <script type="text/javascript" src="/web_unleashed/static/lib/backbone/backbone.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/lib/marionette/marionette.js"></script>
+
+                <!-- jQuery add-ons -->
                 <script type="text/javascript" src="/web_unleashed/static/lib/jquery-addons/jquery.font_size.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/lib/jquery-addons/jquery.when_all.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/lib/jquery-addons/jquery.serialize_object.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/lib/jquery-addons/jquery.form_reset.js"></script>
+
+                <!-- underscore add-ons -->
                 <script type="text/javascript" src="/web_unleashed/static/lib/underscore-addons/underscore.deep_extend.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/lib/underscore-addons/underscore.find_index_where.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/lib/underscore-addons/underscore.parse.js"></script>
+
+                <!-- setup scripts -->
                 <script type="text/javascript" src="/web_unleashed/static/src/js/core/unleashed.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/utils/holder.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/utils/connector.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/controllers/pager.js"></script>
+
+                <!-- model -->
                 <script type="text/javascript" src="/web_unleashed/static/src/js/models/base.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/models/query.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/models/iterator.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/models/state.js"></script>
+
+                <!-- collection -->
                 <script type="text/javascript" src="/web_unleashed/static/src/js/collections/base.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/collections/pager.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/collections/group.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/collections/iterator.js"></script>
+
+                <!-- view  -->
                 <script type="text/javascript" src="/web_unleashed/static/src/js/views/view.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/views/base.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/js/views/region.js"></script>
@@ -45,7 +52,8 @@
             </xpath>
         </template>
 
-        <template id="qunit_suite" name="web_unleashed tests" inherit_id="web.qunit_suite">
+        <!-- inherit test assets to add more tests -->
+        <template id="qunit_suite" name="web_unleashed backend tests" inherit_id="web.qunit_suite">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/web_unleashed/static/src/tests/connector.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/src/tests/group.js"></script>
@@ -54,4 +62,3 @@
         </template>
     </data>
 </openerp>
-

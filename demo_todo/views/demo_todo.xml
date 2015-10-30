@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <openerp>
     <data>
         <template id="assets_backend" name="demo_todo assets" inherit_id="web_unleashed_extra.assets_backend">
@@ -18,4 +17,3 @@
         </template>
     </data>
 </openerp>
-

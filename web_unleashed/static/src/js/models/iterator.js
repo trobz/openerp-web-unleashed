@@ -1,9 +1,9 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
     var BaseModel = base.models('BaseModel'),
         _super = BaseModel.prototype;
 
-    /*
+    /**
      * @class
      * @module      web_unleashed
      * @name        Iterator
@@ -14,7 +14,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      */
     var Iterator = BaseModel.extend({
 
-        /*
+        /**
          * Force to unselected state at initialization
          */
         initialize: function(){
@@ -22,7 +22,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             _super.initialize.apply(this, arguments);
         },
 
-        /*
+        /**
          * Select a model
          *
          * @param {Boolean} force force the selection of a model, even if the model is already selected
@@ -36,7 +36,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             }
         },
 
-        /*
+        /**
          * Get the model selection state
          *
          * @returns {Boolean} true if selected
@@ -44,7 +44,6 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         selected: function(){
             return this.get('selected') || false;
         }
-
     });
 
     base.models('Iterator', Iterator);

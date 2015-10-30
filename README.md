@@ -1,22 +1,24 @@
 [![Build Status](https://travis-ci.org/trobz/openerp-web-unleashed.png?branch=master)](https://travis-ci.org/trobz/openerp-web-unleashed)
 
-By default, the web part of OpenERP is not easy, the documentation is minimalist and the architecture is hard to understand.
+With Odoo version prior to version 9, the web part of OpenERP is really not easy, the documentation is minimalist and the architecture is hard to understand.
 
-This is a pure web module with one objective: providing good bases to build rich web application in OpenERP.
+Although Odoo keep improving overtime with code re-organization and documentation on their website but it does not seem enough. 
+
+This is a pure web module with one objective: providing good bases to build rich web application in Odoo.
 
 
 ## Features
 
 - clear MVC pattern, based on Backbone and Marionnette... with all their documentations ! 
 - new namespace to organize and get access to your objects
-- full-featured Backbone Models with OpenERP JSON-RPC API support
+- full-featured Backbone Models with Odoo JSON-RPC API support
 - QWeb rendering for Marionette views
-- base objects to build custom views (Pager, Grouped Collection, Extended OpenERP View, State manager...)
+- base objects to build custom views (Pager, Grouped Collection, Extended Odoo View, State manager...)
 - unit tests for basic functionalities
 - load/configuration commonly used libraries (momentjs, numeraljs, awesome-font,...) 
 
 
-## Exemple
+## Example
 
 Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_todo), it's a full featured example with comments. 
 
@@ -25,7 +27,7 @@ Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/t
 - module initialization
 - Backbone data access with JSON-RPC API
 - layout definition based on Marionette
-- native OpenERP search widget support
+- native Odoo search widget support
 - pagination support
 - custom 'todo' view type
 
@@ -33,8 +35,7 @@ Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/t
 
 ## Files organization
 
-A good architecture start with a good file organization. A common practice is to 
-separate each object in one fileand organize objects in logical folder.
+A good architecture start with a good file organization. A common practice is to separate each object in one file and organize objects in logical folder.
 
 A module build with Web Unleashed will look like:
 
@@ -56,122 +57,99 @@ A module build with Web Unleashed will look like:
 ```
 
 Note:
-- this is a basic organization, ```js``` subfolder can have specific folders 
-to organize your module code logically.
+- This is a basic organization, ``js`` sub-folder can have specific folders to organize your module code logically.
 
 ## Unleashed namespace
 
-`openerp.unleashed`
+`odoo.unleashed`
 
-This namespace is a Marionette Application, each web OpenERP module that uses 
-Unleashed are submodules of this Application.
+This namespace is a Marionette Application, each Odoo web module that uses 
+Unleashed are sub-modules of this Application.
 
 A module object has few helpers to set/get object in his namespace:
-
 ```js
 // basic getter/setter
-openerp.unleashed.module('my_module').set(namespace, name, object)
-openerp.unleashed.module('my_module').get(namespace, name)
+odoo.unleashed.module('my_module').set(namespace, name, object)
+odoo.unleashed.module('my_module').get(namespace, name)
+
 // helpers
-openerp.unleashed.module('my_module').views(view_name, object)
-openerp.unleashed.module('my_module').collections(collection_name, object)
-openerp.unleashed.module('my_module').models(model_name, object)
-openerp.unleashed.module('my_module').utils(name, object)
+odoo.unleashed.module('my_module').routers(router_name, object)
+odoo.unleashed.module('my_module').controllers(controller_name, object)
+odoo.unleashed.module('my_module').views(view_name, object)
+odoo.unleashed.module('my_module').collections(collection_name, object)
+odoo.unleashed.module('my_module').models(model_name, object)
+odoo.unleashed.module('my_module').behaviors(behavior_name, object)
+odoo.unleashed.module('my_module').utils(name, object)
 ```
 
 Notes: 
 
-- you never have to call the full namespace path, the module object is always 
-passed to your module scope when you have declare a new object, 
-see [object declaration](#object-declaration) for details 
-- the module name has to be the technical name of your OpenERP module
+- You never have to call the full namespace path, the module object is always passed to your module scope when you have declare a new object, see [object declaration](#object-declaration) for details 
+- With Odoo version 9, the module name doesn't have to be the technical name of your Odoo module but it's best to keep the convention as prior versions.
 
 ### Module initialization
 
-In OpenERP web, you need to define a method on openerp namespace to know 
-when OpenERP is ready to process your code, like this:
+In Odoo web, to create a new module file, normally you need to do somethings as bellow:
 
 ```js
-openerp.my_module = function(instance){
-    //openerp is ready to do stuff for your module !
-};
-```
-
-With Unleashed, you can declare a ready method as many time as you want, 
-and from anywhere, Unleashed will ensure that OpenERP is ready to execute your code.
-
-In addition to ensure that OpenERP is fully loaded, some useful arguments 
-are passed to the function, like the base module object, the latest Backbone and Underscore version, 
-and the current module object.
-
-```js
-openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Backbone, base_module) {
-    // openerp is ready and you can benefit from 
-    // the lastest Backbone and Underscore version here !
+odoo.define("my_module", function(require){
+    //odoo is ready to do stuff for your module !
 });
 ```
 
-Notes:
-
-- Backbone and Underscore are already included in OpenERP, but they are using old version. Unleashed
-include the latest version of these libraries in noConflict mode.
-
 ### Object declaration
 
-To be able to split object in different files, and keep the code organization in the global scope, 
-you have to use the module scope.
+To be able to split object in different files, and keep the code organization in the global scope,  you have to use the module scope.
 
-In this scope, you have access to the module object, the base module object, 
-the latest Underscore and Backbone version.
+In this scope, you have access to the module object, the base module object,  the latest Underscore (from Odoo) and Backbone version.
 
+Notes:
+
+- Backbone is already included in Odoo, but they are using **old** version. Unleashed includes the latest version of this library in noConflict mode.
+- Unleashed also includes latest version of Marionette which is a Backbone extension helps to build application with robust views and architecture solutions, and can be accessed via `Backbone.Marionette`,
 
 **create a new object**
 
 ```js
-openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
+odoo.unleashed.module('my_module', function(my_module, require, _, Backbone, base){
     var _super = Backbone.View.prototype;
+
+    // create your own view with Backbone
     var GreatView = Backbone.View.extend({
-        
         initialize: function(){
         }
     });
 
+    // cache the view on module namespace for later use
     my_module.views('GreatView', GreatView);
 });
 ```
 
-In this example, a new view extend the basic Backbone View and is added 
-to ```my_module``` namespace with the name "GreatView".
+In this example, a new view extend the basic Backbone View and is added to ```my_module``` namespace with the name "GreatView".
 
 Now you have access to this object from anywhere by simply using the name you used to declare it:
 
 ```js
     ...
+    // call the same method without 2nd parameter 
+    // to get what has been cached before
     var GreatView = my_module.views('GreatView'),
         view = new GreatView();
     ...
 ```
 
-Note:
-- because OpenERP is not using an AMD/module loader system like RequireJS, you have 
-to ensure that your files are loaded in the correct order in ```__openerp__.py``` file.    
-We are working on requirejs support for OpenERP, it's planned for the next release of unleashed.
-
-
-
 ## Base module
 
-Unleash provide some useful Backbone extension:
+Unleashed provide some useful Backbone extension:
 
 ### JSON-RPC API Model support
 
-By using the ```BaseModel``` and ```BaseCollection``` from the base module, 
-the JSON-RPC API is automatically implemented.
+By using the ```BaseModel``` and ```BaseCollection``` from the base module, the JSON-RPC API is automatically implemented.
 
 **create a new "JSON-RPC API ready" collection**
 
 ```js
-openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
+odoo.unleashed.module('my_module', function(my_module, require, _, Backbone, base){
     
     var BaseCollection = base.collections('BaseCollection'),
         _super = BaseCollection.prototype;
@@ -181,6 +159,7 @@ openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
         // your classic backbone code here !
     });
 
+    // cache the collection
     my_module.collections('Employees', Employees);
 });
 ```
@@ -188,8 +167,8 @@ openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
 Now, you are ready to use this model, somewhere else, you can do:
 
 ```js
-openerp.unleashed.module('my_module', function(my_module, _, Backbone, base){
-    
+odoo.unleashed.module('my_module', function(my_module, require, _, Backbone, base){
+    // get the collection you has cached
     var Employees = my_module.collections('Employees'),
         employees = new Employees();
 
@@ -233,7 +212,6 @@ var BaseCollection = base.collections('BaseCollection'),
     BaseModel = base.models('BaseModel'),
     GroupQuery = base.models('GroupQuery');
 
-
 var CustomGroupQuery = GroupQuery.extend({
     some_method: function(){...}
 });
@@ -242,7 +220,6 @@ var CustomModel = BaseModel.extend({
     model_name: 'your.model'
 });
 
-
 var CustomCollection = BaseCollection.extend({
     model_name: 'your.model',
     model: CustomModel,
@@ -250,7 +227,8 @@ var CustomCollection = BaseCollection.extend({
     /*  you can define the GroupQuery to use when a collection is 
      *  fetched with a group_by query, useful to add specific methods 
      *  on group themself,
-     */ otherwise GroupQuery Model is used instead 
+     *  otherwise GroupQuery Model is used instead 
+     */
     group_model: CustomGroupQuery
 });
 
@@ -263,10 +241,9 @@ var promise = collection.fetch({
 });
 
 promise.done(function(){
-	/*
-	 * the collection is populated with GroupQuery model
-	 */
-
+    /*
+     * the collection is populated with GroupQuery model
+     */
 
     // collection.length == your.model grouped by type
   
@@ -288,9 +265,9 @@ promise.done(function(){
     
     group_promise.done(function(){
     
-    	/*
-    	 * the group is populated with Model
-    	 */
+        /*
+         * the group is populated with Model
+         */
     
         // list.length == group_query.get('length') 
     
@@ -304,12 +281,12 @@ promise.done(function(){
 
 ### Unleashed View
 
-OpenERP View has been extended to add some default behavior/features.
+Odoo View has been extended to add some default behavior/features.
 
-**instanciation**
+**instantiation**
 
 ```js
-openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Backbone, base) {
+odoo.unleashed.module('my_module').ready(function(my_module, require, _, Backbone, base) {
 
     var UnleashedView = base.views('Unleashed');
 
@@ -344,7 +321,7 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
         },
         
         /*
-         * Executed by OpenERP before view loading, usual place to instanciate 
+         * Executed by Odoo before view loading, usual place to instantiate
          * your views and models.
          */
         start: function(){
@@ -369,7 +346,7 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
         
         /*
          * The view is ready to be used, called by a listener on  
-         * OpenERP View "view_loaded" event
+         * Odoo View "view_loaded" event
          *
          *  @param {Object} data
          *    View configuration object:
@@ -385,7 +362,7 @@ openerp.unleashed.module('my_module').ready(function(instance, my_module, _, Bac
         ready: function(data){
             /*
              * A Marionette Panel is available, 
-             * with all OpenERP part defined as Region:
+             * with all Odoo part defined as Region:
              * - this.panel.buttons
              * - this.panel.pager
              * - this.panel.sidebar
@@ -400,7 +377,7 @@ Features automatically handled by the Unleashed View:
 
 - the State of the view is managed by a Model, automatically pushed into the URL at state 
   modification, you can extend the state model to had your own state logic.
-- add a Marionette Panel to manage all elements available in an OpenERP view:   
+- add a Marionette Panel to manage all elements available in an Odoo view:   
   `buttons`, `sidebar`, `pager`, `body` regions. 
 
 Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_todo) for more details.
@@ -412,18 +389,17 @@ description (use `arch` config,...), you have to extend the python `irUiView` mo
 and specify your new view.
 
 You can add `arch` validation and build highly configurable view in the same way 
-than standard OpenERP views.
+than standard Odoo views.
   
 A simple example of a custom type declaration is available here:             
 https://github.com/trobz/openerp-web-unleashed/blob/master/demo_todo/view/todo.py
 
 ### Pager
 
-Provide everything to have a pagination on your collection, similar than the OpenERP 
-one but without dependencies.
+Provide everything to have a pagination on your collection, similar than the Odoo one but without dependencies.
 
 - Paginated collection
-- A pager view, with the same layout than the native OpenERP pager
+- A pager view, with the same layout than the native Odoo pager
 
 Checkout the [demo_todo module](https://github.com/trobz/openerp-web-unleashed/tree/master/demo_todo) for more details.
 
@@ -439,23 +415,19 @@ useful for all modules that uses unleashed.
 
 - momentjs / numeraljs libraries
 - fontawesome library
-- twitter bootstrap, scoped with 'bootstrap-scoped' css class
 - extra base model
   - period model: used to manage a period of time as a Backbone Model
 
-
 # Libraries
 
-- [Backbone 1.1.0](http://backbonejs.org)
-- [Underscore 1.5.2](http://underscorejs.org)
-- [Marionnette 1.1.0](https://github.com/marionettejs/backbone.marionette/)
+## **libraries in base module**
 
-**Libraries in extra module**
+- [Backbone 1.2.3](http://backbonejs.org)
+- [Marionnette 2.4.3](https://github.com/marionettejs/backbone.marionette/)
 
-- [MomentJS 2.0.0](http://momentjs.com)
-- [MomentJS Twix Plugin 0.3](https://github.com/icambron/twix.js)
-- [NumeralJS 1.4.9](http://adamwdraper.github.com/Numeral-js/)
-- [Font Awesome 3.2.1](http://fontawesome.io)
-- [Bootstrap 3.0.0](http://getbootstrap.com)    
-note: all css selector are scoped with the class ```.bootstrap_scope``` to avoid css conflict.
+## **Libraries in extra module**
 
+- [MomentJS 2.10.6](http://momentjs.com)
+- [MomentJS Twix Plugin 1.9.3](https://github.com/icambron/twix.js)
+- [NumeralJS 1.5.3](http://adamwdraper.github.com/Numeral-js/)
+- [Font Awesome 4.4.0](http://fontawesome.io)

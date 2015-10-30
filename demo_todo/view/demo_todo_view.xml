@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_demo_todo" model="ir.ui.view">
+            <field name="name">demo.todo.todo</field>
+            <field name="model">demo.todo</field>
+            <field name="view_type">todo</field>
+
+            <field name="arch" type="xml">
+                <todo></todo>
+            </field>
+        </record>
+
+        <record id="view_demo_todo_form" model="ir.ui.view">
+            <field name="name">demo.todo.todo</field>
+            <field name="model">demo.todo</field>
+            <field name="view_type">form</field>
+            <field name="arch" type="xml">
+                <form string="Todo">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                            </group>
+                            <group>
+                                <field name="priority" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description" nolabel="1" />
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- access to the todo list view -->
+        <record id="action_demo_toto" model="ir.actions.act_window">
+            <field name="name">Todo List</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">todo,form</field>
+            <field name="res_model">demo.todo</field>
+        </record>
+    </data>
+</openerp>

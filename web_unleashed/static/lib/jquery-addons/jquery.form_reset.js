@@ -1,6 +1,5 @@
 (function(jQuery){
-    
-    /*
+    /**
      * reset from values.
      */
     jQuery.fn.reset = function() {
@@ -8,6 +7,5 @@
             $(el).val('');
         });
     };
-    
-    
+
 })($ || jQuery)

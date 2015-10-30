@@ -1,4 +1,4 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
     var BaseCollection = base.collections('BaseCollection'),
         _super = BaseCollection.prototype;
@@ -143,11 +143,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone, base){
             return this.data.groups;
         },
 
-
         eachGroup: function(callback, context){
             return _.each(this.groups(), callback, context);
         },
-
 
         groupByIndice: function(model){
             var indice = null, group_by = this.options.group_by;

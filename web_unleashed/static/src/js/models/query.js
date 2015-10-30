@@ -1,9 +1,9 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
     var Model = Backbone.Model,
         _super = Model.prototype;
 
-    /*
+    /**
      * @class
      * @module      web_unleashed
      * @name        QueryGroup
@@ -14,7 +14,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      */
     var GroupQuery = Model.extend({
 
-        /*
+        /**
          * get OpenERP GroupQuery instance and
          * set aggregates attributes on this model
          */
@@ -36,8 +36,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             this.once('add', this.createCollection, this);
         },
 
-
-        /*
+        /**
          * Create a group collection based on the parent collection constructor.
          * This collection will be populated with GroupQuery fetch results.
          */
@@ -46,8 +45,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             this.group = new Constructor();
         },
 
-
-        /*
+        /**
          * Fetch group results into the same type of collection
          * than the parent of the GroupQuery
          *
@@ -59,7 +57,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                                   .done(_.bind(this.fetched, this));
         },
 
-        /*
+        /**
          * process the fetch result
          *
          * @param {Array} results raw fetching results

@@ -1,4 +1,4 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
     var BaseCollection = base.collections('BaseCollection'),
         _superCollection = BaseCollection.prototype;
@@ -6,8 +6,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
     var PagerController = base.controllers('Pager'),
         _superPager = PagerController.prototype;
 
-
-    /*
+    /**
      * @class
      * @module      web_unleashed
      * @name        PagerCollection
@@ -34,7 +33,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
 
     var PagerCollection = MixedPagerCollection.extend({
 
-        /*
+        /**
          * - initialize all extended objects
          * - bind events
          */
@@ -43,8 +42,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             _superPager.initialize.apply(this, [options]);
         },
 
-
-        /*
+        /**
          * Override the Pager.checkEnabled
          * Disable the pager for group_by queries
          *
@@ -63,28 +61,28 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.enabled();
         },
 
-        /*
+        /**
          * Proxy between pager controller update method and base collection fetch
          */
         update: function(){
             return _superCollection.fetch.apply(this, arguments);
         },
 
-        /*
+        /**
          * Override the Collection.first method by the Pager Controller one
          */
         first: function(){
             return _superPager.first.apply(this, arguments);
         },
 
-        /*
+        /**
          * Override the Collection.last method by the Pager Controller one
          */
         last: function(){
             return _superPager.last.apply(this, arguments);
         },
 
-        /*
+        /**
          * Get the search query, depending of the current page
          *
          * @see PagerController.search
@@ -96,5 +94,4 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
     });
 
     base.collections('Pager', PagerCollection);
-
 });

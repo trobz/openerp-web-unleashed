@@ -1,13 +1,12 @@
-openerp.unleashed.module('web_unleashed_extra', function(base_extra, _, Backbone, base){
+odoo.unleashed.module('web_unleashed_extra', function(base_extra, require, _, Backbone, base){
 
     var _super = Backbone.Model.prototype;
 
-    /*
+    /**
      * @class
      * @module      web_unleashed
      * @name        Period
      * @classdesc   Period of time, use momentjs
-     * @mixes       Backbone.Model
      *
      * @author Michel Meyer <michel[at]zazabe.com>
      */

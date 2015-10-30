@@ -1,5 +1,4 @@
-openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
-
+odoo.unleashed.module('web_unleashed', function(base, require, _, Backbone){
 
     var query = 0;
 
@@ -21,9 +20,9 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
         };
     };
 
-    /*
-     * Connector object, interface to manage the sync of data between a Backbone.Model and the OpenERP JSON-RPC API.
-     * Support all CRUD method.
+    /**
+     * Connector object, interface to manage the sync of data between a
+     * Backbone.Model and the OpenERP JSON-RPC API. Support all CRUD method.
      *
      * @module      web_unleashed
      * @name        Connector
@@ -32,13 +31,11 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
      */
     var Connector = {
 
-
-
-        /*
+        /**
          * Direct call to the Python method accessible by an API call
          *
          * @param {Backbone.Model} model  the model who implement the custom method
-         * @param {Object} options         parameters to pass to the Python method accessible by an API call
+         * @param {Object} options        parameters to pass to the Python method accessible by an API call
          * @param {Object} connection     OpenERP JSON-RPC API Client
          * @returns {jQuery.Deferred.promise}
          */
@@ -69,22 +66,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return qdef.always(function(){ console.timeEnd(prefix); });
         },
 
-        /*
-         * Read model data by using the API
-         *
-         * @param {Backbone.Model} model  the model to read
-         * @param {Object} options        query parameters
-         * @param {Object} connection     OpenERP JSON-RPC API Client
-         * @returns {jQuery.Deferred.promise}
-         */
-        read: function(model, options, connection){
-            if(options && !options.type){
-                options.type = 'all';
-            }
-            return this.search(model, options, connection);
-        },
-
-        /*
+        /**
          * Count model data by using the API
          *
          * @param {Backbone.Model} model  the model to count
@@ -99,7 +81,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return this.search(model, options, connection);
         },
 
-        /*
+        /**
          * Read API wrapper, process the options parameters to create a API client Query
          *
          * @param {Backbone.Model} model  the model to count
@@ -151,9 +133,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
                 log_args.push('context:', options.context);
             }
 
-
             var def = $.Deferred();
-
 
             //TODO: change the way group_by is implemented and avoid auto queries on each QueryGroup...
             if(options.group_by && options.group_by.length > 0 && options.type != 'count'){
@@ -224,7 +204,11 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             return def.promise().then(options.success, options.error);
         },
 
-        /*
+        patch: function(){
+            return this.update.apply(this, arguments);
+        },
+
+        /**
          * Create a model by using the API
          *
          * @param {Backbone.Model} model  the model to create
@@ -269,11 +253,22 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             .always(function(){ console.timeEnd(prefix); });
         },
 
-        patch: function(){
-            return this.update.apply(this, arguments);
+        /**
+         * Read model data by using the API
+         *
+         * @param {Backbone.Model} model  the model to read
+         * @param {Object} options        query parameters
+         * @param {Object} connection     OpenERP JSON-RPC API Client
+         * @returns {jQuery.Deferred.promise}
+         */
+        read: function(model, options, connection){
+            if(options && !options.type){
+                options.type = 'all';
+            }
+            return this.search(model, options, connection);
         },
 
-        /*
+        /**
          * Update a model by using the API
          *
          * @param {Backbone.Model} model  the model to update
@@ -317,7 +312,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
             .always(function(){ console.timeEnd(prefix); });
         },
 
-        /*
+        /**
          * Delete a model by using the API
          *
          * @param {Backbone.Model} model  the model to delete
@@ -325,7 +320,7 @@ openerp.unleashed.module('web_unleashed', function(base, _, Backbone){
          * @param {Object} connection     OpenERP JSON-RPC API Client
          * @returns {jQuery.Deferred.promise}
          */
-        "delete": function(model, options, connection){
+        delete: function(model, options, connection){
             var prefix = '[Connector][delete][' + id() + ']',
                 logger = log(prefix);
 
