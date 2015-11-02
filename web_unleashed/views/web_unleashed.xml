@@ -8,14 +8,7 @@
                 
                 <link rel="stylesheet" href="/web_unleashed/static/src/css/pager.css"/>
                 <link rel="stylesheet" href="/web_unleashed/static/src/css/fix_form.css"/>
-<<<<<<< HEAD
-                
-                <script type="text/javascript" src="/web_unleashed/static/lib/underscore/underscore.js"></script>
-                <!-- load backbone from web module -->
-                <script type="text/javascript" src="/web/static/lib/backbone/backbone.js"></script>
-=======
 
->>>>>>> fix_xpath_issue
                 <script type="text/javascript" src="/web_unleashed/static/lib/marionette/marionette.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/lib/jquery-addons/jquery.font_size.js"></script>
                 <script type="text/javascript" src="/web_unleashed/static/lib/jquery-addons/jquery.when_all.js"></script>

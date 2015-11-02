@@ -1,18 +1,5 @@
 (function(openerp){
 
-<<<<<<< HEAD
-    /**
-     * TODO: 
-     * use Underscore in no conflict mode to get the latest version for Unleashed
-     * use Backbone provided by the web module
-     */
-    var LatestBackbone = Backbone,
-        LatestUnderscore = _.noConflict(),
-        Marionette = LatestBackbone.Marionette;
-    
-
-=======
->>>>>>> fix_xpath_issue
     /*
      * Local helpers to access to objects defined in a module
      * 
