@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp.osv import osv
+from openerp import fields, models
 from openerp.tools.translate import _
 from openerp.tools.safe_eval import safe_eval
 from openerp.addons.base.ir.ir_actions import VIEW_TYPES
@@ -9,8 +9,7 @@ from logging import getLogger
 
 
 _logger = getLogger(__name__)
-VIEW_TYPE = ('todo', _('Todo Demo'))
-VIEW_TYPES.append(VIEW_TYPE)
+VIEW_TYPE = [('todo', _('Todo Demo'))]
 
 
 def valid_node_group(node):
@@ -26,15 +25,10 @@ def valid_type_todo(arch, fromgroup=True):
     return True
 
 
-class IrUiView(osv.Model):
+class IrUiView(models.Model):
     _inherit = 'ir.ui.view'
 
-    def __init__(self, pool, cr):
-        res = super(IrUiView, self).__init__(pool, cr)
-        select = [k for k, v in self._columns['type'].selection]
-        if VIEW_TYPE[0] not in select:
-            self._columns['type'].selection.append(VIEW_TYPE)
-        return res
+    type = fields.Selection(selection_add=VIEW_TYPE)
 
     def _check_xml_todo(self, cr, uid, ids, context=None):
         domain = [
